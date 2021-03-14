@@ -68,10 +68,14 @@ namespace Bruh_Overtime_Defense
             textureCodes.Add(reader.ReadString());
 
             //for each texture code
-            for (int i = 0; i < textureCodes.Count; i++)
-            {
-                //switch case where each string corresponds to a texture
-            }
+            //for (int i = 0; i < textureCodes.Count; i++)
+            //{
+            //    switch (textureCodes[i])
+            //    {
+            //        case "../../../test1.jpg":
+            //            break;
+            //    }
+            //}
 
             //initialize the rectangle 
             map = new Rectangle(0, 0, sideLengthInPixels, sideLengthInPixels);
@@ -81,25 +85,25 @@ namespace Bruh_Overtime_Defense
         /// draws all the tiles to the screen in a grid
         /// </summary>
         /// <param name="sb">the SpriteBatch</param>
-        public void DrawMap(SpriteBatch sb)
-        {
-            //the length of each tile is the total pixels over the amount of tiles in a row
-            int tileLength = sideLengthInPixels / sideLengthInTiles;
+        //public void DrawMap(SpriteBatch sb)
+        //{
+        //    //the length of each tile is the total pixels over the amount of tiles in a row
+        //    int tileLength = sideLengthInPixels / sideLengthInTiles;
 
-            //for each tile in a row
-            for (int i = 0; i < sideLengthInTiles; i++)
-            {
-                //for each tile in a column
-                for(int j = 0; j < sideLengthInTiles; j++)
-                {
-                    //draw the tiles in a grid
-                    sb.Draw(
-                        tiles[i], 
-                        new Rectangle(tileLength * j, tileLength * i, tileLength, tileLength),
-                        Color.White);
-                }
+        //    //for each tile in a row
+        //    for (int i = 0; i < sideLengthInTiles; i++)
+        //    {
+        //        //for each tile in a column
+        //        for(int j = 0; j < sideLengthInTiles; j++)
+        //        {
+        //            //draw the tiles in a grid
+        //            sb.Draw(
+        //                tiles[i], 
+        //                new Rectangle(tileLength * j, tileLength * i, tileLength, tileLength),
+        //                Color.White);
+        //        }
                 
-            }
-        }
+        //    }
+        //}
     }
 }
