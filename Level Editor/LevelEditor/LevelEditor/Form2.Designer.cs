@@ -28,124 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tileBox = new System.Windows.Forms.GroupBox();
-            this.redTile = new System.Windows.Forms.Button();
-            this.yellowTile = new System.Windows.Forms.Button();
-            this.grayTile = new System.Windows.Forms.Button();
-            this.brownColor = new System.Windows.Forms.Button();
-            this.blueTile = new System.Windows.Forms.Button();
-            this.greenTile = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.currentTile = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.loadButton = new System.Windows.Forms.Button();
             this.mapBox = new System.Windows.Forms.GroupBox();
-            this.tileBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.pictureSelect = new System.Windows.Forms.ListBox();
+            this.textureBox = new System.Windows.Forms.GroupBox();
+            this.texturePic = new System.Windows.Forms.PictureBox();
+            this.textureBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.texturePic)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tileBox
-            // 
-            this.tileBox.Controls.Add(this.redTile);
-            this.tileBox.Controls.Add(this.yellowTile);
-            this.tileBox.Controls.Add(this.grayTile);
-            this.tileBox.Controls.Add(this.brownColor);
-            this.tileBox.Controls.Add(this.blueTile);
-            this.tileBox.Controls.Add(this.greenTile);
-            this.tileBox.ForeColor = System.Drawing.Color.Red;
-            this.tileBox.Location = new System.Drawing.Point(13, 13);
-            this.tileBox.Name = "tileBox";
-            this.tileBox.Size = new System.Drawing.Size(124, 199);
-            this.tileBox.TabIndex = 0;
-            this.tileBox.TabStop = false;
-            this.tileBox.Text = "Tile Selector";
-            // 
-            // redTile
-            // 
-            this.redTile.BackColor = System.Drawing.Color.Red;
-            this.redTile.Location = new System.Drawing.Point(63, 135);
-            this.redTile.Name = "redTile";
-            this.redTile.Size = new System.Drawing.Size(55, 51);
-            this.redTile.TabIndex = 5;
-            this.redTile.UseVisualStyleBackColor = false;
-            this.redTile.Click += new System.EventHandler(this.button_Click);
-            // 
-            // yellowTile
-            // 
-            this.yellowTile.BackColor = System.Drawing.Color.Yellow;
-            this.yellowTile.Location = new System.Drawing.Point(6, 135);
-            this.yellowTile.Name = "yellowTile";
-            this.yellowTile.Size = new System.Drawing.Size(55, 51);
-            this.yellowTile.TabIndex = 4;
-            this.yellowTile.UseVisualStyleBackColor = false;
-            this.yellowTile.Click += new System.EventHandler(this.button_Click);
-            // 
-            // grayTile
-            // 
-            this.grayTile.BackColor = System.Drawing.Color.Gray;
-            this.grayTile.Location = new System.Drawing.Point(63, 78);
-            this.grayTile.Name = "grayTile";
-            this.grayTile.Size = new System.Drawing.Size(55, 51);
-            this.grayTile.TabIndex = 3;
-            this.grayTile.UseVisualStyleBackColor = false;
-            this.grayTile.Click += new System.EventHandler(this.button_Click);
-            // 
-            // brownColor
-            // 
-            this.brownColor.BackColor = System.Drawing.Color.DarkGoldenrod;
-            this.brownColor.Location = new System.Drawing.Point(6, 78);
-            this.brownColor.Name = "brownColor";
-            this.brownColor.Size = new System.Drawing.Size(55, 51);
-            this.brownColor.TabIndex = 2;
-            this.brownColor.UseVisualStyleBackColor = false;
-            this.brownColor.Click += new System.EventHandler(this.button_Click);
-            // 
-            // blueTile
-            // 
-            this.blueTile.BackColor = System.Drawing.Color.Aqua;
-            this.blueTile.Location = new System.Drawing.Point(63, 21);
-            this.blueTile.Name = "blueTile";
-            this.blueTile.Size = new System.Drawing.Size(55, 51);
-            this.blueTile.TabIndex = 1;
-            this.blueTile.UseVisualStyleBackColor = false;
-            this.blueTile.Click += new System.EventHandler(this.button_Click);
-            // 
-            // greenTile
-            // 
-            this.greenTile.BackColor = System.Drawing.Color.Lime;
-            this.greenTile.Location = new System.Drawing.Point(6, 21);
-            this.greenTile.Name = "greenTile";
-            this.greenTile.Size = new System.Drawing.Size(55, 51);
-            this.greenTile.TabIndex = 0;
-            this.greenTile.UseVisualStyleBackColor = false;
-            this.greenTile.Click += new System.EventHandler(this.button_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.currentTile);
-            this.groupBox1.ForeColor = System.Drawing.Color.Red;
-            this.groupBox1.Location = new System.Drawing.Point(13, 218);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(118, 114);
-            this.groupBox1.TabIndex = 6;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Current Tile";
-            // 
-            // currentTile
-            // 
-            this.currentTile.BackColor = System.Drawing.Color.Lime;
-            this.currentTile.Location = new System.Drawing.Point(30, 35);
-            this.currentTile.Name = "currentTile";
-            this.currentTile.Size = new System.Drawing.Size(55, 51);
-            this.currentTile.TabIndex = 0;
-            this.currentTile.UseVisualStyleBackColor = false;
             // 
             // saveButton
             // 
             this.saveButton.BackColor = System.Drawing.Color.LavenderBlush;
-            this.saveButton.Location = new System.Drawing.Point(19, 368);
+            this.saveButton.Location = new System.Drawing.Point(12, 564);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(112, 86);
+            this.saveButton.Size = new System.Drawing.Size(295, 86);
             this.saveButton.TabIndex = 7;
             this.saveButton.Text = "Save File";
             this.saveButton.UseVisualStyleBackColor = false;
@@ -154,9 +52,9 @@
             // loadButton
             // 
             this.loadButton.BackColor = System.Drawing.Color.LavenderBlush;
-            this.loadButton.Location = new System.Drawing.Point(19, 460);
+            this.loadButton.Location = new System.Drawing.Point(12, 656);
             this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(112, 86);
+            this.loadButton.Size = new System.Drawing.Size(295, 86);
             this.loadButton.TabIndex = 8;
             this.loadButton.Text = "Load File";
             this.loadButton.UseVisualStyleBackColor = false;
@@ -165,47 +63,74 @@
             // mapBox
             // 
             this.mapBox.BackColor = System.Drawing.Color.Cornsilk;
-            this.mapBox.Location = new System.Drawing.Point(143, 13);
+            this.mapBox.Location = new System.Drawing.Point(338, 13);
             this.mapBox.Name = "mapBox";
-            this.mapBox.Size = new System.Drawing.Size(500, 500);
+            this.mapBox.Size = new System.Drawing.Size(759, 729);
             this.mapBox.TabIndex = 9;
             this.mapBox.TabStop = false;
             this.mapBox.Text = "Map";
+            // 
+            // pictureSelect
+            // 
+            this.pictureSelect.FormattingEnabled = true;
+            this.pictureSelect.ItemHeight = 16;
+            this.pictureSelect.Items.AddRange(new object[] {
+            "Test Image 1",
+            "Test Image 2",
+            "Test Image 3 ",
+            "Test Image 4",
+            "Test Image 5"});
+            this.pictureSelect.Location = new System.Drawing.Point(12, 13);
+            this.pictureSelect.Name = "pictureSelect";
+            this.pictureSelect.Size = new System.Drawing.Size(295, 84);
+            this.pictureSelect.TabIndex = 10;
+            this.pictureSelect.SelectedIndexChanged += new System.EventHandler(this.pictureSelect_SelectedIndexChanged);
+            // 
+            // textureBox
+            // 
+            this.textureBox.Controls.Add(this.texturePic);
+            this.textureBox.Location = new System.Drawing.Point(13, 126);
+            this.textureBox.Name = "textureBox";
+            this.textureBox.Size = new System.Drawing.Size(199, 206);
+            this.textureBox.TabIndex = 11;
+            this.textureBox.TabStop = false;
+            this.textureBox.Text = "Current Texture";
+            // 
+            // texturePic
+            // 
+            this.texturePic.Location = new System.Drawing.Point(22, 37);
+            this.texturePic.Name = "texturePic";
+            this.texturePic.Size = new System.Drawing.Size(151, 143);
+            this.texturePic.TabIndex = 0;
+            this.texturePic.TabStop = false;
             // 
             // LevelEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
-            this.ClientSize = new System.Drawing.Size(682, 591);
+            this.ClientSize = new System.Drawing.Size(1252, 854);
+            this.Controls.Add(this.textureBox);
+            this.Controls.Add(this.pictureSelect);
             this.Controls.Add(this.mapBox);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.tileBox);
             this.Name = "LevelEditor";
             this.Text = "Level Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LevelEditor_FormClosing);
             this.Load += new System.EventHandler(this.LevelEditor_Load);
-            this.tileBox.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            this.textureBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.texturePic)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox tileBox;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button redTile;
-        private System.Windows.Forms.Button yellowTile;
-        private System.Windows.Forms.Button grayTile;
-        private System.Windows.Forms.Button brownColor;
-        private System.Windows.Forms.Button blueTile;
-        private System.Windows.Forms.Button greenTile;
-        private System.Windows.Forms.Button currentTile;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button loadButton;
         private System.Windows.Forms.GroupBox mapBox;
+        private System.Windows.Forms.ListBox pictureSelect;
+        private System.Windows.Forms.GroupBox textureBox;
+        private System.Windows.Forms.PictureBox texturePic;
     }
 }

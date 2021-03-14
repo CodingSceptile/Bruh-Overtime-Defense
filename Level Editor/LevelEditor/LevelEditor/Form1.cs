@@ -21,7 +21,7 @@ namespace LevelEditor
         private int height;
         private int width;
         private string message;
-        private int[,] colors;
+        private string[,] colors;
 
         //Constructor
 
@@ -70,14 +70,22 @@ namespace LevelEditor
                     width = reader.ReadInt32();
                     height = reader.ReadInt32();
 
-                    colors = new int[height, width];                 
+                    colors = new string[height, width];                 
 
                     //Colors obtained
                     for (int i = 0; i < colors.GetLength(0); i++)
                     {
                         for (int j = 0; j < colors.GetLength(1); j++)
                         {
-                            colors[i, j] = reader.ReadInt32();
+                            string currentPicture = reader.ReadString();
+                            if(currentPicture == "null")
+                            {
+                                colors[i, j] = "../../../default.jpg";
+                            }
+                            else
+                            {
+                                colors[i, j] = currentPicture;
+                            }
                         }
                     }
 
@@ -180,7 +188,7 @@ namespace LevelEditor
 
                 //generates the boxes (previously caused an error when put in the 
                 //initialize)
-                editor.GenerateBoxes(Color.White);
+                editor.GenerateBoxes("../../../test1.jpg");
                 //shows the level
                 editor.ShowDialog();                     
             }

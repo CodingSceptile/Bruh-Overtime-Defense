@@ -25,8 +25,10 @@ namespace LevelEditor
         private int boxWidth;
         private PictureBox[,] boxes;
         private FileStream stream;
-        private int[,] colors;
+        private string[,] colors;
         private bool isSaved;
+
+        private string path;
 
         /// <summary>
         /// Creates the level editor form
@@ -42,6 +44,8 @@ namespace LevelEditor
 
             boxes = new PictureBox[height, width];
             isSaved = true;
+
+            path = null;
 
         }
 
@@ -73,21 +77,30 @@ namespace LevelEditor
         /// <param name="e"></param>
         private void button_Click(object sender, EventArgs e)
         {
-            //Button detected
             if(sender is Button)
             {
-                Button w = (Button)sender;
+                //...
+                Button b = (Button)sender;
 
-                //Changes the current tile button
-                currentTile.BackColor = w.BackColor;
             }
 
             //PictureBox is detected
-            else if(sender is PictureBox)
+            if(sender is PictureBox)
             {
+                if(path == null)
+                {
+                    return;
+                }
+
                 PictureBox p = (PictureBox)sender;
+
+
                 //Changes a tile in the level
-                p.BackColor = currentTile.BackColor;
+             
+                p.Image.Dispose();
+                p.Load("../../../" + path);
+                
+
                 //Unsaved changes...
                 isSaved = false;
             }
@@ -133,7 +146,14 @@ namespace LevelEditor
                     //Saves the ARGB colors of the pictureboxes
                     foreach (PictureBox b in boxes)
                     {
-                        writer.Write(b.BackColor.ToArgb());
+                        if(b.Image != null)
+                        {
+                            writer.Write(b.ImageLocation);
+                        }
+                        else
+                        {
+                            writer.Write("null");
+                        }
                     }
 
                     //prompts the user that the file was successfully saved.
@@ -178,6 +198,7 @@ namespace LevelEditor
 
             DialogResult r = dialog.ShowDialog();
 
+
             try
             {
                 if (r == DialogResult.OK)
@@ -191,14 +212,22 @@ namespace LevelEditor
                     width = reader.ReadInt32();
                     height = reader.ReadInt32();
                     //creates a new array that is able to store colors
-                    colors = new int[height, width];
+                    colors = new string[height, width];
 
                     //Fills the array with the colors of the loaded data
                     for (int i = 0; i < colors.GetLength(0); i++)
                     {
                         for (int j = 0; j < colors.GetLength(1); j++)
                         {
-                            colors[i, j] = reader.ReadInt32();
+                            string currentPicture = reader.ReadString();
+                            if (currentPicture == "null") 
+                            {
+                                colors[i, j] = "../../../test1.png";
+                            }
+                            else
+                            {
+                                colors[i, j] = currentPicture;
+                            }                           
                         }
                     }
                 }
@@ -240,7 +269,7 @@ namespace LevelEditor
         /// data required
         /// </summary>
         /// <param name="color">The color of the boxes</param>
-        public void GenerateBoxes(Color color)
+        public void GenerateBoxes(string path)
         {
             //Handles Y axis
             for (int i = 0; i < height; i++)
@@ -276,7 +305,8 @@ namespace LevelEditor
                     //Subscribes box's MouseDown to the button_Click method, so
                     //it is interactable.
                     box.MouseDown += button_Click;
-                    box.BackColor = color;
+
+                    box.Load(path);
                     //saves in an array in case the data
                     //is saved to an external file
                     boxes[i, j] = box;                   
@@ -292,15 +322,16 @@ namespace LevelEditor
         /// data and loads the boxes based on that
         /// </summary>
         /// <param name="colors">The array of loaded colors</param>
-        public void LoadBoxes(int[,] colors)
+        public void LoadBoxes(string[,] colors)
         {
            //Clears the controls (so we dont 
            //get overlap)
+
             mapBox.Controls.Clear();
 
             //sets the group box to it's default width and height
-            mapBox.Width = 375;
-            mapBox.Height = 406;
+            mapBox.Width = 650;
+            mapBox.Height = 650;
 
             //Most of the functionality here is the same
             //as the above method, look there for non-unique 
@@ -329,10 +360,10 @@ namespace LevelEditor
                     box.Visible = true;
                     mapBox.Controls.Add(box);
                     box.MouseDown += button_Click;
-                    
+
                     //assigns a box the color from the corresponding
                     //colors array index
-                    box.BackColor = Color.FromArgb(colors[i, j]);
+                    box.Load(colors[i, j]);
                     mapBox.Controls.Add(box);
 
                     boxes[i, j] = box;
@@ -374,7 +405,7 @@ namespace LevelEditor
 
             //resizes the form according to the width of the
             //group box
-            this.Size = new Size(200 + mapBox.Width, 500);
+            this.Size = new Size(350 + mapBox.Width, 750);
         }
 
         /// <summary>
@@ -407,6 +438,33 @@ namespace LevelEditor
                     e.Cancel = true;
                 }
             }
+        }
+
+        private void pictureSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           if(sender is ListBox)
+            {
+                ListBox b = (ListBox)sender;
+
+                switch (b.SelectedIndex)
+                {
+                    case 0:
+                        path = "test1.jpg";
+                        break;
+                    case 1:
+                        path = "test2.jpg";
+                        break;
+                    case 2:
+                        path = "test3.jpg";
+                        break;
+                    case 3:
+                        path = "test4.jpg";
+                        break;
+                                                          
+                }
+            }
+
+            texturePic.Load("../../../" + path);
         }
     }   
 }
