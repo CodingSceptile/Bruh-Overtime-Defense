@@ -188,7 +188,7 @@ namespace LevelEditor
 
                 //generates the boxes (previously caused an error when put in the 
                 //initialize)
-                editor.GenerateBoxes("../../../test1.jpg");
+                editor.GenerateBoxes("../../../default-min.jpg");
                 //shows the level
                 editor.ShowDialog();                     
             }
