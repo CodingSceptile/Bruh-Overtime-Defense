@@ -29,6 +29,7 @@ namespace LevelEditor
         private bool isSaved;
 
         private string path;
+        private LinkedList<PictureBox> pictures;
 
         /// <summary>
         /// Creates the level editor form
@@ -46,6 +47,8 @@ namespace LevelEditor
             isSaved = true;
 
             path = null;
+
+            pictures = new LinkedList<PictureBox>();
 
         }
 
@@ -77,12 +80,6 @@ namespace LevelEditor
         /// <param name="e"></param>
         private void button_Click(object sender, EventArgs e)
         {
-            if(sender is Button)
-            {
-                //...
-                Button b = (Button)sender;
-
-            }
 
             //PictureBox is detected
             if(sender is PictureBox)
@@ -94,13 +91,16 @@ namespace LevelEditor
 
                 PictureBox p = (PictureBox)sender;
 
+                p.Capture = false;
 
-                //Changes a tile in the level
-             
-                p.Image.Dispose();
-                p.Load("../../../" + path);
+                if(Control.MouseButtons == MouseButtons.Left)
+                {
+                    p.Image.Dispose();
+                    p.Load("../../../" + path);
+                }
+               
                 
-
+                                            
                 //Unsaved changes...
                 isSaved = false;
             }
@@ -305,6 +305,9 @@ namespace LevelEditor
                     //Subscribes box's MouseDown to the button_Click method, so
                     //it is interactable.
                     box.MouseDown += button_Click;
+                    box.MouseEnter += button_Click;
+                    
+
 
                     box.Load(path);
                     //saves in an array in case the data
@@ -360,6 +363,7 @@ namespace LevelEditor
                     box.Visible = true;
                     mapBox.Controls.Add(box);
                     box.MouseDown += button_Click;
+                    box.MouseEnter += button_Click;
 
                     //assigns a box the color from the corresponding
                     //colors array index
