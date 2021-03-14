@@ -117,7 +117,8 @@ namespace LevelEditor
                 isSaved = false;
             }
             //Puts an asterisk if there are unsaved changes
-            if(this.Text.IndexOf("*") == -1)
+            if(this.Text.IndexOf("*") == -1
+                & Control.MouseButtons != MouseButtons.Left)
             {
                 this.Text = this.Text + "*";
             }          

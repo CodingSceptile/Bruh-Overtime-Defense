@@ -54,9 +54,9 @@ namespace LevelEditor
             FileStream stream = null;
             BinaryReader reader = null;
             LevelEditor editor = null;
-            
+
             //User chooses OK in the file explorer
-            if(r == DialogResult.OK)
+            if (r == DialogResult.OK)
             {
 
                 try
@@ -70,15 +70,13 @@ namespace LevelEditor
                     width = reader.ReadInt32();
                     height = reader.ReadInt32();
 
-                    colors = new string[height, width];                 
-
                     //Colors obtained
                     for (int i = 0; i < colors.GetLength(0); i++)
                     {
                         for (int j = 0; j < colors.GetLength(1); j++)
                         {
                             string currentPicture = reader.ReadString();
-                            if(currentPicture == "null")
+                            if (currentPicture == "null")
                             {
                                 colors[i, j] = "../../../default.jpg";
                             }
@@ -101,22 +99,22 @@ namespace LevelEditor
                     MessageBox.Show("Successfully loaded the file!", ":)");
                     editor.ShowDialog();
                 }
-                
+
                 catch (Exception ex)
                 {
                     //Something was wrong with the file
                     MessageBox.Show("Error reading file! " + ex.Message, ":(");
                 }
-                
+
                 finally
                 {
-                    if(stream != null)
+                    if (stream != null)
                     {
                         reader.Close();
-                    }                    
-                }                           
+                    }
+                }
             }
-            
+
             //User exited out of the file explorer...
             else
             {
@@ -143,43 +141,43 @@ namespace LevelEditor
             {
                 message = message + " - Not a valid Width.\n";
             }
-           
+
             //height not valid
-            if(validHeight == false)
+            if (validHeight == false)
             {
                 message = message + " - Not a valid Height.\n";
             }
-           
+
             //too small width
-            if(width < 10 && validWidth)
+            if (width < 10 && validWidth)
             {
                 message = message + " - Width too small, the minimum is 10.\n";
             }
-            
+
             //too large width
-            if(width > 30 && validWidth)
+            if (width > 30 && validWidth)
             {
                 message = message + " - Width too large, the maximum is 30.\n";
             }
-           
+
             //too small height
-            if(height < 10 && validHeight)
+            if (height < 10 && validHeight)
             {
                 message = message + " - Height too small, the minimum is 10.\n";
             }
-           
+
             //too large height
-            if(height > 30 && validHeight)
+            if (height > 30 && validHeight)
             {
                 message = message + " - Height to large, the maximum is 30.\n";
             }
 
             //prints errors to a message box, if any
-            if(message != "Errors: \n")
+            if (message != "Errors: \n")
             {
                 MessageBox.Show(message, "Error creating level :(");
             }
-            
+
             //No errors!
             else
             {
@@ -190,8 +188,80 @@ namespace LevelEditor
                 //initialize)
                 editor.GenerateBoxes("../../../default-min.jpg");
                 //shows the level
-                editor.ShowDialog();                     
+                editor.ShowDialog();
             }
         }
+
+        private void exportButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "Convert a .level file...";
+            dialog.Filter = "Level Files|*.level";
+            DialogResult r = dialog.ShowDialog();
+
+            FileStream stream = null;
+            FileStream writeStream = null;
+            BinaryReader reader = null;
+            BinaryWriter writer = null;
+
+            //User chooses OK in the file explorer
+            if (r == DialogResult.OK)
+            {
+
+                try
+                {
+                    //Reads AND writes from the file
+                    stream = new FileStream(dialog.FileName, FileMode.Open);
+                    writeStream = new FileStream(dialog.FileName + "_Appended", FileMode.Create);
+                    reader = new BinaryReader(stream);
+                    writer = new BinaryWriter(writeStream);
+
+                    //Width and height obtained
+                    width = reader.ReadInt32();
+                    writer.Write(width);
+                    height = reader.ReadInt32();
+                    writer.Write(height);
+
+                    //Colors obtained
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            string currentPicture = reader.ReadString();
+                            if (currentPicture.Contains("../../../"))
+                            {
+                                currentPicture = currentPicture.Substring
+                                    (currentPicture.LastIndexOf('/') + 1);
+                            }
+                            else
+                            {
+                                currentPicture = "default.jpg";
+                            }
+                            writer.Write(currentPicture);
+                        }
+                    }
+
+                    //RESERVED FOR VECTOR2 DATA.
+
+                    MessageBox.Show("Successfully appended the file for Bruh Overtime Defense!", ":D");
+                }
+
+                catch (Exception ex)
+                {
+                    //Something was wrong with the file
+                    MessageBox.Show("Error reading file! " + ex.Message, ":(");
+                }
+
+                finally
+                {
+                    if (stream != null)
+                    {
+                        reader.Close();
+                    }
+                }
+            }
+
+        }
     }
+
 }

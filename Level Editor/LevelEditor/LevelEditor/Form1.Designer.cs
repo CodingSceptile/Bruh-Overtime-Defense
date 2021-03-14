@@ -124,6 +124,7 @@
             this.exportButton.TabIndex = 2;
             this.exportButton.Text = "Export File to Game\r\n(Beta Test)";
             this.exportButton.UseVisualStyleBackColor = false;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
             // gameInfo
             // 
