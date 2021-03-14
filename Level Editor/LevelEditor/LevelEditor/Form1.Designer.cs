@@ -35,6 +35,8 @@
             this.widthBox = new System.Windows.Forms.TextBox();
             this.heightLabel = new System.Windows.Forms.Label();
             this.widthLabel = new System.Windows.Forms.Label();
+            this.exportButton = new System.Windows.Forms.Button();
+            this.gameInfo = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,12 +113,35 @@
             this.widthLabel.TabIndex = 0;
             this.widthLabel.Text = "Width (in tiles)";
             // 
+            // exportButton
+            // 
+            this.exportButton.BackColor = System.Drawing.Color.Beige;
+            this.exportButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.exportButton.Font = new System.Drawing.Font("Sitka Small", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exportButton.Location = new System.Drawing.Point(386, 41);
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(357, 100);
+            this.exportButton.TabIndex = 2;
+            this.exportButton.Text = "Export File to Game\r\n(Beta Test)";
+            this.exportButton.UseVisualStyleBackColor = false;
+            // 
+            // gameInfo
+            // 
+            this.gameInfo.Location = new System.Drawing.Point(386, 180);
+            this.gameInfo.Name = "gameInfo";
+            this.gameInfo.Size = new System.Drawing.Size(357, 252);
+            this.gameInfo.TabIndex = 3;
+            this.gameInfo.TabStop = false;
+            this.gameInfo.Text = "Game Information";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
-            this.ClientSize = new System.Drawing.Size(385, 450);
+            this.ClientSize = new System.Drawing.Size(755, 450);
+            this.Controls.Add(this.gameInfo);
+            this.Controls.Add(this.exportButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.loadButton);
             this.Name = "Form1";
@@ -136,6 +161,8 @@
         private System.Windows.Forms.TextBox widthBox;
         private System.Windows.Forms.Label heightLabel;
         private System.Windows.Forms.Label widthLabel;
+        private System.Windows.Forms.Button exportButton;
+        private System.Windows.Forms.GroupBox gameInfo;
     }
 }
 
