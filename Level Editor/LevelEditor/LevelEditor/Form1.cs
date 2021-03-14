@@ -70,6 +70,8 @@ namespace LevelEditor
                     width = reader.ReadInt32();
                     height = reader.ReadInt32();
 
+                    colors = new string[width, height];
+
                     //Colors obtained
                     for (int i = 0; i < colors.GetLength(0); i++)
                     {

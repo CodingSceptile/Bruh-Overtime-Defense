@@ -101,6 +101,11 @@ namespace LevelEditor
                     p.SizeMode = PictureBoxSizeMode.Zoom;
                     p.Load("../../../" + path);
 
+                    if (this.Text.IndexOf("*") == -1)
+                    {
+                        this.Text = this.Text + "*";
+                    }
+
                     if (recentlyUsed.Items.Contains(path))
                     {
                         return;
@@ -117,11 +122,7 @@ namespace LevelEditor
                 isSaved = false;
             }
             //Puts an asterisk if there are unsaved changes
-            if(this.Text.IndexOf("*") == -1
-                & Control.MouseButtons != MouseButtons.Left)
-            {
-                this.Text = this.Text + "*";
-            }          
+                     
         }
 
         /// <summary>
