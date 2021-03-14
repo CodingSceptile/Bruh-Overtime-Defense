@@ -46,7 +46,7 @@ namespace Bruh_Overtime_Defense
             set
             {
                 if (value > 0)
-                    radius = initialCost;
+                    initialCost = value;
             }
         }
 
