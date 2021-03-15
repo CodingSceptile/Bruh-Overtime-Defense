@@ -188,7 +188,7 @@ namespace LevelEditor
 
                 //generates the boxes (previously caused an error when put in the 
                 //initialize)
-                editor.GenerateBoxes("../../../default-min.jpg");
+                editor.GenerateBoxes("../../../default-min.png");
                 //shows the level
                 editor.ShowDialog();
             }
@@ -233,11 +233,12 @@ namespace LevelEditor
                             if (currentPicture.Contains("../../../"))
                             {
                                 currentPicture = currentPicture.Substring
-                                    (currentPicture.LastIndexOf('/') + 1);
+                                    (currentPicture.LastIndexOf('/') + 1,
+                                    currentPicture.LastIndexOf('.') - currentPicture.LastIndexOf('/') - 1);
                             }
                             else
                             {
-                                currentPicture = "default.jpg";
+                                currentPicture = "error";
                             }
                             writer.Write(currentPicture);
                         }

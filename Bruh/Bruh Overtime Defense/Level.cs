@@ -13,6 +13,10 @@ namespace Bruh_Overtime_Defense
         //fields
         List<Texture2D> tiles;
         Rectangle map;
+        private string mapFile;
+
+        private int width;
+        private int height;
 
         /// <summary>
         /// Constructor
@@ -20,26 +24,35 @@ namespace Bruh_Overtime_Defense
         /// <param name="mapFile">the name of the map file</param>
         public Level(string mapFile)
         {
-            GenerateMap(mapFile);
+            this.mapFile = mapFile;
         }
 
         /// <summary>
         /// generates a map
         /// </summary>
         /// <param name="mapFile">the name of the map file</param>
-        private void GenerateMap(string mapFile)
+        public List<string> GenerateMap()
         {
-            List<String> textureCodes = new List<String>();
-            BinaryReader reader = new BinaryReader(File.Open(mapFile, FileMode.Open));
-            int width = reader.ReadInt32();
-            int height = reader.ReadInt32();
-            textureCodes.Add(reader.ReadString());
-            for(int  i = 0; i < textureCodes.Count; i++)
+          
+            FileStream stream = new FileStream("Content/" + mapFile, FileMode.Open);
+            BinaryReader reader = new BinaryReader(stream);
+
+            List<string> codes = new List<string>();
+
+            this.width = reader.ReadInt32();
+            this.height = reader.ReadInt32();
+            
+            for (int i = 0; i < width; i++)
             {
-                //switch case where each string corresponds to a texture
+                for (int j = 0; j < height; j++)
+                {
+                    string textureCode = reader.ReadString();
+                    codes.Add(textureCode);                
+                }
             }
 
-            map = new Rectangle(width, height, 500, 500);
+            return codes;
+
         }
 
         /// <summary>
@@ -56,6 +69,15 @@ namespace Bruh_Overtime_Defense
         public List<Texture2D> Tiles
         {
             get { return tiles; }
+        }
+
+        public int Width { get { return width; } }
+
+        public int Height { get { return height; } }
+
+        public void Draw(SpriteBatch sb, Texture2D texture, Rectangle tileLocation)
+        {
+            sb.Draw(texture, tileLocation, Color.White);
         }
     }
 }
