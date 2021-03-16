@@ -103,7 +103,11 @@ namespace LevelEditor
 
                     if (this.Text.IndexOf("*") == -1)
                     {
+                        //Puts an asterisk if there are unsaved changes
                         this.Text = this.Text + "*";
+
+                        //Unsaved changes...
+                        isSaved = false;
                     }
 
                     if (recentlyUsed.Items.Contains(path))
@@ -114,15 +118,8 @@ namespace LevelEditor
                     {
                         recentlyUsed.Items.Add(path);
                     }                   
-                }
-               
-                
-                                            
-                //Unsaved changes...
-                isSaved = false;
-            }
-            //Puts an asterisk if there are unsaved changes
-                     
+                }                                                        
+            }                                 
         }
 
         /// <summary>

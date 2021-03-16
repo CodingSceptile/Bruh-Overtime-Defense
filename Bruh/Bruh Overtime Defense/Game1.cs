@@ -13,12 +13,14 @@ namespace Bruh_Overtime_Defense
         private Level level;
         private Level level2;
         private List<string> codes;
+        private List<string> overlayCodes;
 
         private int tileHeight;
         private int tileWidth;
 
         //Textures
         private List<Texture2D> textures;
+        private List<Texture2D> overlayTextures;
 
         public Game1()
         {
@@ -33,10 +35,13 @@ namespace Bruh_Overtime_Defense
         {
             // TODO: Add your initialization logic here
             textures = new List<Texture2D>();
+            overlayTextures = new List<Texture2D>();
 
             level = new Level("simpleMap.level_Appended");
-            level2 = new Level("testMap.level_Appended");
+            level2 = new Level("overlay.level_Appended");
+            
             codes = level.GenerateMap();
+            overlayCodes = level2.GenerateMap();
 
             _graphics.PreferredBackBufferWidth = 750;
             _graphics.PreferredBackBufferHeight = 750;
@@ -58,6 +63,12 @@ namespace Bruh_Overtime_Defense
                 Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
 
                 textures.Add(texture);
+            }
+            foreach(string code in overlayCodes)
+            {
+                Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
+
+                overlayTextures.Add(texture);
             }
 
             // TODO: use this.Content to load your game content here
@@ -87,10 +98,19 @@ namespace Bruh_Overtime_Defense
                     new Rectangle(
                         new Point(tileWidth * j, tileHeight * i),
                         new Point(tileWidth, tileHeight)));
+
+                    level2.Draw(_spriteBatch, overlayTextures[(i * 10) + j],
+                    new Rectangle(
+                        new Point(tileWidth * j, tileHeight * i),
+                        new Point(tileWidth, tileHeight)));                                      
                 }
             }
             
-                       
+
+
+
+
+
 
             _spriteBatch.End();
             

@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin overlay.level_Appended
+/copy:overlay.level_Appended
+
 #begin simpleMap.level_Appended
 /copy:simpleMap.level_Appended
 

@@ -33,23 +33,38 @@ namespace Bruh_Overtime_Defense
         /// <param name="mapFile">the name of the map file</param>
         public List<string> GenerateMap()
         {
-          
-            FileStream stream = new FileStream("Content/" + mapFile, FileMode.Open);
-            BinaryReader reader = new BinaryReader(stream);
+
+            FileStream stream = null;
+            BinaryReader reader = null;
 
             List<string> codes = new List<string>();
 
-            this.width = reader.ReadInt32();
-            this.height = reader.ReadInt32();
-            
-            for (int i = 0; i < width; i++)
+            try
             {
-                for (int j = 0; j < height; j++)
+                stream = new FileStream("Content/" + mapFile, FileMode.Open);
+                reader = new BinaryReader(stream);
+
+                this.width = reader.ReadInt32();
+                this.height = reader.ReadInt32();
+
+                for (int i = 0; i < width; i++)
                 {
-                    string textureCode = reader.ReadString();
-                    codes.Add(textureCode);                
+                    for (int j = 0; j < height; j++)
+                    {
+                        string textureCode = reader.ReadString();
+                        codes.Add(textureCode);
+                    }
                 }
             }
+            finally
+            {
+                if(stream != null)
+                {
+                    stream.Close();
+                }
+            }
+
+            
 
             return codes;
 
