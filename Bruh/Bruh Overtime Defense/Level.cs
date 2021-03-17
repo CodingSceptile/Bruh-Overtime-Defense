@@ -16,6 +16,8 @@ namespace Bruh_Overtime_Defense
         private string mapFile;
         int sideLengthInTiles;
         int sideLengthInPixels;
+        int width;
+        int height;
 
         /// <summary>
         /// Constructor
@@ -25,7 +27,6 @@ namespace Bruh_Overtime_Defense
         {
             //500 pixels is an arbitrary amount
             sideLengthInPixels = 500;
-            GenerateMap(mapFile);
             this.mapFile = mapFile;
         }
 
@@ -57,14 +58,16 @@ namespace Bruh_Overtime_Defense
                         codes.Add(textureCode);
                     }
                 }
+                return codes;
             }
             finally
             {
-                if(stream != null)
+                if (stream != null)
                 {
                     stream.Close();
                 }
             }
+        }
 
         /// <summary>
         /// the tiles for the map in order
@@ -72,9 +75,6 @@ namespace Bruh_Overtime_Defense
         public List<Texture2D> Tiles
         {
             get { return tiles; }
-            
-
-            return codes;
 
         }
 
@@ -84,36 +84,6 @@ namespace Bruh_Overtime_Defense
         public int SideLength
         {
             get { return sideLengthInTiles; }
-        }
-
-        /// <summary>
-        /// generates a map
-        /// </summary>
-        /// <param name="mapFile">the name of the map file</param>
-        private void GenerateMap(string mapFile)
-        {
-            //a list of texture names
-            List<String> textureCodes = new List<String>();
-            //opens the level file to be read
-            BinaryReader reader = new BinaryReader(File.Open(mapFile, FileMode.Open));
-
-            //get the side length in tiles from the file
-            sideLengthInTiles = reader.ReadInt32();
-            //add all the strings as a texture code
-            textureCodes.Add(reader.ReadString());
-
-            //for each texture code
-            //for (int i = 0; i < textureCodes.Count; i++)
-            //{
-            //    switch (textureCodes[i])
-            //    {
-            //        case "../../../test1.jpg":
-            //            break;
-            //    }
-            //}
-
-            //initialize the rectangle 
-            map = new Rectangle(0, 0, sideLengthInPixels, sideLengthInPixels);
         }
 
         public int Width { get { return width; } }
