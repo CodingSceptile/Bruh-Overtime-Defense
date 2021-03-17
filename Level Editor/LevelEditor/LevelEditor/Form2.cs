@@ -29,7 +29,6 @@ namespace LevelEditor
         private bool isSaved;
 
         private string path;
-        private LinkedList<PictureBox> pictures;
 
         /// <summary>
         /// Creates the level editor form
@@ -47,8 +46,6 @@ namespace LevelEditor
             isSaved = true;
 
             path = null;
-
-            pictures = new LinkedList<PictureBox>();
 
         }
 
@@ -70,6 +67,11 @@ namespace LevelEditor
         private void LevelEditor_Load(object sender, EventArgs e)
         {           
             ResizeForm();    
+
+            for(int i = 1; i < 300; i++)
+            {
+                pictureSelect.Items.Add("Tower defense texture " + i);
+            }
         }
 
         /// <summary>
@@ -96,19 +98,28 @@ namespace LevelEditor
                 if(Control.MouseButtons == MouseButtons.Left)
                 {
                     p.Image.Dispose();
+                    p.SizeMode = PictureBoxSizeMode.Zoom;
                     p.Load("../../../" + path);
-                }
-               
-                
-                                            
-                //Unsaved changes...
-                isSaved = false;
-            }
-            //Puts an asterisk if there are unsaved changes
-            if(this.Text.IndexOf("*") == -1)
-            {
-                this.Text = this.Text + "*";
-            }          
+
+                    if (this.Text.IndexOf("*") == -1)
+                    {
+                        //Puts an asterisk if there are unsaved changes
+                        this.Text = this.Text + "*";
+
+                        //Unsaved changes...
+                        isSaved = false;
+                    }
+
+                    if (recentlyUsed.Items.Contains(path))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        recentlyUsed.Items.Add(path);
+                    }                   
+                }                                                        
+            }                                 
         }
 
         /// <summary>
@@ -327,15 +338,14 @@ namespace LevelEditor
         /// <param name="colors">The array of loaded colors</param>
         public void LoadBoxes(string[,] colors)
         {
-           //Clears the controls (so we dont 
-           //get overlap)
+            //Clears the controls (so we dont 
+            //get overlap)
+
+            mapBox.Size = new Size(575, 575);
 
             mapBox.Controls.Clear();
 
-            //sets the group box to it's default width and height
-            mapBox.Width = 650;
-            mapBox.Height = 650;
-
+           
             //Most of the functionality here is the same
             //as the above method, look there for non-unique 
             //comments
@@ -368,11 +378,14 @@ namespace LevelEditor
                     //assigns a box the color from the corresponding
                     //colors array index
                     box.Load(colors[i, j]);
+                    box.SizeMode = PictureBoxSizeMode.Zoom;
                     mapBox.Controls.Add(box);
 
                     boxes[i, j] = box;
+
                 }
             }
+            
         }
 
         /// <summary>
@@ -450,25 +463,38 @@ namespace LevelEditor
             {
                 ListBox b = (ListBox)sender;
 
-                switch (b.SelectedIndex)
-                {
-                    case 0:
-                        path = "test1.jpg";
-                        break;
-                    case 1:
-                        path = "test2.jpg";
-                        break;
-                    case 2:
-                        path = "test3.jpg";
-                        break;
-                    case 3:
-                        path = "test4.jpg";
-                        break;
-                                                          
-                }
-            }
+                int index = b.SelectedIndex + 1;
 
-            texturePic.Load("../../../" + path);
+                if(index < 10)
+                {
+                    path = "Default size/towerDefense_tile" + $"00{index}.png";
+                }
+                else if(index < 100)
+                {
+                    path = "Default size/towerDefense_tile" + $"0{index}.png";
+                }
+                else
+                {
+                    path = "Default size/towerDefense_tile" + $"{index}.png";
+                }
+
+                texturePic.Load("../../../" + path);
+                texturePic.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+        }
+
+        private void RecentSelect(object sender, EventArgs e)
+        { 
+            if(sender is ListBox)
+            {
+                ListBox b = (ListBox)sender;
+
+                int index = b.SelectedIndex;
+
+                path = (string)b.Items[index];
+
+                texturePic.Load("../../../" + path);
+            }
         }
     }   
 }

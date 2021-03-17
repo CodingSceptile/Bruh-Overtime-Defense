@@ -13,6 +13,7 @@ namespace Bruh_Overtime_Defense
         //fields
         List<Texture2D> tiles;
         Rectangle map;
+        private string mapFile;
         int sideLengthInTiles;
         int sideLengthInPixels;
 
@@ -25,15 +26,45 @@ namespace Bruh_Overtime_Defense
             //500 pixels is an arbitrary amount
             sideLengthInPixels = 500;
             GenerateMap(mapFile);
+            this.mapFile = mapFile;
         }
 
         /// <summary>
         /// the map rectangle
         /// </summary>
-        public Rectangle Map
+        /// <param name="mapFile">the name of the map file</param>
+        public List<string> GenerateMap()
         {
-            get { return map; }
-        }
+
+            FileStream stream = null;
+            BinaryReader reader = null;
+
+            List<string> codes = new List<string>();
+
+            try
+            {
+                stream = new FileStream("Content/" + mapFile, FileMode.Open);
+                reader = new BinaryReader(stream);
+
+                this.width = reader.ReadInt32();
+                this.height = reader.ReadInt32();
+
+                for (int i = 0; i < width; i++)
+                {
+                    for (int j = 0; j < height; j++)
+                    {
+                        string textureCode = reader.ReadString();
+                        codes.Add(textureCode);
+                    }
+                }
+            }
+            finally
+            {
+                if(stream != null)
+                {
+                    stream.Close();
+                }
+            }
 
         /// <summary>
         /// the tiles for the map in order
@@ -41,6 +72,10 @@ namespace Bruh_Overtime_Defense
         public List<Texture2D> Tiles
         {
             get { return tiles; }
+            
+
+            return codes;
+
         }
 
         /// <summary>
@@ -81,29 +116,13 @@ namespace Bruh_Overtime_Defense
             map = new Rectangle(0, 0, sideLengthInPixels, sideLengthInPixels);
         }
 
-        /// <summary>
-        /// draws all the tiles to the screen in a grid
-        /// </summary>
-        /// <param name="sb">the SpriteBatch</param>
-        //public void DrawMap(SpriteBatch sb)
-        //{
-        //    //the length of each tile is the total pixels over the amount of tiles in a row
-        //    int tileLength = sideLengthInPixels / sideLengthInTiles;
+        public int Width { get { return width; } }
 
-        //    //for each tile in a row
-        //    for (int i = 0; i < sideLengthInTiles; i++)
-        //    {
-        //        //for each tile in a column
-        //        for(int j = 0; j < sideLengthInTiles; j++)
-        //        {
-        //            //draw the tiles in a grid
-        //            sb.Draw(
-        //                tiles[i], 
-        //                new Rectangle(tileLength * j, tileLength * i, tileLength, tileLength),
-        //                Color.White);
-        //        }
-                
-        //    }
-        //}
+        public int Height { get { return height; } }
+
+        public void Draw(SpriteBatch sb, Texture2D texture, Rectangle tileLocation)
+        {
+            sb.Draw(texture, tileLocation, Color.White);
+        }
     }
 }

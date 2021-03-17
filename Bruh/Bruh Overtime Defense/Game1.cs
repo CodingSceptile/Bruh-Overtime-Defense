@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Bruh_Overtime_Defense
 {
@@ -9,16 +10,46 @@ namespace Bruh_Overtime_Defense
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private Level level;
+        private Level level2;
+        private List<string> codes;
+        private List<string> overlayCodes;
+
+        private int tileHeight;
+        private int tileWidth;
+
+        //Textures
+        private List<Texture2D> textures;
+        private List<Texture2D> overlayTextures;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            textures = new List<Texture2D>();
+            overlayTextures = new List<Texture2D>();
+
+            level = new Level("simpleMap.level_Appended");
+            level2 = new Level("overlay.level_Appended");
+            
+            codes = level.GenerateMap();
+            overlayCodes = level2.GenerateMap();
+
+            _graphics.PreferredBackBufferWidth = 750;
+            _graphics.PreferredBackBufferHeight = 750;
+
+            tileWidth = _graphics.PreferredBackBufferWidth / level.Width;
+            tileHeight = _graphics.PreferredBackBufferHeight / level.Width;
+
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -26,6 +57,19 @@ namespace Bruh_Overtime_Defense
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            foreach(string code in codes)
+            {
+                Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
+
+                textures.Add(texture);
+            }
+            foreach(string code in overlayCodes)
+            {
+                Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
+
+                overlayTextures.Add(texture);
+            }
 
             // TODO: use this.Content to load your game content here
         }
@@ -43,6 +87,33 @@ namespace Bruh_Overtime_Defense
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            _spriteBatch.Begin();
+
+            for(int i = 0; i < level.Width; i++)
+            {
+                for(int j = 0; j < level.Height; j++)
+                {
+                    level.Draw(_spriteBatch, textures[(i * 10) + j],
+                    new Rectangle(
+                        new Point(tileWidth * j, tileHeight * i),
+                        new Point(tileWidth, tileHeight)));
+
+                    level2.Draw(_spriteBatch, overlayTextures[(i * 10) + j],
+                    new Rectangle(
+                        new Point(tileWidth * j, tileHeight * i),
+                        new Point(tileWidth, tileHeight)));                                      
+                }
+            }
+            
+
+
+
+
+
+
+            _spriteBatch.End();
+            
 
             // TODO: Add your drawing code here
 
