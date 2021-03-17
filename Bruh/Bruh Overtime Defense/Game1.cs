@@ -20,6 +20,10 @@ namespace Bruh_Overtime_Defense
         private int tileHeight;
         private int tileWidth;
 
+        //mouse states
+        MouseState mState;
+        MouseState prevMState;
+
         //Textures
         private List<Texture2D> textures;
         private List<Texture2D> overlayTextures;
@@ -29,8 +33,6 @@ namespace Bruh_Overtime_Defense
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-
         }
 
         /// <summary>
@@ -53,6 +55,10 @@ namespace Bruh_Overtime_Defense
 
             tileWidth = _graphics.PreferredBackBufferWidth / level.Width;
             tileHeight = _graphics.PreferredBackBufferHeight / level.Width;
+
+            //initialize the mouse states
+            mState = Mouse.GetState();
+            prevMState = Mouse.GetState();
 
             _graphics.ApplyChanges();
 
@@ -87,7 +93,6 @@ namespace Bruh_Overtime_Defense
                 overlayTextures.Add(texture);
             }
 
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -99,7 +104,11 @@ namespace Bruh_Overtime_Defense
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            //get the current MouseState (first thing to be done)
+            mState = Mouse.GetState();
+
+            //make the current state the previous state (last thing to be done)
+            prevMState = mState;
 
             base.Update(gameTime);
         }
@@ -112,6 +121,7 @@ namespace Bruh_Overtime_Defense
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            //begin the SpriteBatch
             _spriteBatch.Begin();
 
             //Manages the tiles locations and sizes
@@ -139,9 +149,8 @@ namespace Bruh_Overtime_Defense
                 }
             }
            
+            //end the SpriteBatch
             _spriteBatch.End();
-           
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }
