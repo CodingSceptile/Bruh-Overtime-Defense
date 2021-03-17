@@ -10,11 +10,13 @@ namespace Bruh_Overtime_Defense
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        //Level information and objects
         private Level level;
-        private Level level2;
+        private Level overlay;
         private List<string> codes;
         private List<string> overlayCodes;
 
+        //Height and width of the tiles
         private int tileHeight;
         private int tileWidth;
 
@@ -31,6 +33,9 @@ namespace Bruh_Overtime_Defense
 
         }
 
+        /// <summary>
+        /// Initializes main logic of the game
+        /// </summary>
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -38,10 +43,10 @@ namespace Bruh_Overtime_Defense
             overlayTextures = new List<Texture2D>();
 
             level = new Level("simpleMap.level_Appended");
-            level2 = new Level("overlay.level_Appended");
+            overlay = new Level("overlay.level_Appended");
             
             codes = level.GenerateMap();
-            overlayCodes = level2.GenerateMap();
+            overlayCodes = overlay.GenerateMap();
 
             _graphics.PreferredBackBufferWidth = 750;
             _graphics.PreferredBackBufferHeight = 750;
@@ -54,16 +59,27 @@ namespace Bruh_Overtime_Defense
             base.Initialize();
         }
 
+        /// <summary>
+        /// Loads the Textures, and assigns them to respective lists
+        /// </summary>
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //Loops through the list of code values garnered from the
+            //level editor
+
+            //Main level
             foreach(string code in codes)
             {
+                //Loads a texture given the code(Located in the textures folder, basically
+                //just the file name)
                 Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
 
                 textures.Add(texture);
             }
+
+            //Overlay
             foreach(string code in overlayCodes)
             {
                 Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
@@ -74,6 +90,10 @@ namespace Bruh_Overtime_Defense
             // TODO: use this.Content to load your game content here
         }
 
+        /// <summary>
+        /// Updates the game logic once per frame
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -84,37 +104,43 @@ namespace Bruh_Overtime_Defense
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Draws all necessary assets to the screen
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin();
 
+            //Manages the tiles locations and sizes
             for(int i = 0; i < level.Width; i++)
             {
                 for(int j = 0; j < level.Height; j++)
                 {
+
+                    //gets the textures for each collumn,
+                    //draws each with an equal widths and heights, 
+                    //as well as locates them depending on the individual widths
+                    //and heights
+
+                    //Background draw
                     level.Draw(_spriteBatch, textures[(i * 10) + j],
                     new Rectangle(
                         new Point(tileWidth * j, tileHeight * i),
                         new Point(tileWidth, tileHeight)));
 
-                    level2.Draw(_spriteBatch, overlayTextures[(i * 10) + j],
+                    //Overlay draw
+                    overlay.Draw(_spriteBatch, overlayTextures[(i * 10) + j],
                     new Rectangle(
                         new Point(tileWidth * j, tileHeight * i),
                         new Point(tileWidth, tileHeight)));                                      
                 }
             }
-            
-
-
-
-
-
-
+           
             _spriteBatch.End();
-            
-
+           
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
