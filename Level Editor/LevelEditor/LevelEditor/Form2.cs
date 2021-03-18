@@ -196,32 +196,30 @@ namespace LevelEditor
                         }
                         else
                         {
-                            writer.Write("../../../default-min.png");
-                        }
-                    }
-
-                    //Checks for colors in the overlay
-                    foreach(PictureBox b in boxes)
-                    {
-                        if(b.BackColor == Color.White)
-                        {
-                            writer.Write(0);
-                        }
-                        else if(b.BackColor == Color.Red)
-                        {
-                            writer.Write("<-1, 1>");
-                        }
-                        else if(b.BackColor == Color.Blue)
-                        {
-                            writer.Write("<1, -1>");
-                        }
-                        else if(b.BackColor == Color.Violet)
-                        {
-                            writer.Write("<-1, -1>");
-                        }
-                        else if(b.BackColor == Color.Pink)
-                        {
-                            writer.Write("tower");
+                            if (b.BackColor == Color.White)
+                            {
+                                writer.Write(0);
+                            }
+                            else if (b.BackColor == Color.Red)
+                            {
+                                writer.Write("<-1, 1>");
+                            }
+                            else if (b.BackColor == Color.Blue)
+                            {
+                                writer.Write("<1, -1>");
+                            }
+                            else if (b.BackColor == Color.Violet)
+                            {
+                                writer.Write("<-1, -1>");
+                            }
+                            else if (b.BackColor == Color.Pink)
+                            {
+                                writer.Write("tower");
+                            }
+                            else
+                            {
+                                writer.Write("../../../default-min.png");
+                            }                            
                         }
                     }
 

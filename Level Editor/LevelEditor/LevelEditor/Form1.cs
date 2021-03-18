@@ -236,10 +236,6 @@ namespace LevelEditor
                                     (currentPicture.LastIndexOf('/') + 1,
                                     currentPicture.LastIndexOf('.') - currentPicture.LastIndexOf('/') - 1);
                             }
-                            else
-                            {
-                                currentPicture = "error";
-                            }
                             writer.Write(currentPicture);
                         }
                     }
