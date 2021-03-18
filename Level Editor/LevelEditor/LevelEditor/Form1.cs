@@ -78,9 +78,18 @@ namespace LevelEditor
                         for (int j = 0; j < colors.GetLength(1); j++)
                         {
                             string currentPicture = reader.ReadString();
-                            if (currentPicture == "null")
+   
+                            if(currentPicture == "<-1, 1>")
                             {
-                                colors[i, j] = "../../../default.jpg";
+                                colors[i, j] = Color.Red.ToString();
+                            }
+                            else if(currentPicture == "<1, -1>")
+                            {
+                                colors[i, j] = Color.Blue.ToString();
+                            }
+                            else if(currentPicture == "<-1, -1>")
+                            {
+                                colors[i, j] = Color.Violet.ToString();
                             }
                             else
                             {

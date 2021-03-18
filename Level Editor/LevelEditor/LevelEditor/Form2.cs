@@ -196,11 +196,7 @@ namespace LevelEditor
                         }
                         else
                         {
-                            if (b.BackColor == Color.White)
-                            {
-                                writer.Write(0);
-                            }
-                            else if (b.BackColor == Color.Red)
+                            if (b.BackColor == Color.Red)
                             {
                                 writer.Write("<-1, 1>");
                             }
@@ -288,9 +284,18 @@ namespace LevelEditor
                         for (int j = 0; j < colors.GetLength(1); j++)
                         {
                             string currentPicture = reader.ReadString();
-                            if (currentPicture == "null") 
+                            
+                            if (currentPicture == "<-1, 1>")
                             {
-                                colors[i, j] = "../../../test1.png";
+                                colors[i, j] = Color.Red.ToString();
+                            }
+                            else if (currentPicture == "<1, -1>")
+                            {
+                                colors[i, j] = Color.Blue.ToString();
+                            }
+                            else if (currentPicture == "<-1, -1>")
+                            {
+                                colors[i, j] = Color.Violet.ToString();
                             }
                             else
                             {
@@ -432,8 +437,32 @@ namespace LevelEditor
 
                     //assigns a box the color from the corresponding
                     //colors array index
-                    box.Load(colors[i, j]);
-                    box.SizeMode = PictureBoxSizeMode.Zoom;
+
+                    if(colors[i, j] == "../../../default-min.png")
+                    {
+                        box.BackColor = Color.White;
+                    }
+                    else if(colors[i, j].Contains("../../../") == false)
+                    {
+                        if(colors[i,j] == "Color [Red]")
+                        {
+                            box.BackColor = Color.Red;
+                        }
+                        else if(colors[i, j] == "Color [Blue]")
+                        {
+                            box.BackColor = Color.Blue;
+                        }
+                        else if(colors[i, j] == "Color [Violet]")
+                        {
+                            box.BackColor = Color.Violet;
+                        }
+                    }
+                    else
+                    {
+                        box.Load(colors[i, j]);
+                        box.SizeMode = PictureBoxSizeMode.Zoom;
+                    }
+                    
                     mapBox.Controls.Add(box);
 
                     boxes[i, j] = box;
