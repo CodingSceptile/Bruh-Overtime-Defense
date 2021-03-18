@@ -53,7 +53,7 @@ namespace LevelEditor
 
             FileStream stream = null;
             BinaryReader reader = null;
-            LevelEditor editor = null;
+            levelEditor editor = null;
 
             //User chooses OK in the file explorer
             if (r == DialogResult.OK)
@@ -90,7 +90,7 @@ namespace LevelEditor
                     }
 
                     //establishes the level editor with the given information
-                    editor = new LevelEditor(width, height);
+                    editor = new levelEditor(width, height);
                     //loads the picture boxes and matches the colors
                     editor.LoadBoxes(colors);
                     //Properly sizes the form
@@ -184,7 +184,7 @@ namespace LevelEditor
             else
             {
                 //successfully creates a new level editor instance
-                LevelEditor editor = new LevelEditor(width, height);
+                levelEditor editor = new levelEditor(width, height);
 
                 //generates the boxes (previously caused an error when put in the 
                 //initialize)

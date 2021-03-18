@@ -31,9 +31,9 @@ namespace Bruh_Overtime_Defense
         }
 
         /// <summary>
-        /// the map rectangle
+        /// Generates a list of references to textures, that are
+        /// eventually drawn to the screen
         /// </summary>
-        /// <param name="mapFile">the name of the map file</param>
         public List<string> GenerateMap()
         {
 
@@ -47,9 +47,12 @@ namespace Bruh_Overtime_Defense
                 stream = new FileStream("Content/" + mapFile, FileMode.Open);
                 reader = new BinaryReader(stream);
 
+                //retrieves the width and height of each tile (to properly format each level)
                 this.width = reader.ReadInt32();
                 this.height = reader.ReadInt32();
 
+                //retrieves all the various texture references from the 
+                //external text file.
                 for (int i = 0; i < width; i++)
                 {
                     for (int j = 0; j < height; j++)
@@ -86,10 +89,23 @@ namespace Bruh_Overtime_Defense
             get { return sideLengthInTiles; }
         }
 
+        /// <summary>
+        /// Returns the width of a tile
+        /// </summary>
         public int Width { get { return width; } }
 
+        /// <summary>
+        /// Returns the height of a tile
+        /// </summary>
         public int Height { get { return height; } }
 
+        /// <summary>
+        /// Draws the tiles to the screen with the
+        /// Game1 _spriteBatch
+        /// </summary>
+        /// <param name="sb">_spriteBatch</param>
+        /// <param name="texture">The texture that is drawn</param>
+        /// <param name="tileLocation">The Rectangle location of the tile</param>
         public void Draw(SpriteBatch sb, Texture2D texture, Rectangle tileLocation)
         {
             sb.Draw(texture, tileLocation, Color.White);

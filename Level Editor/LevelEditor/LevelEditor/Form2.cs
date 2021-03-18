@@ -16,7 +16,7 @@ using System.IO;
 
 namespace LevelEditor
 {
-    public partial class LevelEditor : Form
+    public partial class levelEditor : Form
     {
         //fields
         private int height;
@@ -24,9 +24,13 @@ namespace LevelEditor
         private int boxHeight;
         private int boxWidth;
         private PictureBox[,] boxes;
+        private PictureBox[,] overlay;
+        private List<Button> buttons;
         private FileStream stream;
         private string[,] colors;
         private bool isSaved;
+
+        private Color currentColor;
 
         private string path;
 
@@ -35,7 +39,7 @@ namespace LevelEditor
         /// </summary>
         /// <param name="width">The width of the level</param>
         /// <param name="height">The height of the level</param>
-        public LevelEditor(int width, int height)
+        public levelEditor(int width, int height)
         {
             InitializeComponent();
 
@@ -45,8 +49,14 @@ namespace LevelEditor
             boxes = new PictureBox[height, width];
             isSaved = true;
 
-            path = null;
+            buttons = new List<Button>();
+            AssignColors();
 
+            currentColor = Color.Red;
+
+            path = "Default size/towerDefense_tile001.png";
+            texturePic.Load("../../../" + path);
+            texturePic.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
         /// <summary>
@@ -66,12 +76,13 @@ namespace LevelEditor
         /// <param name="e"></param>
         private void LevelEditor_Load(object sender, EventArgs e)
         {           
-            ResizeForm();    
+            ResizeForm();
 
-            for(int i = 1; i < 300; i++)
+            for (int i = 1; i < 300; i++)
             {
                 pictureSelect.Items.Add("Tower defense texture " + i);
             }
+
         }
 
         /// <summary>
@@ -97,7 +108,11 @@ namespace LevelEditor
 
                 if(Control.MouseButtons == MouseButtons.Left)
                 {
-                    p.Image.Dispose();
+                    if(p.Image != null)
+                    {
+                        p.Image.Dispose();
+                    }
+                    
                     p.SizeMode = PictureBoxSizeMode.Zoom;
                     p.Load("../../../" + path);
 
@@ -118,7 +133,23 @@ namespace LevelEditor
                     {
                         recentlyUsed.Items.Add(path);
                     }                   
-                }                                                        
+                }
+
+                else if(Control.MouseButtons == MouseButtons.Right)
+                {
+                    p.Image = null;
+
+                    p.BackColor = currentColor;
+                                                          
+                    if (this.Text.IndexOf("*") == -1)
+                    {
+                        //Puts an asterisk if there are unsaved changes
+                        this.Text = this.Text + "*";
+
+                        //Unsaved changes...
+                        isSaved = false;
+                    }
+                }
             }                                 
         }
 
@@ -143,7 +174,9 @@ namespace LevelEditor
                 BinaryWriter writer = null;
                 
                 //File order
-                //Width, height, Colors (which are Int32).
+                //Width, height, LEVEL texture data,
+                //Special Vector2/tower data.
+
                 try
                 {
                     stream = new FileStream(saveMenu.FileName, FileMode.Create);
@@ -163,7 +196,32 @@ namespace LevelEditor
                         }
                         else
                         {
-                            writer.Write("null");
+                            writer.Write("../../../default-min.png");
+                        }
+                    }
+
+                    //Checks for colors in the overlay
+                    foreach(PictureBox b in boxes)
+                    {
+                        if(b.BackColor == Color.White)
+                        {
+                            writer.Write(0);
+                        }
+                        else if(b.BackColor == Color.Red)
+                        {
+                            writer.Write("<-1, 1>");
+                        }
+                        else if(b.BackColor == Color.Blue)
+                        {
+                            writer.Write("<1, -1>");
+                        }
+                        else if(b.BackColor == Color.Violet)
+                        {
+                            writer.Write("<-1, -1>");
+                        }
+                        else if(b.BackColor == Color.Pink)
+                        {
+                            writer.Write("tower");
                         }
                     }
 
@@ -171,6 +229,7 @@ namespace LevelEditor
                     MessageBox.Show("Successfully Saved the file!", ":)");
                     this.Text = $"Level Editor - {saveMenu.FileName.Remove(0, saveMenu.FileName.LastIndexOf('\\') + 1)}";
                     isSaved = true;
+                
                 }
                 catch(Exception ex)
                 {
@@ -317,10 +376,8 @@ namespace LevelEditor
                     //it is interactable.
                     box.MouseDown += button_Click;
                     box.MouseEnter += button_Click;
-                    
 
-
-                    box.Load(path);
+                    box.BackColor = Color.White;
                     //saves in an array in case the data
                     //is saved to an external file
                     boxes[i, j] = box;                   
@@ -457,6 +514,12 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// Checks for which texture a user chooses
+        /// from the list displayed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pictureSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
            if(sender is ListBox)
@@ -483,6 +546,12 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// Displays recently selected tiles
+        /// in a ListBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RecentSelect(object sender, EventArgs e)
         { 
             if(sender is ListBox)
@@ -495,6 +564,40 @@ namespace LevelEditor
 
                 texturePic.Load("../../../" + path);
             }
+        }
+
+
+        private void ColorPicker(object sender, EventArgs e)
+        {
+            if(sender is Button)
+            {
+                Button b = (Button)(sender);
+
+                currentColor = b.BackColor;
+                colorSelect.BackColor = b.BackColor;               
+            }
+        }
+
+        /// <summary>
+        /// Assigns colors to the buttons shown in the 
+        /// color selection
+        /// </summary>
+        private void AssignColors()
+        {
+            color1.BackColor = Color.Red;
+            buttons.Add(color1);
+
+            color2.BackColor = Color.Blue;
+            buttons.Add(color2);
+
+            color11.BackColor = Color.Pink;
+            buttons.Add(color11);
+
+            color11.BackColor = Color.Violet;
+            buttons.Add(color11);
+
+            color14.BackColor = Color.White;
+            buttons.Add(color14);
         }
     }   
 }
