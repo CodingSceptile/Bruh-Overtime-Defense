@@ -49,5 +49,25 @@ namespace Bruh_Overtime_Defense
         {
             t.Salary = t.OriginalSalary;
         }
+
+        /// <summary>
+        /// If Salary is due and not paid (can change condition so some time should pass later)
+        /// then tower resigns and leaves. Will add the bruh generation feature after the enemy class is
+        /// worked on a bit more.
+        /// </summary>
+        /// <param name="t">The tower that is checked to be resigning or not</param>
+        /// <returns>True if it's resigning, false if not.</returns>
+        public bool Resignation(Tower t)
+        {
+            if (SalaryDue(t))
+            {
+                towers.Remove(t);
+                return true;
+            }
+
+            else return false;
+        }
+
+
     }
 }
