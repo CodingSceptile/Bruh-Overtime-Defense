@@ -12,6 +12,7 @@ namespace Bruh_Overtime_Defense
         //Fields
         private int radius;
         private int initialCost;
+        private float originalSalary; 
         private float salary;
         private int activitySpeed;
 
@@ -68,6 +69,18 @@ namespace Bruh_Overtime_Defense
         }
 
         /// <summary>
+        /// Property to get the original salary.
+        /// </summary>
+        public float OriginalSalary
+        {
+            get
+            {
+                return salary;
+            }
+ 
+        }
+
+        /// <summary>
         /// Property to get the activity speed and set it if value is greater than zero.
         /// </summary>
         public int ActivitySpeed
@@ -99,7 +112,8 @@ namespace Bruh_Overtime_Defense
         {
             this.radius = radius;
             this.initialCost = initialCost;
-            salary = (initialCost / 5);
+            originalSalary = (initialCost / 5);
+            salary = originalSalary;
             this.activitySpeed = activitySpeed;
         }
     }
