@@ -22,6 +22,7 @@ namespace LevelEditor
         private int width;
         private string message;
         private string[,] colors;
+        private string[,] overlayColors;
 
         //Constructor
 
@@ -71,6 +72,8 @@ namespace LevelEditor
                     height = reader.ReadInt32();
 
                     colors = new string[width, height];
+                    overlayColors = new string[width, height];
+                    
 
                     //Reads Vector2 data and turns it into a color indicator
                     for (int i = 0; i < colors.GetLength(0); i++)
@@ -98,10 +101,35 @@ namespace LevelEditor
                         }
                     }
 
+                    for (int i = 0; i < overlayColors.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < overlayColors.GetLength(1); j++)
+                        {
+                            string currentPicture = reader.ReadString();
+
+                            if (currentPicture == "<-1, 1>")
+                            {
+                                overlayColors[i, j] = Color.Red.ToString();
+                            }
+                            else if (currentPicture == "<1, -1>")
+                            {
+                                overlayColors[i, j] = Color.Blue.ToString();
+                            }
+                            else if (currentPicture == "<-1, -1>")
+                            {
+                                overlayColors[i, j] = Color.Violet.ToString();
+                            }
+                            else
+                            {
+                                overlayColors[i, j] = currentPicture;
+                            }
+                        }
+                    }
+
                     //establishes the level editor with the given information
                     editor = new levelEditor(width, height);
                     //loads the picture boxes and matches the colors
-                    //editor.LoadBoxes(colors);
+                    editor.LoadBoxes(colors, overlayColors);
                     //Properly sizes the form
                     editor.ResizeForm();
 
