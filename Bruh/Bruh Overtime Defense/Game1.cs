@@ -50,6 +50,8 @@ namespace Bruh_Overtime_Defense
 
         //buttons
         Button mapSelect1;
+        Button towerMenuButton;
+        Button pauseButton;
 
         //SpriteFonts
         SpriteFont arial64;
@@ -93,6 +95,8 @@ namespace Bruh_Overtime_Defense
 
             //buttons
             mapSelect1 = new Button(200, 200, 200, 200);
+            towerMenuButton = new Button(600, 0, tileWidth, tileHeight);
+            pauseButton = new Button(675, 0, tileWidth, tileHeight);
 
             _graphics.ApplyChanges();
 
@@ -130,6 +134,10 @@ namespace Bruh_Overtime_Defense
             //buttons
             mapSelect1.DefaultSprite = Content.Load<Texture2D>("testTile1");
             mapSelect1.ActiveSprite = Content.Load<Texture2D>("testTile1");
+            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile086");
+            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile090");
+            pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile085");
+            pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile089");
 
             //SpriteFonts
             arial64 = Content.Load<SpriteFont>("arial64");
@@ -204,6 +212,9 @@ namespace Bruh_Overtime_Defense
                                 new Point(tileWidth, tileHeight)));
                         }
                     }
+                    //draws buttons
+                    towerMenuButton.Draw(_spriteBatch, mState);
+                    pauseButton.Draw(_spriteBatch, mState);
                     break;
                 case GameState.PauseScreen:
                     _spriteBatch.DrawString(arial64, "Paused", new Vector2(200, 300), Color.White);
@@ -250,6 +261,12 @@ namespace Bruh_Overtime_Defense
             {
                 //if the player hits escape
                 if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
+                {
+                    //return to gameplay
+                    gState = GameState.PauseScreen;
+                }
+                //if the player hits escape
+                if (pauseButton.Clicked(mState, prevMState))
                 {
                     //return to gameplay
                     gState = GameState.PauseScreen;
