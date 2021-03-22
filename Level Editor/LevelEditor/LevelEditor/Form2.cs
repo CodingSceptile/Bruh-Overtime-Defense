@@ -28,6 +28,7 @@ namespace LevelEditor
         private List<Button> buttons;
         private FileStream stream;
         private string[,] colors;
+        private string[,] overlayColors;
         private bool isSaved;
 
         private Color currentColor;
@@ -47,6 +48,7 @@ namespace LevelEditor
             this.width = width;
 
             boxes = new PictureBox[height, width];
+            overlay = new PictureBox[height, width];
             isSaved = true;
 
             buttons = new List<Button>();
@@ -57,6 +59,8 @@ namespace LevelEditor
             path = "Default size/towerDefense_tile001.png";
             texturePic.Load("../../../" + path);
             texturePic.SizeMode = PictureBoxSizeMode.Zoom;
+
+            backgroundButton.BackColor = Color.Green;
         }
 
         /// <summary>
@@ -219,6 +223,38 @@ namespace LevelEditor
                         }
                     }
 
+                    foreach(PictureBox b in overlay)
+                    {
+                        if (b.Image != null)
+                        {
+                            writer.Write(b.ImageLocation);
+                        }
+                        else
+                        {
+                            if (b.BackColor == Color.Red)
+                            {
+                                writer.Write("<-1, 1>");
+                            }
+                            else if (b.BackColor == Color.Blue)
+                            {
+                                writer.Write("<1, -1>");
+                            }
+                            else if (b.BackColor == Color.Violet)
+                            {
+                                writer.Write("<-1, -1>");
+                            }
+                            else if (b.BackColor == Color.Pink)
+                            {
+                                writer.Write("tower");
+                            }
+                            else
+                            {
+                                writer.Write("../../../default-min.png");
+                            }
+                        }
+
+                    }
+
                     //prompts the user that the file was successfully saved.
                     MessageBox.Show("Successfully Saved the file!", ":)");
                     this.Text = $"Level Editor - {saveMenu.FileName.Remove(0, saveMenu.FileName.LastIndexOf('\\') + 1)}";
@@ -277,6 +313,7 @@ namespace LevelEditor
                     height = reader.ReadInt32();
                     //creates a new array that is able to store colors
                     colors = new string[height, width];
+                    overlayColors = new string[height, width];
 
                     //Fills the array with the colors of the loaded data
                     for (int i = 0; i < colors.GetLength(0); i++)
@@ -303,7 +340,33 @@ namespace LevelEditor
                             }                           
                         }
                     }
+
+                    for (int i = 0; i < overlayColors.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < overlayColors.GetLength(1); j++)
+                        {
+                            string currentPicture = reader.ReadString();
+
+                            if (currentPicture == "<-1, 1>")
+                            {
+                                overlayColors[i, j] = Color.Red.ToString();
+                            }
+                            else if (currentPicture == "<1, -1>")
+                            {
+                                overlayColors[i, j] = Color.Blue.ToString();
+                            }
+                            else if (currentPicture == "<-1, -1>")
+                            {
+                                overlayColors[i, j] = Color.Violet.ToString();
+                            }
+                            else
+                            {
+                                overlayColors[i, j] = currentPicture;
+                            }
+                        }
+                    }
                 }
+
                 //User cancels decision
                 else if(r == DialogResult.Cancel)
                 {
@@ -311,7 +374,7 @@ namespace LevelEditor
                 }
                 
                 //Displays the data on the map
-                LoadBoxes(colors);
+                LoadBoxes(colors, overlayColors);
                 //Resizes the form accordingly
                 ResizeForm();
 
@@ -319,6 +382,9 @@ namespace LevelEditor
                 this.Text = $"Level editor - {dialog.FileName.Remove(0, dialog.FileName.LastIndexOf('\\') + 1)}";
                 //prompts the user that the operation was successful
                 MessageBox.Show("Successfully loaded the file!", ":)");
+
+                backgroundButton.BackColor = Color.Green;
+                overlayButton.BackColor = Color.LavenderBlush;
             }
 
             catch(Exception ex)
@@ -353,26 +419,34 @@ namespace LevelEditor
                 {
                     //Creates width # of Picture boxes height # of times
                     PictureBox box = new PictureBox();
+                    PictureBox overlayBox = new PictureBox();
                    
                     //Sizes the boxes to the map width/height
                     //Horizontal is bigger, base off of the width
                     if (width > height || width == height)
                     {
                         box.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
+                        overlayBox.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
                     }
                    
                     //Vertical is bigger, base off of the height
                     else if (height > width)
                     {
                         box.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
+                        overlayBox.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
+
                     }
                     
                     //Sets the location of the box
                     //by taking the iteration of i and j.
                     box.Location = new Point
                         (10 + box.Width * j, 15 + box.Height * i);
+
+                    overlayBox.Location = new Point
+                        (10 + box.Width * j, 15 + box.Height * i);
                     //Boxes are visible
                     box.Visible = true;
+                    overlayBox.Visible = true;
                     //Adds the box to the list of controls (for the group box)
                     mapBox.Controls.Add(box);
                     //Subscribes box's MouseDown to the button_Click method, so
@@ -380,10 +454,16 @@ namespace LevelEditor
                     box.MouseDown += button_Click;
                     box.MouseEnter += button_Click;
 
+                    overlayBox.MouseDown += button_Click;
+                    overlayBox.MouseEnter += button_Click;
+
+
                     box.BackColor = Color.White;
+                    overlayBox.BackColor = Color.White;
                     //saves in an array in case the data
                     //is saved to an external file
-                    boxes[i, j] = box;                   
+                    boxes[i, j] = box;
+                    overlay[i, j] = overlayBox;
                 }
             }
 
@@ -396,7 +476,7 @@ namespace LevelEditor
         /// data and loads the boxes based on that
         /// </summary>
         /// <param name="colors">The array of loaded colors</param>
-        public void LoadBoxes(string[,] colors)
+        public void LoadBoxes(string[,] colors, string[,] overlayColors)
         {
             //Clears the controls (so we dont 
             //get overlap)
@@ -417,23 +497,34 @@ namespace LevelEditor
                 for (int j = 0; j < width; j++)
                 {
                     PictureBox box = new PictureBox();
+                    PictureBox overlayBox = new PictureBox();
                    
                     if (width > height || width == height)
                     {
                         box.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
+                        overlayBox.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
                     }
                   
                     else if (height > width)
                     {
                         box.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
+                        overlayBox.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
                     }
                     
                     box.Location = new Point
                         (10 + box.Width * j, 15 + box.Height * i);
+
+                    overlayBox.Location = new Point
+                        (10 + box.Width * j, 15 + box.Height * i);
+
+                    overlayBox.Visible = true;
                     box.Visible = true;
-                    mapBox.Controls.Add(box);
+
                     box.MouseDown += button_Click;
                     box.MouseEnter += button_Click;
+
+                    overlayBox.MouseEnter += button_Click;
+                    overlayBox.MouseDown += button_Click;
 
                     //assigns a box the color from the corresponding
                     //colors array index
@@ -462,10 +553,36 @@ namespace LevelEditor
                         box.Load(colors[i, j]);
                         box.SizeMode = PictureBoxSizeMode.Zoom;
                     }
-                    
+
+                    if (overlayColors[i, j] == "../../../default-min.png")
+                    {
+                        overlayBox.BackColor = Color.White;
+                    }
+                    else if (overlayColors[i, j].Contains("../../../") == false)
+                    {
+                        if (overlayColors[i, j] == "Color [Red]")
+                        {
+                            overlayBox.BackColor = Color.Red;
+                        }
+                        else if (overlayColors[i, j] == "Color [Blue]")
+                        {
+                            overlayBox.BackColor = Color.Blue;
+                        }
+                        else if (overlayColors[i, j] == "Color [Violet]")
+                        {
+                            overlayBox.BackColor = Color.Violet;
+                        }
+                    }
+                    else
+                    {
+                        overlayBox.Load(colors[i, j]);
+                        overlayBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    }
+
                     mapBox.Controls.Add(box);
 
                     boxes[i, j] = box;
+                    overlay[i, j] = overlayBox;
 
                 }
             }
@@ -587,6 +704,11 @@ namespace LevelEditor
 
                 int index = b.SelectedIndex;
 
+                if(index == -1)
+                {
+                    return;
+                }
+
                 path = (string)b.Items[index];
 
                 texturePic.Load("../../../" + path);
@@ -625,6 +747,49 @@ namespace LevelEditor
 
             color14.BackColor = Color.White;
             buttons.Add(color14);
+        }
+
+        /// <summary>
+        /// swaps to the overlay board
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void overlayButton_Click(object sender, EventArgs e)
+        {
+            mapBox.Controls.Clear();
+
+            backgroundButton.BackColor = Color.LavenderBlush;
+            overlayButton.BackColor = Color.Green;
+            
+            for(int i = 0; i < height; i++)
+            {
+                for(int j = 0; j < width; j++)
+                {
+                    boxes[i, j].Enabled = false;
+                    overlay[i, j].Enabled = true;
+
+                    mapBox.Controls.Add(overlay[i, j]);
+                }
+            }
+        }
+
+        private void backgroundButton_Click(object sender, EventArgs e)
+        {
+            mapBox.Controls.Clear();
+
+            overlayButton.BackColor = Color.LavenderBlush;
+            backgroundButton.BackColor = Color.Green;
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    boxes[i, j].Enabled = true;
+                    overlay[i, j].Enabled = false;
+
+                    mapBox.Controls.Add(boxes[i, j]);
+                }
+            }
         }
     }   
 }

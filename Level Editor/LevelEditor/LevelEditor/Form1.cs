@@ -72,7 +72,7 @@ namespace LevelEditor
 
                     colors = new string[width, height];
 
-                    //Colors obtained
+                    //Reads Vector2 data and turns it into a color indicator
                     for (int i = 0; i < colors.GetLength(0); i++)
                     {
                         for (int j = 0; j < colors.GetLength(1); j++)
@@ -101,7 +101,7 @@ namespace LevelEditor
                     //establishes the level editor with the given information
                     editor = new levelEditor(width, height);
                     //loads the picture boxes and matches the colors
-                    editor.LoadBoxes(colors);
+                    //editor.LoadBoxes(colors);
                     //Properly sizes the form
                     editor.ResizeForm();
 

@@ -37,8 +37,8 @@
             this.recentlyUsed = new System.Windows.Forms.ListBox();
             this.texturesLabel = new System.Windows.Forms.Label();
             this.recentlyUsedLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.backgroundButton = new System.Windows.Forms.Button();
+            this.overlayButton = new System.Windows.Forms.Button();
             this.basicColors = new System.Windows.Forms.GroupBox();
             this.colorSelect = new System.Windows.Forms.PictureBox();
             this.currentColorLabel = new System.Windows.Forms.Label();
@@ -149,25 +149,27 @@
             this.recentlyUsedLabel.TabIndex = 14;
             this.recentlyUsedLabel.Text = "Recently\r\nUsed\r\n";
             // 
-            // button1
+            // backgroundButton
             // 
-            this.button1.BackColor = System.Drawing.Color.LavenderBlush;
-            this.button1.Location = new System.Drawing.Point(223, 274);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(187, 72);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Background";
-            this.button1.UseVisualStyleBackColor = false;
+            this.backgroundButton.BackColor = System.Drawing.Color.LavenderBlush;
+            this.backgroundButton.Location = new System.Drawing.Point(223, 274);
+            this.backgroundButton.Name = "backgroundButton";
+            this.backgroundButton.Size = new System.Drawing.Size(187, 72);
+            this.backgroundButton.TabIndex = 15;
+            this.backgroundButton.Text = "Background";
+            this.backgroundButton.UseVisualStyleBackColor = false;
+            this.backgroundButton.Click += new System.EventHandler(this.backgroundButton_Click);
             // 
-            // button2
+            // overlayButton
             // 
-            this.button2.BackColor = System.Drawing.Color.LavenderBlush;
-            this.button2.Location = new System.Drawing.Point(223, 353);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(187, 75);
-            this.button2.TabIndex = 16;
-            this.button2.Text = "Overlay";
-            this.button2.UseVisualStyleBackColor = false;
+            this.overlayButton.BackColor = System.Drawing.Color.LavenderBlush;
+            this.overlayButton.Location = new System.Drawing.Point(223, 353);
+            this.overlayButton.Name = "overlayButton";
+            this.overlayButton.Size = new System.Drawing.Size(187, 75);
+            this.overlayButton.TabIndex = 16;
+            this.overlayButton.Text = "Overlay";
+            this.overlayButton.UseVisualStyleBackColor = false;
+            this.overlayButton.Click += new System.EventHandler(this.overlayButton_Click);
             // 
             // basicColors
             // 
@@ -259,8 +261,8 @@
             this.BackColor = System.Drawing.Color.Cornsilk;
             this.ClientSize = new System.Drawing.Size(1252, 854);
             this.Controls.Add(this.basicColors);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.overlayButton);
+            this.Controls.Add(this.backgroundButton);
             this.Controls.Add(this.recentlyUsedLabel);
             this.Controls.Add(this.texturesLabel);
             this.Controls.Add(this.recentlyUsed);
@@ -294,8 +296,8 @@
         private System.Windows.Forms.ListBox recentlyUsed;
         private System.Windows.Forms.Label texturesLabel;
         private System.Windows.Forms.Label recentlyUsedLabel;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button backgroundButton;
+        private System.Windows.Forms.Button overlayButton;
         private System.Windows.Forms.GroupBox basicColors;
         private System.Windows.Forms.GroupBox vectorIndicators;
         private System.Windows.Forms.Button color2;
