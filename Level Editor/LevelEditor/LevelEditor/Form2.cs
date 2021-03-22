@@ -311,6 +311,7 @@ namespace LevelEditor
                     //Reads width, height
                     width = reader.ReadInt32();
                     height = reader.ReadInt32();
+
                     //creates a new array that is able to store colors
                     colors = new string[height, width];
                     overlayColors = new string[height, width];
@@ -575,7 +576,7 @@ namespace LevelEditor
                     }
                     else
                     {
-                        overlayBox.Load(colors[i, j]);
+                        overlayBox.Load(overlayColors[i, j]);
                         overlayBox.SizeMode = PictureBoxSizeMode.Zoom;
                     }
 
