@@ -14,6 +14,8 @@ namespace Bruh_Overtime_Defense
         List<Texture2D> tiles;
         Rectangle map;
         private string mapFile;
+        private List<Vector2> motionChange;
+        private List<Point> locations;
         int sideLengthInTiles;
         int sideLengthInPixels;
         int width;
@@ -41,6 +43,8 @@ namespace Bruh_Overtime_Defense
             BinaryReader reader = null;
 
             List<string> codes = new List<string>();
+            motionChange = new List<Vector2>();
+            locations = new List<Point>();
 
             try
             {
@@ -61,7 +65,48 @@ namespace Bruh_Overtime_Defense
                         codes.Add(textureCode);
                     }
                 }
+                
+                //OVERLAY (BREAKS GAME RN)
+
+              for(int i = 0; i < width; i++)
+              {
+                  for(int j = 0; j < height; j++)
+                  {
+                      string textureCode = reader.ReadString();
+
+                        if (textureCode.Contains('>'))
+                        {
+                            codes.Add("default-min");
+                            
+                            if(textureCode == "<-1, 1>")
+                            {
+                                motionChange.Add(
+                                    new Vector2(-1, 1));
+                                
+                            }
+                            else if(textureCode == "<1, -1>")
+                            {
+                                motionChange.Add(
+                                    new Vector2(1, -1));
+                            }
+                            else if(textureCode == "<-1, -1>")
+                            {
+                                motionChange.Add(
+                                    new Vector2(-1, -1));
+                            }
+
+                            locations.Add(new
+                                Point(i * width, j * height));
+                        }
+                        else
+                        {
+                            codes.Add(textureCode);
+                        }                                                                
+                  }
+              }
+
                 return codes;
+                
             }
             finally
             {

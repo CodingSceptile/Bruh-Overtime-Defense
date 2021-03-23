@@ -20,11 +20,8 @@
 /processorParam:TextureFormat=Compressed
 /build:arial64.spritefont
 
-#begin overlay.level_Appended
-/copy:overlay.level_Appended
-
-#begin simpleMap.level_Appended
-/copy:simpleMap.level_Appended
+#begin gameLevel.level_Appended
+/copy:gameLevel.level_Appended
 
 #begin testTile1.jpg
 /importer:TextureImporter

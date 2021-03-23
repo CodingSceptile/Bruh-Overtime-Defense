@@ -264,7 +264,7 @@ namespace LevelEditor
                     //Colors obtained
                     for (int i = 0; i < width; i++)
                     {
-                        for (int j = 0; j < height; j++)
+                        for (int j = 0; j < height * 2; j++)
                         {
                             string currentPicture = reader.ReadString();
                             if (currentPicture.Contains("../../../"))
@@ -276,8 +276,6 @@ namespace LevelEditor
                             writer.Write(currentPicture);
                         }
                     }
-
-                    //RESERVED FOR VECTOR2 DATA.
 
                     MessageBox.Show("Successfully appended the file for Bruh Overtime Defense!", ":D");
                 }

@@ -27,9 +27,7 @@ namespace Bruh_Overtime_Defense
 
         //Level information and objects
         private Level level;
-        private Level overlay;
         private List<string> codes;
-        private List<string> overlayCodes;
 
         //Height and width of the tiles
         private int tileHeight;
@@ -43,7 +41,6 @@ namespace Bruh_Overtime_Defense
 
         //Textures
         private List<Texture2D> textures;
-        private List<Texture2D> overlayTextures;
 
         //game state
         GameState gState;
@@ -70,19 +67,16 @@ namespace Bruh_Overtime_Defense
         {
             // TODO: Add your initialization logic here
             textures = new List<Texture2D>();
-            overlayTextures = new List<Texture2D>();
 
-            level = new Level("simpleMap.level_Appended");
-            overlay = new Level("overlay.level_Appended");
+            level = new Level("gameLevel.level_Appended");
             
             codes = level.GenerateMap();
-            overlayCodes = overlay.GenerateMap();
 
-            _graphics.PreferredBackBufferWidth = 750;
-            _graphics.PreferredBackBufferHeight = 750;
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 800;
 
             tileWidth = _graphics.PreferredBackBufferWidth / level.Width;
-            tileHeight = _graphics.PreferredBackBufferHeight / level.Width;
+            tileHeight = _graphics.PreferredBackBufferHeight / level.Height;
 
             //initialize the mouse and keyboard states
             mState = Mouse.GetState();
@@ -121,14 +115,6 @@ namespace Bruh_Overtime_Defense
                 Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
 
                 textures.Add(texture);
-            }
-
-            //Overlay
-            foreach(string code in overlayCodes)
-            {
-                Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
-
-                overlayTextures.Add(texture);
             }
 
             //buttons
@@ -200,16 +186,30 @@ namespace Bruh_Overtime_Defense
                             //and heights
 
                             //Background draw
-                            level.Draw(_spriteBatch, textures[(i * 10) + j],
+                            level.Draw(_spriteBatch, textures[(i * level.Width) + j],
                             new Rectangle(
                                 new Point(tileWidth * j, tileHeight * i),
+                                new Point(tileWidth, tileHeight)));
+                        
+                        }
+                    }
+
+                    for (int i = level.Width; i < level.Width * 2; i++)
+                    {
+                        for (int j = 0; j < level.Height; j++)
+                        {
+
+                            //gets the textures for each collumn,
+                            //draws each with an equal widths and heights, 
+                            //as well as locates them depending on the individual widths
+                            //and heights
+
+                            //Draws Objects on the screen
+                            level.Draw(_spriteBatch, textures[(level.Width * i) + j],
+                            new Rectangle(
+                                new Point(tileWidth * j, (tileHeight * (i - level.Width))),
                                 new Point(tileWidth, tileHeight)));
 
-                            //Overlay draw
-                            overlay.Draw(_spriteBatch, overlayTextures[(i * 10) + j],
-                            new Rectangle(
-                                new Point(tileWidth * j, tileHeight * i),
-                                new Point(tileWidth, tileHeight)));
                         }
                     }
                     //draws buttons
@@ -217,10 +217,12 @@ namespace Bruh_Overtime_Defense
                     pauseButton.Draw(_spriteBatch, mState);
                     break;
                 case GameState.PauseScreen:
-                    _spriteBatch.DrawString(arial64, "Paused", new Vector2(200, 300), Color.White);
+                    _spriteBatch.DrawString(arial64, "Paused",
+                        new Vector2(200, 300), Color.White);
                     break;
                 case GameState.GameOver:
-                    _spriteBatch.DrawString(arial64, "Game Over", new Vector2(200, 300), Color.Red);
+                    _spriteBatch.DrawString(arial64, "Game Over",
+                        new Vector2(200, 300), Color.Red);
                     break;
             }
 
