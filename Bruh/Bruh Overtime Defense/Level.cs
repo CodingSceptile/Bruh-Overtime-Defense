@@ -66,7 +66,7 @@ namespace Bruh_Overtime_Defense
                     }
                 }
                 
-                //OVERLAY (BREAKS GAME RN)
+                //OVERLAY
 
               for(int i = 0; i < width; i++)
               {

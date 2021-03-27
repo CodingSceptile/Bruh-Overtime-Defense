@@ -491,6 +491,7 @@ namespace LevelEditor
             //as the above method, look there for non-unique 
             //comments
             boxes = new PictureBox[height, width];
+            overlay = new PictureBox[height, width];
 
             for (int i = 0; i < height; i++)
             {
