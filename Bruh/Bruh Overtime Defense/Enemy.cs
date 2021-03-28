@@ -21,6 +21,7 @@ namespace Bruh_Overtime_Defense
         public bool IsDead { get { return isDead; } set { isDead = value; } }
         public Texture2D Bruh { get { return texture; } }
         public Vector2 Place { get { return position; } }
+        public Rectangle HitBox { get { return hitBox; } }
 
         public Enemy(Rectangle box, Texture2D texture, int health, float speed)
             : base(box, texture)
