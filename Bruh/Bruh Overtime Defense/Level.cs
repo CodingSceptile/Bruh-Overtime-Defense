@@ -15,7 +15,7 @@ namespace Bruh_Overtime_Defense
         Rectangle map;
         private string mapFile;
         private List<Vector2> motionChange;
-        private List<Point> locations;
+        private List<Rectangle> locations;
         int sideLengthInTiles;
         int sideLengthInPixels;
         int width;
@@ -44,7 +44,7 @@ namespace Bruh_Overtime_Defense
 
             List<string> codes = new List<string>();
             motionChange = new List<Vector2>();
-            locations = new List<Point>();
+            locations = new List<Rectangle>();
 
             try
             {
@@ -74,7 +74,7 @@ namespace Bruh_Overtime_Defense
                   {
                       string textureCode = reader.ReadString();
 
-                        if (textureCode.Contains('>'))
+                        if (textureCode.Contains('>') || textureCode == "begin_tile")
                         {
                             codes.Add("default-min");
                             
@@ -89,14 +89,10 @@ namespace Bruh_Overtime_Defense
                                 motionChange.Add(
                                     new Vector2(1, -1));
                             }
-                            else if(textureCode == "<-1, -1>")
-                            {
-                                motionChange.Add(
-                                    new Vector2(-1, -1));
-                            }
 
-                            locations.Add(new
-                                Point(i * width, j * height));
+                            locations.Add(
+                                    new Rectangle(new Point(i * width, j * height),
+                                    new Point(width, height)));
                         }
                         else
                         {

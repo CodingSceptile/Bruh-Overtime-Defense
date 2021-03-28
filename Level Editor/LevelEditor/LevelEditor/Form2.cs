@@ -210,7 +210,7 @@ namespace LevelEditor
                             }
                             else if (b.BackColor == Color.Violet)
                             {
-                                writer.Write("<-1, -1>");
+                                writer.Write("begin_tile");
                             }
                             else if (b.BackColor == Color.Pink)
                             {
@@ -241,7 +241,7 @@ namespace LevelEditor
                             }
                             else if (b.BackColor == Color.Violet)
                             {
-                                writer.Write("<-1, -1>");
+                                writer.Write("begin_tile");
                             }
                             else if (b.BackColor == Color.Pink)
                             {
@@ -331,7 +331,7 @@ namespace LevelEditor
                             {
                                 colors[i, j] = Color.Blue.ToString();
                             }
-                            else if (currentPicture == "<-1, -1>")
+                            else if (currentPicture == "begin_tile")
                             {
                                 colors[i, j] = Color.Violet.ToString();
                             }

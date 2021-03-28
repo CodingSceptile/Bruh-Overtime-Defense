@@ -230,7 +230,7 @@
             this.color11.Name = "color11";
             this.color11.Size = new System.Drawing.Size(43, 105);
             this.color11.TabIndex = 11;
-            this.color11.Text = "-1\r\n-1";
+            this.color11.Text = "B\r\nE\r\nG\r\nI\r\nN";
             this.color11.UseVisualStyleBackColor = true;
             this.color11.Click += new System.EventHandler(this.ColorPicker);
             // 
