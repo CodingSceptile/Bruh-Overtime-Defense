@@ -67,7 +67,15 @@ namespace Bruh_Overtime_Defense
 
         //Collision Manager
         private CollisionManager collisions;
-        
+
+        //Enemies
+        private Texture2D enemyTex;
+        private EnemyManager enMan;
+        private List<Enemy> enemies;
+
+        //tower manager
+        private List<Tower> towers;
+        private TowerManager towerManager;
 
         //misc
         Towers selectedTower;
@@ -130,6 +138,12 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             placeTower = false;
 
+            enMan = new EnemyManager(enemies);
+
+            //towers
+            towers = new List<Tower>();
+            towerManager = new TowerManager(towers);
+
             _graphics.ApplyChanges();
 
             base.Initialize();
@@ -172,6 +186,14 @@ namespace Bruh_Overtime_Defense
             //SpriteFonts
             arial64 = Content.Load<SpriteFont>("arial64");
             arial36 = Content.Load<SpriteFont>("arial36");
+
+            enemyTex = Content.Load<Texture2D>("bruh");
+
+            enemies.Add(new Enemy(
+                enemyTex,
+                5,
+                3f,
+                collisions.EnemyStartPoint()));
         }
 
         /// <summary>
@@ -259,11 +281,19 @@ namespace Bruh_Overtime_Defense
 
                         }
                     }
+                    enMan.Draw(_spriteBatch);
                     //draws buttons
                     towerMenuButton.Draw(_spriteBatch, mState);
                     pauseButton.Draw(_spriteBatch, mState);
                     nextWaveButton.Draw(_spriteBatch, mState);
 
+                    //draw the towers
+                    for(int i = 0; i < towers.Count; i++)
+                    {
+                        towers[i].Draw(_spriteBatch);
+                    }
+
+                    //draw the towerMenu if it is open
                     if(openTowerMenu == true)
                     {
                         _spriteBatch.Draw(towerMenuSprite, towerMenuPos, Color.White);
@@ -277,8 +307,10 @@ namespace Bruh_Overtime_Defense
                         switch (selectedTower)
                         {
                             case Towers.BaseTower:
-                                _spriteBatch.Draw(baseTowerButton.DefaultSprite, 
-                                    new Vector2(mState.X, mState.Y), Color.White);
+                                //values of tower and temp and default
+                                towers.Add(new Tower(
+                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    baseTowerButton.DefaultSprite, 20, 20, 20));
                                 break;
                         }
 

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bruh_Overtime_Defense
 {
-    abstract class Tower : GameObject
+     class Tower : GameObject //not abstract FOR NOW
     {
         //Fields
         private int radius;
@@ -96,8 +96,7 @@ namespace Bruh_Overtime_Defense
                     activitySpeed = value;
             }
         }
-
-
+            
         //Constructor
         /// <summary>
         /// Constructor that initializes Tower class
@@ -115,6 +114,13 @@ namespace Bruh_Overtime_Defense
             originalSalary = (initialCost / 5);
             salary = originalSalary;
             this.activitySpeed = activitySpeed;
+        }
+
+        //Methods
+        public void Draw(SpriteBatch sb)
+        {
+
+            sb.Draw(Sprite, Position, Color.White);
         }
     }
 }
