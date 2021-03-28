@@ -46,12 +46,14 @@ namespace Bruh_Overtime_Defense
         GameState gState;
 
         //buttons
-        Button mapSelect1;
+        Button mapSelectButton1;
         Button towerMenuButton;
         Button pauseButton;
+        Button nextWaveButton;
 
         //SpriteFonts
         SpriteFont arial64;
+        SpriteFont arial36;
 
         public Game1()
         {
@@ -88,9 +90,13 @@ namespace Bruh_Overtime_Defense
             gState = GameState.TitleScreen;
 
             //buttons
-            mapSelect1 = new Button(200, 200, 200, 200);
-            towerMenuButton = new Button(600, 0, tileWidth, tileHeight);
-            pauseButton = new Button(675, 0, tileWidth, tileHeight);
+            mapSelectButton1 = new Button(200, 200, 200, 200);
+            towerMenuButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 2), 
+                0, tileWidth, tileHeight);
+            pauseButton = new Button(_graphics.PreferredBackBufferWidth - tileWidth,
+                0, tileWidth, tileHeight);
+            nextWaveButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 4),
+                0, tileWidth * 2, tileHeight);
 
             _graphics.ApplyChanges();
 
@@ -118,15 +124,18 @@ namespace Bruh_Overtime_Defense
             }
 
             //buttons
-            mapSelect1.DefaultSprite = Content.Load<Texture2D>("testTile1");
-            mapSelect1.ActiveSprite = Content.Load<Texture2D>("testTile1");
+            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("testTile1");
+            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("testTile1");
             towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile086");
             towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile090");
             pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile085");
             pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile089");
+            nextWaveButton.DefaultSprite = Content.Load<Texture2D>("NextWaveButton");
+            nextWaveButton.ActiveSprite = Content.Load<Texture2D>("NextWaveButtonActive");
 
             //SpriteFonts
             arial64 = Content.Load<SpriteFont>("arial64");
+            arial36 = Content.Load<SpriteFont>("arial36");
         }
 
         /// <summary>
@@ -170,7 +179,7 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial64, "Bruh Tower Defense", new Vector2(0, 300), Color.White);
                     break;
                 case GameState.MapSelect:
-                    mapSelect1.Draw(_spriteBatch, mState);
+                    mapSelectButton1.Draw(_spriteBatch, mState);
                     break;
                 case GameState.Gameplay:
                     //draws the map
@@ -215,6 +224,7 @@ namespace Bruh_Overtime_Defense
                     //draws buttons
                     towerMenuButton.Draw(_spriteBatch, mState);
                     pauseButton.Draw(_spriteBatch, mState);
+                    nextWaveButton.Draw(_spriteBatch, mState);
                     break;
                 case GameState.PauseScreen:
                     _spriteBatch.DrawString(arial64, "Paused",
@@ -253,7 +263,7 @@ namespace Bruh_Overtime_Defense
             else if(gState == GameState.MapSelect)
             {
                 //check to see which map button they pressed
-                if(mapSelect1.Clicked(mState, prevMState))
+                if(mapSelectButton1.Clicked(mState, prevMState))
                 {
                     gState = GameState.Gameplay;
                 }

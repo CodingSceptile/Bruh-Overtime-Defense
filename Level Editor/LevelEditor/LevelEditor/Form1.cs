@@ -90,7 +90,7 @@ namespace LevelEditor
                             {
                                 colors[i, j] = Color.Blue.ToString();
                             }
-                            else if(currentPicture == "<-1, -1>")
+                            else if(currentPicture == "begin_tile")
                             {
                                 colors[i, j] = Color.Violet.ToString();
                             }
@@ -115,7 +115,7 @@ namespace LevelEditor
                             {
                                 overlayColors[i, j] = Color.Blue.ToString();
                             }
-                            else if (currentPicture == "<-1, -1>")
+                            else if (currentPicture == "begin_tile")
                             {
                                 overlayColors[i, j] = Color.Violet.ToString();
                             }
