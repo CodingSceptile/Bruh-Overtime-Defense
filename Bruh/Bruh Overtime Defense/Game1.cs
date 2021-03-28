@@ -18,6 +18,15 @@ namespace Bruh_Overtime_Defense
     }
 
     /// <summary>
+    /// enum to store the tower held by the player
+    /// </summary>
+    enum Towers
+    {
+        None,
+        BaseTower
+    }
+
+    /// <summary>
     /// class that runs the game
     /// </summary>
     public class Game1 : Game
@@ -50,10 +59,18 @@ namespace Bruh_Overtime_Defense
         Button towerMenuButton;
         Button pauseButton;
         Button nextWaveButton;
+        Button baseTowerButton;
 
         //SpriteFonts
         SpriteFont arial64;
         SpriteFont arial36;
+
+        //misc
+        Towers selectedTower;
+        Texture2D towerMenuSprite;
+        Rectangle towerMenuPos;
+        bool openTowerMenu;
+        bool placeTower;
 
         public Game1()
         {
@@ -97,6 +114,16 @@ namespace Bruh_Overtime_Defense
                 0, tileWidth, tileHeight);
             nextWaveButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 4),
                 0, tileWidth * 2, tileHeight);
+            baseTowerButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 2) + 5,
+                (tileHeight * 2) + 5, tileWidth, tileHeight);
+
+            towerMenuPos = new Rectangle(_graphics.PreferredBackBufferWidth - (tileWidth * 2),
+                tileHeight, tileWidth * 2, tileHeight * 6);
+
+            //misc
+            selectedTower = Towers.None;
+            openTowerMenu = false;
+            placeTower = false;
 
             _graphics.ApplyChanges();
 
@@ -124,14 +151,18 @@ namespace Bruh_Overtime_Defense
             }
 
             //buttons
-            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("testTile1");
-            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("testTile1");
+            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("testMap1");
+            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("testMap1");
             towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile086");
             towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile090");
             pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile085");
             pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile089");
             nextWaveButton.DefaultSprite = Content.Load<Texture2D>("NextWaveButton");
             nextWaveButton.ActiveSprite = Content.Load<Texture2D>("NextWaveButtonActive");
+            baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
+            baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
+
+            towerMenuSprite = Content.Load<Texture2D>("towerSelector");
 
             //SpriteFonts
             arial64 = Content.Load<SpriteFont>("arial64");
@@ -177,8 +208,10 @@ namespace Bruh_Overtime_Defense
             {
                 case GameState.TitleScreen:
                     _spriteBatch.DrawString(arial64, "Bruh Tower Defense", new Vector2(0, 300), Color.White);
+                    _spriteBatch.DrawString(arial36, "Press Enter to start", new Vector2(200, 400), Color.White);
                     break;
                 case GameState.MapSelect:
+                    _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
                     mapSelectButton1.Draw(_spriteBatch, mState);
                     break;
                 case GameState.Gameplay:
@@ -225,6 +258,30 @@ namespace Bruh_Overtime_Defense
                     towerMenuButton.Draw(_spriteBatch, mState);
                     pauseButton.Draw(_spriteBatch, mState);
                     nextWaveButton.Draw(_spriteBatch, mState);
+
+                    if(openTowerMenu == true)
+                    {
+                        _spriteBatch.Draw(towerMenuSprite, towerMenuPos, Color.White);
+                        baseTowerButton.Draw(_spriteBatch, mState);
+                    }
+
+                    //if the player has a tower to place and clicks
+                    if(placeTower == true)
+                    {
+                        //draw the selected tower (needs to be changed to add a tower to some sort of list to be drawn permanently
+                        switch (selectedTower)
+                        {
+                            case Towers.BaseTower:
+                                _spriteBatch.Draw(baseTowerButton.DefaultSprite, 
+                                    new Vector2(mState.X, mState.Y), Color.White);
+                                break;
+                        }
+
+                        //turns off place tower and empties the selectedTower
+                        placeTower = false;
+                        selectedTower = Towers.None;
+                    }
+
                     break;
                 case GameState.PauseScreen:
                     _spriteBatch.DrawString(arial64, "Paused",
@@ -271,18 +328,52 @@ namespace Bruh_Overtime_Defense
             //if the player is in gameplay
             else if(gState == GameState.Gameplay)
             {
+                //if the mouse button is clicked and none of the buttons are
+                if (mState.LeftButton == ButtonState.Pressed && !pauseButton.RollOver(mState) &&
+                    !nextWaveButton.RollOver(mState) && !towerMenuButton.RollOver(mState) && !baseTowerButton.RollOver(mState))
+                {
+                    placeTower = true;
+                }
+
                 //if the player hits escape
                 if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
                 {
                     //return to gameplay
                     gState = GameState.PauseScreen;
                 }
-                //if the player hits escape
+                //if the player hits the pause button
                 if (pauseButton.Clicked(mState, prevMState))
                 {
                     //return to gameplay
                     gState = GameState.PauseScreen;
                 }
+
+                //if the player hits the towerMenu button while the menu is closed
+                if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == false)
+                {
+                    //open the towerMenu
+                    openTowerMenu = true;
+                }
+                //if the player hits the towerMenu button while the menu is open
+                else if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == true)
+                {
+                    //close the towerMenu
+                    openTowerMenu = false;
+                }
+
+                //if the towerMenu is open
+                if(openTowerMenu == true)
+                {
+                    //if the baseTower button is clicked
+                    if(baseTowerButton.Clicked(mState, prevMState))
+                    {
+                        //select the baseTower and close the towerMenu
+                        selectedTower = Towers.BaseTower;
+                        openTowerMenu = false;
+                    }
+                }
+
+                
             }
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
