@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System;
 
 namespace Bruh_Overtime_Defense
 {
@@ -84,6 +85,8 @@ namespace Bruh_Overtime_Defense
         bool openTowerMenu;
         bool placeTower;
 
+        private Random random;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -103,6 +106,8 @@ namespace Bruh_Overtime_Defense
             level = collisions.CurrentLevel;
             
             codes = collisions.Codes;
+
+            random = new Random();
 
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 800;
@@ -190,11 +195,14 @@ namespace Bruh_Overtime_Defense
 
             enemyTex = Content.Load<Texture2D>("bruh");
 
-            enemies.Add(new Enemy(
+            for(int i = 0; i < 20; i++)
+            {
+                enemies.Add(new Enemy(
                 enemyTex,
                 5,
-                3f,
+                3f * (float)(1 + random.NextDouble()),
                 collisions.StartPosition));
+            }          
         }
 
         /// <summary>
@@ -216,6 +224,7 @@ namespace Bruh_Overtime_Defense
             //make the current state the previous state (last thing to be done)
             prevMState = mState;
             prevKState = kState;
+
 
             base.Update(gameTime);
         }
@@ -366,6 +375,17 @@ namespace Bruh_Overtime_Defense
             //if the player is in gameplay
             else if(gState == GameState.Gameplay)
             {
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    collisions.ChangeEnemyDirection(enemies[i]);
+                    enemies[i].X += (int)enemies[i].Movement.X;
+                    enemies[i].Y += (int)enemies[i].Movement.Y;
+                    enemies[i].Position = new Rectangle(
+                        enemies[i].X, enemies[i].Y,
+                        enemies[i].Position.Width, enemies[i].Position.Height);
+                }
+
+
                 //if the mouse button is clicked and none of the buttons are
                 if (mState.LeftButton == ButtonState.Pressed && !pauseButton.RollOver(mState) &&
                     !nextWaveButton.RollOver(mState) && !towerMenuButton.RollOver(mState) && !baseTowerButton.RollOver(mState))

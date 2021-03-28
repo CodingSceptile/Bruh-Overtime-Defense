@@ -40,7 +40,7 @@ namespace Bruh_Overtime_Defense
         {
             for(int i = 0; i < enemies.Count; i++)
             {
-                sb.Draw(enemies[i].Bruh, enemies[i].Place, Color.White);
+                sb.Draw(enemies[i].Bruh, enemies[i].Position, Color.White);
             }
         }
         public void Update(GameTime gameTime)

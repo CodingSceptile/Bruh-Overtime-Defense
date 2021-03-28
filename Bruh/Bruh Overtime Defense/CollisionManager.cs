@@ -50,12 +50,42 @@ namespace Bruh_Overtime_Defense
         /// with the level elements
         /// </summary>
         /// <returns>true - intersecting/ false - not intersecting</returns>
-        public bool LevelIntersects()
+        public bool LevelIntersects(GameObject gameObj)
         {
-            return true;
+            for(int i = 1; i < rectangles.Count; i++)
+            {
+                if (gameObj.Position.Intersects(rectangles[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
+        /// <summary>
+        /// Changes the direction of an object
+        /// if it collides with an invisible level
+        /// object
+        /// </summary>
+        /// <param name="gameObj">The object being traced</param>
+        public void ChangeEnemyDirection(Enemy enemy)
+        {
+            if(LevelIntersects(enemy) == true)
+            {
+                int whichVector = enemy.VectorInteractions;
+                enemy.VectorInteractions++;
+               
+                if(enemy.Movement.X == 0)
+                {
+                    enemy.Movement = new Vector2(enemy.Speed, 0);
+                }
+                else if(enemy.Movement.Y == 0)
+                {
+                    enemy.Movement = new Vector2(0, enemy.Speed);                   
+                }
 
-
+                enemy.Movement *= vectors[whichVector];
+            }
+        }
     }
 }

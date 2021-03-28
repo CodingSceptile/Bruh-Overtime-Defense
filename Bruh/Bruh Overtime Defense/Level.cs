@@ -83,16 +83,32 @@ namespace Bruh_Overtime_Defense
                                 motionChange.Add(
                                     new Vector2(-1, 1));
                                 
+                               locations.Add(
+                                    new Rectangle
+                                    (new Point(((j * width) * 2) + width / 2,
+                                    ((i * height) * 2) + height / 2),
+                                    new Point(1, 1)));
+
                             }
                             else if(textureCode == "<1, -1>")
                             {
                                 motionChange.Add(
                                     new Vector2(1, -1));
-                            }
 
-                            locations.Add(
-                                    new Rectangle(new Point(((j * width) * 2) + width / 2, i * height),
+                                locations.Add(
+                                    new Rectangle
+                                    (new Point(((j * width) * 2) + width / 2,
+                                    ((i * height) * 2) + height / 2),
+                                    new Point(1, 1)));
+                            }
+                            else
+                            {
+                                locations.Add(
+                                    new Rectangle
+                                    (new Point(((j * width) * 2) + width / 2,
+                                    ((i * height) * 2) + height / 2),
                                     new Point(width * 3, height * 3)));
+                            }                           
                         }
                         else
                         {

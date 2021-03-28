@@ -27,7 +27,7 @@ namespace Bruh_Overtime_Defense
         /// <summary>
         /// the position of the object
         /// </summary>
-        protected Rectangle Position
+        public Rectangle Position
         {
             get { return position; }
             set { position = value; }
@@ -36,7 +36,7 @@ namespace Bruh_Overtime_Defense
         /// <summary>
         /// the sprite of the object
         /// </summary>
-        protected Texture2D Sprite
+        public Texture2D Sprite
         {
             get { return sprite; }
             set { sprite = value; }

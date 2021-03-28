@@ -48,6 +48,8 @@
             this.color2 = new System.Windows.Forms.Button();
             this.color1 = new System.Windows.Forms.Button();
             this.colorPick = new System.Windows.Forms.ColorDialog();
+            this.color4 = new System.Windows.Forms.Button();
+            this.color3 = new System.Windows.Forms.Button();
             this.textureBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.texturePic)).BeginInit();
             this.basicColors.SuspendLayout();
@@ -203,20 +205,22 @@
             // 
             // vectorIndicators
             // 
+            this.vectorIndicators.Controls.Add(this.color3);
+            this.vectorIndicators.Controls.Add(this.color4);
             this.vectorIndicators.Controls.Add(this.color14);
             this.vectorIndicators.Controls.Add(this.color11);
             this.vectorIndicators.Controls.Add(this.color2);
             this.vectorIndicators.Controls.Add(this.color1);
             this.vectorIndicators.Location = new System.Drawing.Point(6, 21);
             this.vectorIndicators.Name = "vectorIndicators";
-            this.vectorIndicators.Size = new System.Drawing.Size(260, 134);
+            this.vectorIndicators.Size = new System.Drawing.Size(327, 134);
             this.vectorIndicators.TabIndex = 0;
             this.vectorIndicators.TabStop = false;
             this.vectorIndicators.Text = "Vector2 Indicators (Right Click)";
             // 
             // color14
             // 
-            this.color14.Location = new System.Drawing.Point(167, 21);
+            this.color14.Location = new System.Drawing.Point(265, 23);
             this.color14.Name = "color14";
             this.color14.Size = new System.Drawing.Size(43, 107);
             this.color14.TabIndex = 13;
@@ -226,7 +230,7 @@
             // 
             // color11
             // 
-            this.color11.Location = new System.Drawing.Point(118, 23);
+            this.color11.Location = new System.Drawing.Point(216, 23);
             this.color11.Name = "color11";
             this.color11.Size = new System.Drawing.Size(43, 105);
             this.color11.TabIndex = 11;
@@ -240,7 +244,7 @@
             this.color2.Name = "color2";
             this.color2.Size = new System.Drawing.Size(43, 105);
             this.color2.TabIndex = 1;
-            this.color2.Text = "1\r\n-1";
+            this.color2.Text = "0\r\n1";
             this.color2.UseVisualStyleBackColor = true;
             this.color2.Click += new System.EventHandler(this.ColorPicker);
             // 
@@ -250,9 +254,29 @@
             this.color1.Name = "color1";
             this.color1.Size = new System.Drawing.Size(43, 105);
             this.color1.TabIndex = 0;
-            this.color1.Text = "-1\r\n1";
+            this.color1.Text = "1\r\n0";
             this.color1.UseVisualStyleBackColor = true;
             this.color1.Click += new System.EventHandler(this.ColorPicker);
+            // 
+            // color4
+            // 
+            this.color4.Location = new System.Drawing.Point(167, 23);
+            this.color4.Name = "color4";
+            this.color4.Size = new System.Drawing.Size(43, 105);
+            this.color4.TabIndex = 14;
+            this.color4.Text = "0\r\n-1";
+            this.color4.UseVisualStyleBackColor = true;
+            this.color4.Click += new System.EventHandler(this.ColorPicker);
+            // 
+            // color3
+            // 
+            this.color3.Location = new System.Drawing.Point(118, 23);
+            this.color3.Name = "color3";
+            this.color3.Size = new System.Drawing.Size(43, 105);
+            this.color3.TabIndex = 15;
+            this.color3.Text = "-1\r\n0";
+            this.color3.UseVisualStyleBackColor = true;
+            this.color3.Click += new System.EventHandler(this.ColorPicker);
             // 
             // levelEditor
             // 
@@ -307,5 +331,7 @@
         private System.Windows.Forms.Button color11;
         private System.Windows.Forms.PictureBox colorSelect;
         private System.Windows.Forms.Label currentColorLabel;
+        private System.Windows.Forms.Button color3;
+        private System.Windows.Forms.Button color4;
     }
 }

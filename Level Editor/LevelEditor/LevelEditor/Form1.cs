@@ -81,14 +81,22 @@ namespace LevelEditor
                         for (int j = 0; j < colors.GetLength(1); j++)
                         {
                             string currentPicture = reader.ReadString();
-   
-                            if(currentPicture == "<-1, 1>")
+
+                            if (currentPicture == "<1, 0>")
                             {
                                 colors[i, j] = Color.Red.ToString();
                             }
-                            else if(currentPicture == "<1, -1>")
+                            else if (currentPicture == "<0, 1>")
                             {
                                 colors[i, j] = Color.Blue.ToString();
+                            }
+                            else if (currentPicture == "<-1, 0>")
+                            {
+                                colors[i, j] = Color.Green.ToString();
+                            }
+                            else if (currentPicture == "<0, -1>")
+                            {
+                                colors[i, j] = Color.HotPink.ToString();
                             }
                             else if(currentPicture == "begin_tile")
                             {
@@ -107,13 +115,21 @@ namespace LevelEditor
                         {
                             string currentPicture = reader.ReadString();
 
-                            if (currentPicture == "<-1, 1>")
+                            if (currentPicture == "<1, 0>")
                             {
                                 overlayColors[i, j] = Color.Red.ToString();
                             }
-                            else if (currentPicture == "<1, -1>")
+                            else if (currentPicture == "<0, 1>")
                             {
                                 overlayColors[i, j] = Color.Blue.ToString();
+                            }
+                            else if (currentPicture == "<-1, 0>")
+                            {
+                                overlayColors[i, j] = Color.Green.ToString();
+                            }
+                            else if (currentPicture == "<0, -1>")
+                            {
+                                overlayColors[i, j] = Color.HotPink.ToString();
                             }
                             else if (currentPicture == "begin_tile")
                             {
@@ -136,6 +152,7 @@ namespace LevelEditor
                     //Prompts the user that it was sucessful!
                     editor.Text = $"Level editor - { dialog.FileName.Remove(0, dialog.FileName.LastIndexOf('\\') + 1)}";
                     MessageBox.Show("Successfully loaded the file!", ":)");
+                    stream.Close();
                     editor.ShowDialog();
                 }
 
@@ -143,14 +160,7 @@ namespace LevelEditor
                 {
                     //Something was wrong with the file
                     MessageBox.Show("Error reading file! " + ex.Message, ":(");
-                }
-
-                finally
-                {
-                    if (stream != null)
-                    {
-                        reader.Close();
-                    }
+                    stream.Close();
                 }
             }
 

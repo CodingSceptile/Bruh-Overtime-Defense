@@ -202,19 +202,23 @@ namespace LevelEditor
                         {
                             if (b.BackColor == Color.Red)
                             {
-                                writer.Write("<-1, 1>");
+                                writer.Write("<1, 0>");
                             }
                             else if (b.BackColor == Color.Blue)
                             {
-                                writer.Write("<1, -1>");
+                                writer.Write("<0, 1>");
                             }
                             else if (b.BackColor == Color.Violet)
                             {
                                 writer.Write("begin_tile");
                             }
-                            else if (b.BackColor == Color.Pink)
+                            else if (b.BackColor == Color.HotPink)
                             {
-                                writer.Write("tower");
+                                writer.Write("<1, -1>");
+                            }
+                            else if(b.BackColor == Color.Green)
+                            {
+                                writer.Write("<-1, 1>");
                             }
                             else
                             {
@@ -233,19 +237,23 @@ namespace LevelEditor
                         {
                             if (b.BackColor == Color.Red)
                             {
-                                writer.Write("<-1, 1>");
+                                writer.Write("<1, 0>");
                             }
                             else if (b.BackColor == Color.Blue)
                             {
-                                writer.Write("<1, -1>");
+                                writer.Write("<0, 1>");
                             }
                             else if (b.BackColor == Color.Violet)
                             {
                                 writer.Write("begin_tile");
                             }
-                            else if (b.BackColor == Color.Pink)
+                            else if (b.BackColor == Color.HotPink)
                             {
-                                writer.Write("tower");
+                                writer.Write("<1, -1>");
+                            }
+                            else if(b.BackColor == Color.Green)
+                            {
+                                writer.Write("<-1, 0>");
                             }
                             else
                             {
@@ -323,13 +331,21 @@ namespace LevelEditor
                         {
                             string currentPicture = reader.ReadString();
                             
-                            if (currentPicture == "<-1, 1>")
+                            if (currentPicture == "<1, 0>")
                             {
                                 colors[i, j] = Color.Red.ToString();
                             }
-                            else if (currentPicture == "<1, -1>")
+                            else if (currentPicture == "<0, 1>")
                             {
                                 colors[i, j] = Color.Blue.ToString();
+                            }
+                            else if(currentPicture == "<-1, 0>")
+                            {
+                                colors[i, j] = Color.Green.ToString();
+                            }
+                            else if (currentPicture == "<0, -1>")
+                            {
+                                colors[i, j] = Color.HotPink.ToString();
                             }
                             else if (currentPicture == "begin_tile")
                             {
@@ -348,17 +364,21 @@ namespace LevelEditor
                         {
                             string currentPicture = reader.ReadString();
 
-                            if (currentPicture == "<-1, 1>")
+                            if (currentPicture == "<1, 0>")
                             {
                                 overlayColors[i, j] = Color.Red.ToString();
                             }
-                            else if (currentPicture == "<1, -1>")
+                            else if (currentPicture == "<0, 1>")
                             {
                                 overlayColors[i, j] = Color.Blue.ToString();
                             }
-                            else if (currentPicture == "<-1, -1>")
+                            else if (currentPicture == "<-1, 0>")
                             {
-                                overlayColors[i, j] = Color.Violet.ToString();
+                                overlayColors[i, j] = Color.Green.ToString();
+                            }
+                            else if (currentPicture == "<0, -1>")
+                            {
+                                overlayColors[i, j] = Color.HotPink.ToString();
                             }
                             else
                             {
@@ -741,15 +761,19 @@ namespace LevelEditor
             color2.BackColor = Color.Blue;
             buttons.Add(color2);
 
-            color11.BackColor = Color.Pink;
-            buttons.Add(color11);
-
             color11.BackColor = Color.Violet;
             buttons.Add(color11);
 
             color14.BackColor = Color.White;
             buttons.Add(color14);
+
+            color3.BackColor = Color.Green;
+            buttons.Add(color3);
+
+            color4.BackColor = Color.HotPink;
+            buttons.Add(color4);
         }
+
 
         /// <summary>
         /// swaps to the overlay board
