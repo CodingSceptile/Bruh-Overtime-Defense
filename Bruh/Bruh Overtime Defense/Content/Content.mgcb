@@ -39,9 +39,6 @@
 /processorParam:TextureFormat=Color
 /build:bruh.png
 
-#begin gameLevel.level_Appended
-/copy:gameLevel.level_Appended
-
 #begin NextWaveButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -65,6 +62,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:NextWaveButtonActive.png
+
+#begin redoLevel.level_Appended
+/copy:redoLevel.level_Appended
 
 #begin testMap1.png
 /importer:TextureImporter

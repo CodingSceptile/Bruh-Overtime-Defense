@@ -101,7 +101,7 @@ namespace Bruh_Overtime_Defense
         {
             // TODO: Add your initialization logic here
             textures = new List<Texture2D>();
-            collisions = new CollisionManager();
+            collisions = new CollisionManager("redoLevel.level_Appended");
 
             level = collisions.CurrentLevel;
             
@@ -200,7 +200,7 @@ namespace Bruh_Overtime_Defense
                 enemies.Add(new Enemy(
                 enemyTex,
                 5,
-                3f * (float)(1 + random.NextDouble()),
+                3,
                 collisions.StartPosition));
             }          
         }

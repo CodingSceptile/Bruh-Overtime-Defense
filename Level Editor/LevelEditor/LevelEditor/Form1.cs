@@ -277,6 +277,12 @@ namespace LevelEditor
                         for (int j = 0; j < height * 2; j++)
                         {
                             string currentPicture = reader.ReadString();
+                            if (currentPicture.Contains("<"))
+                            {
+                                writer.Write(currentPicture);
+                                continue;
+                            }
+
                             if (currentPicture.Contains("../../../"))
                             {
                                 currentPicture = currentPicture.Substring
@@ -286,8 +292,6 @@ namespace LevelEditor
                             writer.Write(currentPicture);
                         }
                     }
-
-                    MessageBox.Show("Successfully appended the file for Bruh Overtime Defense!", ":D");
                 }
 
                 catch (Exception ex)
@@ -300,6 +304,7 @@ namespace LevelEditor
                 {
                     if (stream != null)
                     {
+                        MessageBox.Show("Successfully appended the file for Bruh Overtime Defense!", ":D");
                         reader.Close();
                     }
                 }

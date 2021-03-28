@@ -78,37 +78,33 @@ namespace Bruh_Overtime_Defense
                         {
                             codes.Add("default-min");
                             
-                            if(textureCode == "<-1, 1>")
+                            if(textureCode == "<1, 0>")
                             {
                                 motionChange.Add(
-                                    new Vector2(-1, 1));
-                                
-                               locations.Add(
-                                    new Rectangle
-                                    (new Point(((j * width) * 2) + width / 2,
-                                    ((i * height) * 2) + height / 2),
-                                    new Point(1, 1)));
+                                    new Vector2(1, 0));                              
 
                             }
-                            else if(textureCode == "<1, -1>")
+                            else if(textureCode == "<0, 1>")
                             {
                                 motionChange.Add(
-                                    new Vector2(1, -1));
-
-                                locations.Add(
-                                    new Rectangle
-                                    (new Point(((j * width) * 2) + width / 2,
-                                    ((i * height) * 2) + height / 2),
-                                    new Point(1, 1)));
+                                    new Vector2(0, 1));
                             }
-                            else
+                            else if (textureCode == "<-1, 0>")
                             {
-                                locations.Add(
+                                motionChange.Add(
+                                    new Vector2(-1, 0));
+                            }
+                            else if (textureCode == "<0, -1>")
+                            {
+                                motionChange.Add(
+                                    new Vector2(0, -1));
+                            }
+
+                            locations.Add(
                                     new Rectangle
                                     (new Point(((j * width) * 2) + width / 2,
                                     ((i * height) * 2) + height / 2),
                                     new Point(width * 3, height * 3)));
-                            }                           
                         }
                         else
                         {

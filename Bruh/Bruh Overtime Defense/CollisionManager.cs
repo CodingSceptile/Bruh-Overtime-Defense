@@ -10,6 +10,7 @@ namespace Bruh_Overtime_Defense
     class CollisionManager
     {
         //Fields
+        private string levelName;
         private Level level;
         private List<Vector2> vectors;
         private List<Rectangle> rectangles;
@@ -34,12 +35,15 @@ namespace Bruh_Overtime_Defense
         /// <summary>
         /// Creates a new instance of a collision manager
         /// </summary>
-        public CollisionManager()
+        public CollisionManager(string levelName)
         {
-            this.level = new Level("gameLevel.level_Appended");
-            codes = level.GenerateMap();
-            vectors = level.Vectors;
-            rectangles = level.Locations;         
+            this.levelName = levelName;
+
+            this.level = new Level(levelName);
+            
+            this.codes = level.GenerateMap();
+            this.vectors = level.Vectors;
+            this.rectangles = level.Locations;         
         }
 
         //Methods
@@ -73,18 +77,8 @@ namespace Bruh_Overtime_Defense
             if(LevelIntersects(enemy) == true)
             {
                 int whichVector = enemy.VectorInteractions;
-                enemy.VectorInteractions++;
-               
-                if(enemy.Movement.X == 0)
-                {
-                    enemy.Movement = new Vector2(enemy.Speed, 0);
-                }
-                else if(enemy.Movement.Y == 0)
-                {
-                    enemy.Movement = new Vector2(0, enemy.Speed);                   
-                }
 
-                enemy.Movement *= vectors[whichVector];
+                enemy.Movement = level.Vectors[whichVector] * enemy.Speed;
             }
         }
     }
