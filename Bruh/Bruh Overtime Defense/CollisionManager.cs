@@ -13,6 +13,7 @@ namespace Bruh_Overtime_Defense
         private Level level;
         private List<Vector2> vectors;
         private List<Rectangle> rectangles;
+        private List<string> codes;
 
 
         //Properties
@@ -20,6 +21,11 @@ namespace Bruh_Overtime_Defense
         {
             get { return level; }        
         }
+        public List<string> Codes
+        {
+            get { return codes; }
+        }
+
 
 
 
@@ -30,9 +36,10 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public CollisionManager()
         {
-            level = new Level("gameLevel.level_Appended");
+            this.level = new Level("gameLevel.level_Appended");
+            codes = level.GenerateMap();
             vectors = level.Vectors;
-            rectangles = level.Locations;
+            rectangles = level.Locations;         
         }
 
         //Methods

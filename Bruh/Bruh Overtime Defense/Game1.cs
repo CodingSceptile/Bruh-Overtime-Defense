@@ -94,7 +94,7 @@ namespace Bruh_Overtime_Defense
 
             level = collisions.CurrentLevel;
             
-            codes = level.GenerateMap();
+            codes = collisions.Codes;
 
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 800;
