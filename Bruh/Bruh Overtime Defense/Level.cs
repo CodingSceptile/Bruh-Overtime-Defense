@@ -91,7 +91,7 @@ namespace Bruh_Overtime_Defense
                             }
 
                             locations.Add(
-                                    new Rectangle(new Point(i * width, j * height),
+                                    new Rectangle(new Point(j * width, i * height),
                                     new Point(width, height)));
                         }
                         else
@@ -121,6 +121,25 @@ namespace Bruh_Overtime_Defense
             get { return tiles; }
 
         }
+
+        /// <summary>
+        /// Gets a list of Rectangles
+        /// that indicate where a vector is.
+        /// </summary>
+        public List<Rectangle> Locations
+        {
+            get { return locations; }
+        }
+
+        /// <summary>
+        /// Gets the list of vectors that dictates 
+        /// a change in direction
+        /// </summary>
+        public List<Vector2> Vectors
+        {
+            get { return motionChange; }
+        }
+
 
         /// <summary>
         /// the side length in tiles
