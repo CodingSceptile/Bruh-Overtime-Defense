@@ -34,26 +34,30 @@ namespace Bruh_Overtime_Defense
         private int tileWidth;
 
         //mouse and keyboard states
-        MouseState mState;
-        MouseState prevMState;
-        KeyboardState kState;
-        KeyboardState prevKState;
+        private MouseState mState;
+        private MouseState prevMState;
+        private KeyboardState kState;
+        private KeyboardState prevKState;
 
         //Textures
         private List<Texture2D> textures;
 
         //game state
-        GameState gState;
+        private GameState gState;
 
         //buttons
-        Button mapSelectButton1;
-        Button towerMenuButton;
-        Button pauseButton;
-        Button nextWaveButton;
+        private Button mapSelectButton1;
+        private Button towerMenuButton;
+        private Button pauseButton;
+        private Button nextWaveButton;
 
         //SpriteFonts
-        SpriteFont arial64;
-        SpriteFont arial36;
+        private SpriteFont arial64;
+        private SpriteFont arial36;
+
+        //Collision Manager
+        private CollisionManager collisions;
+        
 
         public Game1()
         {
@@ -69,8 +73,9 @@ namespace Bruh_Overtime_Defense
         {
             // TODO: Add your initialization logic here
             textures = new List<Texture2D>();
+            collisions = new CollisionManager();
 
-            level = new Level("gameLevel.level_Appended");
+            level = collisions.CurrentLevel;
             
             codes = level.GenerateMap();
 
@@ -97,6 +102,8 @@ namespace Bruh_Overtime_Defense
                 0, tileWidth, tileHeight);
             nextWaveButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 4),
                 0, tileWidth * 2, tileHeight);
+
+            
 
             _graphics.ApplyChanges();
 
