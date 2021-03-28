@@ -59,6 +59,7 @@ namespace Bruh_Overtime_Defense
         private Button towerMenuButton;
         private Button pauseButton;
         private Button nextWaveButton;
+        private Button baseTowerButton;
 
         //SpriteFonts
         private SpriteFont arial64;
