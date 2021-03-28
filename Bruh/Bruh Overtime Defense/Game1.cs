@@ -57,7 +57,11 @@ namespace Bruh_Overtime_Defense
 
         //Collision Manager
         private CollisionManager collisions;
-        
+
+        //Enemies
+        private Texture2D enemyTex;
+        private EnemyManager enMan;
+        private List<Enemy> enemies;
 
         public Game1()
         {
@@ -103,7 +107,8 @@ namespace Bruh_Overtime_Defense
             nextWaveButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 4),
                 0, tileWidth * 2, tileHeight);
 
-            
+
+            enMan = new EnemyManager(enemies);
 
             _graphics.ApplyChanges();
 
@@ -143,6 +148,14 @@ namespace Bruh_Overtime_Defense
             //SpriteFonts
             arial64 = Content.Load<SpriteFont>("arial64");
             arial36 = Content.Load<SpriteFont>("arial36");
+
+            enemyTex = Content.Load<Texture2D>("bruh");
+
+            enemies.Add(new Enemy(
+                enemyTex,
+                5,
+                3f,
+                collisions.EnemyStartPoint()));
         }
 
         /// <summary>
@@ -228,6 +241,7 @@ namespace Bruh_Overtime_Defense
 
                         }
                     }
+                    enMan.Draw(_spriteBatch);
                     //draws buttons
                     towerMenuButton.Draw(_spriteBatch, mState);
                     pauseButton.Draw(_spriteBatch, mState);
