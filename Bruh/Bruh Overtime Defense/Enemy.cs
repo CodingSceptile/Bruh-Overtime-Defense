@@ -10,17 +10,19 @@ namespace Bruh_Overtime_Defense
     class Enemy : GameObject
     {
         private int health;
-        private int speed;
+        private float speed;
         private Vector2 position;
         private bool isDead;
         private Texture2D texture;
         private Rectangle hitBox;
 
         public int Health { get { return health; } set { health = value; } }
-        public int Speed { get { return speed; } set { speed = value; } }
-        public bool IsDead { get { return isDead; } }
+        public float Speed { get { return speed; } set { speed = value; } }
+        public bool IsDead { get { return isDead; } set { isDead = value; } }
+        public Texture2D Bruh { get { return texture; } }
+        public Vector2 Place { get { return position; } }
 
-        public Enemy(Rectangle box, Texture2D texture, int health, int speed)
+        public Enemy(Rectangle box, Texture2D texture, int health, float speed)
             : base(box, texture)
         {
             this.hitBox = box;
