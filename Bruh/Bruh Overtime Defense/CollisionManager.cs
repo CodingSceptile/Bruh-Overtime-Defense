@@ -25,10 +25,10 @@ namespace Bruh_Overtime_Defense
         {
             get { return codes; }
         }
-
-
-
-
+        public Rectangle StartPosition
+        {
+            get { return rectangles[0]; }
+        }
         //Constructor
 
         /// <summary>
@@ -43,15 +43,6 @@ namespace Bruh_Overtime_Defense
         }
 
         //Methods
-
-        /// <summary>
-        /// returns the starting position of the enemy
-        /// </summary>
-        /// <returns>starting position of the enemy</returns>
-        public Rectangle EnemyStartPoint()
-        {
-            return rectangles[0];
-        }
 
         /// <summary>
         /// Returns whether or not 

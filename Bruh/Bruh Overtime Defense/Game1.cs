@@ -138,8 +138,9 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             placeTower = false;
 
+            enemies = new List<Enemy>();
             enMan = new EnemyManager(enemies);
-
+            
             //towers
             towers = new List<Tower>();
             towerManager = new TowerManager(towers);
@@ -193,7 +194,7 @@ namespace Bruh_Overtime_Defense
                 enemyTex,
                 5,
                 3f,
-                collisions.EnemyStartPoint()));
+                collisions.StartPosition));
         }
 
         /// <summary>

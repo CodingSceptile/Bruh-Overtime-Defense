@@ -91,8 +91,8 @@ namespace Bruh_Overtime_Defense
                             }
 
                             locations.Add(
-                                    new Rectangle(new Point(j * width, i * height),
-                                    new Point(width, height)));
+                                    new Rectangle(new Point(((j * width) * 2) + width / 2, i * height),
+                                    new Point(width * 3, height * 3)));
                         }
                         else
                         {
