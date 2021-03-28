@@ -67,7 +67,10 @@ namespace Bruh_Overtime_Defense
 
         //Collision Manager
         private CollisionManager collisions;
-        
+
+        //tower manager
+        private List<Tower> towers;
+        private TowerManager towerManager;
 
         //misc
         Towers selectedTower;
@@ -129,6 +132,10 @@ namespace Bruh_Overtime_Defense
             selectedTower = Towers.None;
             openTowerMenu = false;
             placeTower = false;
+
+            //towers
+            towers = new List<Tower>();
+            towerManager = new TowerManager(towers);
 
             _graphics.ApplyChanges();
 
@@ -264,6 +271,13 @@ namespace Bruh_Overtime_Defense
                     pauseButton.Draw(_spriteBatch, mState);
                     nextWaveButton.Draw(_spriteBatch, mState);
 
+                    //draw the towers
+                    for(int i = 0; i < towers.Count; i++)
+                    {
+                        towers[i].Draw(_spriteBatch);
+                    }
+
+                    //draw the towerMenu if it is open
                     if(openTowerMenu == true)
                     {
                         _spriteBatch.Draw(towerMenuSprite, towerMenuPos, Color.White);
@@ -277,8 +291,10 @@ namespace Bruh_Overtime_Defense
                         switch (selectedTower)
                         {
                             case Towers.BaseTower:
-                                _spriteBatch.Draw(baseTowerButton.DefaultSprite, 
-                                    new Vector2(mState.X, mState.Y), Color.White);
+                                //values of tower and temp and default
+                                towers.Add(new Tower(
+                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    baseTowerButton.DefaultSprite, 20, 20, 20));
                                 break;
                         }
 

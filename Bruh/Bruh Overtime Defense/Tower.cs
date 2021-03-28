@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bruh_Overtime_Defense
 {
-    abstract class Tower : GameObject
+    class Tower : GameObject
     {
         //Fields
         private int radius;
