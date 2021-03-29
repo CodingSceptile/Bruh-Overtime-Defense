@@ -101,6 +101,8 @@ namespace LevelEditor
             //PictureBox is detected
             if(sender is PictureBox)
             {
+                //No path selected, do not change
+                //the picture displayed on a picture box
                 if(path == null)
                 {
                     return;
@@ -110,16 +112,22 @@ namespace LevelEditor
 
                 p.Capture = false;
 
+                //Allows for drawing pictures
                 if(Control.MouseButtons == MouseButtons.Left)
                 {
+                    //Disposes image that existed before
+                    //clicking on the box
                     if(p.Image != null)
                     {
                         p.Image.Dispose();
                     }
                     
+                    //Resize image
                     p.SizeMode = PictureBoxSizeMode.Zoom;
+                    //Load image
                     p.Load("../../../" + path);
 
+                    //Shows indicator that the user needs to save!
                     if (this.Text.IndexOf("*") == -1)
                     {
                         //Puts an asterisk if there are unsaved changes
@@ -129,6 +137,8 @@ namespace LevelEditor
                         isSaved = false;
                     }
 
+                    //Adds the path to recently used if it wasn't
+                    //already there
                     if (recentlyUsed.Items.Contains(path))
                     {
                         return;
@@ -139,6 +149,7 @@ namespace LevelEditor
                     }                   
                 }
 
+                //Draws colors
                 else if(Control.MouseButtons == MouseButtons.Right)
                 {
                     p.Image = null;
@@ -179,7 +190,9 @@ namespace LevelEditor
                 
                 //File order
                 //Width, height, LEVEL texture data,
-                //Special Vector2/tower data.
+                //Special Vector2/begin data.
+
+                //Repeat again for overlay data.
 
                 try
                 {
@@ -191,13 +204,19 @@ namespace LevelEditor
                     writer.Write(width);
                     writer.Write(height);
 
+                    //Background
+
                     //Saves the ARGB colors of the pictureboxes
                     foreach (PictureBox b in boxes)
                     {
+                        //writes the location of the image
                         if(b.Image != null)
                         {
                             writer.Write(b.ImageLocation);
                         }
+
+                        //Vector data detected, write the data in
+                        //Vector notation!
                         else
                         {
                             if (b.BackColor == Color.Red)
@@ -220,6 +239,7 @@ namespace LevelEditor
                             {
                                 writer.Write("<-1, 1>");
                             }
+                            //Nothing detected
                             else
                             {
                                 writer.Write("../../../default-min.png");
@@ -227,6 +247,7 @@ namespace LevelEditor
                         }
                     }
 
+                    //Overlay
                     foreach(PictureBox b in overlay)
                     {
                         if (b.Image != null)
@@ -324,7 +345,10 @@ namespace LevelEditor
                     colors = new string[height, width];
                     overlayColors = new string[height, width];
 
+                    //Background
+
                     //Fills the array with the colors of the loaded data
+                    //(Vector2/Begin tile)
                     for (int i = 0; i < colors.GetLength(0); i++)
                     {
                         for (int j = 0; j < colors.GetLength(1); j++)
@@ -357,6 +381,8 @@ namespace LevelEditor
                             }                           
                         }
                     }
+
+                    //Overlay 
 
                     for (int i = 0; i < overlayColors.GetLength(0); i++)
                     {
@@ -472,6 +498,8 @@ namespace LevelEditor
                     mapBox.Controls.Add(box);
                     //Subscribes box's MouseDown to the button_Click method, so
                     //it is interactable.
+
+                    //Allows for drag clicking
                     box.MouseDown += button_Click;
                     box.MouseEnter += button_Click;
 
@@ -502,6 +530,8 @@ namespace LevelEditor
             //Clears the controls (so we dont 
             //get overlap)
 
+
+            //Resizes the groupBox
             mapBox.Size = new Size(575, 575);
 
             mapBox.Controls.Clear();
@@ -570,16 +600,20 @@ namespace LevelEditor
                             box.BackColor = Color.Violet;
                         }
                     }
+
+                    //image path detected, load the image and resize
                     else
                     {
                         box.Load(colors[i, j]);
                         box.SizeMode = PictureBoxSizeMode.Zoom;
                     }
 
+                    //Default picture detected, Color the tile white.
                     if (overlayColors[i, j] == "../../../default-min.png")
                     {
                         overlayBox.BackColor = Color.White;
                     }
+                    //Vector2 data detected, color the image a respective color.
                     else if (overlayColors[i, j].Contains("../../../") == false)
                     {
                         if (overlayColors[i, j] == "Color [Red]")
@@ -601,8 +635,10 @@ namespace LevelEditor
                         overlayBox.SizeMode = PictureBoxSizeMode.Zoom;
                     }
 
+                    //Add the pictureboxes to the controls
                     mapBox.Controls.Add(box);
 
+                    //add data to 2d arrays
                     boxes[i, j] = box;
                     overlay[i, j] = overlayBox;
 
@@ -679,7 +715,7 @@ namespace LevelEditor
                 }
             }
         }
-
+        
         /// <summary>
         /// Checks for which texture a user chooses
         /// from the list displayed.
@@ -692,8 +728,10 @@ namespace LevelEditor
             {
                 ListBox b = (ListBox)sender;
 
+                //determines the index that was selected
                 int index = b.SelectedIndex + 1;
 
+                //Determines the path that the user chose
                 if(index < 10)
                 {
                     path = "Default size/towerDefense_tile" + $"00{index}.png";
@@ -707,6 +745,7 @@ namespace LevelEditor
                     path = "Default size/towerDefense_tile" + $"{index}.png";
                 }
 
+                //loads the image for preview, resizes accordingly
                 texturePic.Load("../../../" + path);
                 texturePic.SizeMode = PictureBoxSizeMode.Zoom;
             }
@@ -719,11 +758,14 @@ namespace LevelEditor
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void RecentSelect(object sender, EventArgs e)
-        { 
-            if(sender is ListBox)
+        {
+            //Works much the same as pictureSelect_SelectedIndexChanged(object sender, EventArgs e)
+            //but is operated in a different section.
+            if (sender is ListBox)
             {
                 ListBox b = (ListBox)sender;
 
+               
                 int index = b.SelectedIndex;
 
                 if(index == -1)
@@ -737,13 +779,19 @@ namespace LevelEditor
             }
         }
 
-
+        /// <summary>
+        /// Allows the user to choose between a set 
+        /// number of colors
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ColorPicker(object sender, EventArgs e)
         {
             if(sender is Button)
             {
                 Button b = (Button)(sender);
 
+                //changes the current color selected
                 currentColor = b.BackColor;
                 colorSelect.BackColor = b.BackColor;               
             }
@@ -782,11 +830,15 @@ namespace LevelEditor
         /// <param name="e"></param>
         private void overlayButton_Click(object sender, EventArgs e)
         {
+            //clears the controls
             mapBox.Controls.Clear();
 
+            //changes the color of the buttons to indicate
+            //that the user is on the overlay tab
             backgroundButton.BackColor = Color.LavenderBlush;
             overlayButton.BackColor = Color.Green;
             
+            //changes the pictureboxes to the overlay stored data
             for(int i = 0; i < height; i++)
             {
                 for(int j = 0; j < width; j++)
@@ -799,13 +851,22 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// Changes to the background board
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundButton_Click(object sender, EventArgs e)
         {
+            //clears the controls
             mapBox.Controls.Clear();
 
+            //changes color of buttons to indicate that the user
+            //is selecting the background later
             overlayButton.BackColor = Color.LavenderBlush;
             backgroundButton.BackColor = Color.Green;
 
+            //replaces pictureBox data with the background data
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)
