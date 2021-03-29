@@ -143,6 +143,7 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             placeTower = false;
 
+            //Enemies, and enemy manager
             enemies = new List<Enemy>();
             enMan = new EnemyManager(enemies);
             
@@ -193,8 +194,11 @@ namespace Bruh_Overtime_Defense
             arial64 = Content.Load<SpriteFont>("arial64");
             arial36 = Content.Load<SpriteFont>("arial36");
 
+            //Bruh enemy texture
             enemyTex = Content.Load<Texture2D>("bruh");
 
+            //Creates new enemies to be displayed
+            //on the screen
             for(int i = 0; i < 20; i++)
             {
                 enemies.Add(new Enemy(
