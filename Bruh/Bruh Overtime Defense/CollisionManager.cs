@@ -7,6 +7,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bruh_Overtime_Defense
 {
+    //Names: Sami Chamberlain, Mukund Suresh, Caleb Jeon,
+    //London Emmerich
+    //Date: 3/28/2021
+    //Purpose: Establishes level collisions,
+    //and interacts with stored Vector2's to
+    //change the player's movement
+    //Also, checks for collisions between
+    //towers and enemies
     class CollisionManager
     {
         //Fields
@@ -18,18 +26,34 @@ namespace Bruh_Overtime_Defense
 
 
         //Properties
+
+        /// <summary>
+        /// Returns the current level data
+        /// </summary>
         public Level CurrentLevel 
         {
             get { return level; }        
         }
+
+        /// <summary>
+        /// Returns the list of texture codes
+        /// used by the level
+        /// </summary>
         public List<string> Codes
         {
             get { return codes; }
         }
+
+        /// <summary>
+        /// Returns the starting position of a
+        /// bruh
+        /// </summary>
         public Rectangle StartPosition
         {
             get { return rectangles[0]; }
         }
+
+
         //Constructor
 
         /// <summary>
@@ -58,11 +82,14 @@ namespace Bruh_Overtime_Defense
         {
             for(int i = 1; i < rectangles.Count; i++)
             {
+                //Checks for intersection
                 if (gameObj.Position.Intersects(rectangles[i]))
                 {
                     return true;
                 }
             }
+
+            //Not intersecting
             return false;
         }
 
@@ -74,10 +101,14 @@ namespace Bruh_Overtime_Defense
         /// <param name="gameObj">The object being traced</param>
         public void ChangeEnemyDirection(Enemy enemy)
         {
+            //Intersection detected...
             if(LevelIntersects(enemy) == true)
             {
+                //Checks which Vector needs to be called.....
                 int whichVector = enemy.VectorInteractions;
 
+                //and changes the enemy's movement to that, as well as multiplies it
+                //by the enemy's passive speed
                 enemy.Movement = level.Vectors[whichVector] * enemy.Speed;
             }
         }
