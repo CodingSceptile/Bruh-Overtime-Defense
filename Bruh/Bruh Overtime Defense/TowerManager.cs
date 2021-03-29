@@ -84,6 +84,27 @@ namespace Bruh_Overtime_Defense
             }
         }
 
+        /// <summary>
+        /// Draws the towers on the map.
+        /// </summary>
+        /// <param name="sb">SpriteBatch</param>
+        public void DrawTowers(SpriteBatch sb)
+        {
+            for(int i = 0; i < towers.Count; i++)
+            {
+                towers[i].Draw(sb);
+            }
+        }
+
+        /// <summary>
+        /// Places the tower.
+        /// </summary>
+        /// <param name="t">The tower to be placed</param>
+        public void PlaceTower(Tower t)
+        {
+            towers.Add(t);
+        }
+
         public float Distance(Rectangle p1, Rectangle p2)
         {
             float distance = (float)Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
