@@ -253,8 +253,8 @@ namespace Bruh_Overtime_Defense
             switch (gState)
             {
                 case GameState.TitleScreen:
-                    _spriteBatch.DrawString(arial64, "Bruh Tower Defense", new Vector2(0, 300), Color.White);
-                    _spriteBatch.DrawString(arial36, "Press Enter to start", new Vector2(200, 400), Color.White);
+                    _spriteBatch.DrawString(arial64, "Bruh Overtime \n     Defense", new Vector2(125, 250), Color.White);
+                    _spriteBatch.DrawString(arial36, "Press Enter to start", new Vector2(200, 450), Color.White);
                     break;
                 case GameState.MapSelect:
                     _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
