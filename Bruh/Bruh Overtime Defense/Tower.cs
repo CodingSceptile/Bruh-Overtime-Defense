@@ -122,5 +122,10 @@ namespace Bruh_Overtime_Defense
 
             sb.Draw(Sprite, Position, Color.White);
         }
+
+        public void Shoot()
+        {
+
+        }
     }
 }
