@@ -145,7 +145,7 @@ namespace Bruh_Overtime_Defense
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
-            enMan = new EnemyManager(enemies);
+            enMan = new EnemyManager(enemies, collisions.StartPosition);
             
             //towers
             towers = new List<Tower>();
@@ -295,7 +295,10 @@ namespace Bruh_Overtime_Defense
 
                         }
                     }
+
+                    enMan.Update(gameTime);
                     enMan.Draw(_spriteBatch);
+                                       
                     //draws buttons
                     towerMenuButton.Draw(_spriteBatch, mState);
                     pauseButton.Draw(_spriteBatch, mState);
@@ -381,12 +384,12 @@ namespace Bruh_Overtime_Defense
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    collisions.ChangeEnemyDirection(enemies[i]);
-                    enemies[i].X += (int)enemies[i].Movement.X;
-                    enemies[i].Y += (int)enemies[i].Movement.Y;
-                    enemies[i].Position = new Rectangle(
-                        enemies[i].X, enemies[i].Y,
-                        enemies[i].Position.Width, enemies[i].Position.Height);
+                    if(enemies[i].IsDead == false)
+                    {
+                        collisions.ChangeEnemyDirection(enemies[i]);
+                        enemies[i].X += (int)enemies[i].Movement.X;
+                        enemies[i].Y += (int)enemies[i].Movement.Y;
+                    }                                     
                 }
 
 
