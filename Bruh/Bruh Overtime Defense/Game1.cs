@@ -63,8 +63,10 @@ namespace Bruh_Overtime_Defense
         private Button baseTowerButton;
 
         //SpriteFonts
-        private SpriteFont arial64;
+        private SpriteFont arial10;
+        private SpriteFont arial16;
         private SpriteFont arial36;
+        private SpriteFont arial64;
 
         //Collision Manager
         private CollisionManager collisions;
@@ -79,13 +81,13 @@ namespace Bruh_Overtime_Defense
         private TowerManager towerManager;
 
         //misc
-        Towers selectedTower;
-        Texture2D towerMenuSprite;
-        Rectangle towerMenuPos;
-        bool openTowerMenu;
-        bool placeTower;
-
+        private Towers selectedTower;
+        private Texture2D towerMenuSprite;
+        private Rectangle towerMenuPos;
+        private bool openTowerMenu;
+        private bool placeTower;
         private Random random;
+        private int totalMoney;
 
         public Game1()
         {
@@ -142,6 +144,7 @@ namespace Bruh_Overtime_Defense
             selectedTower = Towers.None;
             openTowerMenu = false;
             placeTower = false;
+            totalMoney = 100;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
@@ -191,8 +194,10 @@ namespace Bruh_Overtime_Defense
             towerMenuSprite = Content.Load<Texture2D>("towerSelector");
 
             //SpriteFonts
-            arial64 = Content.Load<SpriteFont>("arial64");
+            arial10 = Content.Load<SpriteFont>("arial10");
+            arial16 = Content.Load<SpriteFont>("arial16");
             arial36 = Content.Load<SpriteFont>("arial36");
+            arial64 = Content.Load<SpriteFont>("arial64");
 
             //Bruh enemy texture
             enemyTex = Content.Load<Texture2D>("bruh");
@@ -300,6 +305,9 @@ namespace Bruh_Overtime_Defense
                     towerMenuButton.Draw(_spriteBatch, mState);
                     pauseButton.Draw(_spriteBatch, mState);
                     nextWaveButton.Draw(_spriteBatch, mState);
+                    _spriteBatch.DrawString(arial16, "Money: $" + totalMoney, 
+                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 8), 0), 
+                        Color.White);
 
                     //draw the towers
                     for(int i = 0; i < towers.Count; i++)
@@ -311,6 +319,12 @@ namespace Bruh_Overtime_Defense
                     if(openTowerMenu == true)
                     {
                         _spriteBatch.Draw(towerMenuSprite, towerMenuPos, Color.White);
+                        _spriteBatch.DrawString(arial10, "Tower  Cost",
+                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 2), tileHeight),
+                        Color.White);
+                        _spriteBatch.DrawString(arial16, "20",
+                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth), tileHeight * 2),
+                        Color.White);
                         baseTowerButton.Draw(_spriteBatch, mState);
                     }
 
@@ -325,6 +339,7 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new Tower(
                                     new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
                                     baseTowerButton.DefaultSprite, 20, 20, 20));
+                                totalMoney -= 20;
                                 break;
                         }
 
@@ -426,8 +441,9 @@ namespace Bruh_Overtime_Defense
                 //if the towerMenu is open
                 if(openTowerMenu == true)
                 {
-                    //if the baseTower button is clicked
-                    if(baseTowerButton.Clicked(mState, prevMState))
+                    //if the baseTower button is clicked and the player can afford it
+                    if(baseTowerButton.Clicked(mState, prevMState) &&
+                    totalMoney >= 20)
                     {
                         //select the baseTower and close the towerMenu
                         selectedTower = Towers.BaseTower;
