@@ -68,6 +68,26 @@ namespace Bruh_Overtime_Defense
             else return false;
         }
 
-        
+        /// <summary>
+        /// Shoot method to pop bruhs
+        /// </summary>
+        /// <param name="t">The tower that is trying to pop</param>
+        /// <param name="enemies">The enemies on the map.</param>
+        public void Shoot(Tower t, List<Enemy> enemies)
+        {
+            foreach (Enemy e in enemies)
+            {
+                if (Distance(t.Position, e.Position) <= t.Radius)
+                {
+                    e.Health -= 2;
+                }
+            }
+        }
+
+        public float Distance(Rectangle p1, Rectangle p2)
+        {
+            float distance = (float)Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
+            return distance;
+        }
     }
 }
