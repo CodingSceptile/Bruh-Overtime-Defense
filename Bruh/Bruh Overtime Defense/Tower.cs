@@ -16,6 +16,7 @@ namespace Bruh_Overtime_Defense
         private float salary;
         private int activitySpeed;
 
+
         //Properties
         /// <summary>
         /// Property to get the radius and set it if value is greater than zero.
@@ -121,11 +122,6 @@ namespace Bruh_Overtime_Defense
         {
 
             sb.Draw(Sprite, Position, Color.White);
-        }
-
-        public void Shoot()
-        {
-
         }
     }
 }
