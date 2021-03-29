@@ -74,8 +74,9 @@ namespace LevelEditor
                     colors = new string[width, height];
                     overlayColors = new string[width, height];
                     
+                    //BACKGROUND LAYER
 
-                    //Reads Vector2 data and turns it into a color indicator
+                    //Reads Vector2/beginning data and turns it into a color indicator                   
                     for (int i = 0; i < colors.GetLength(0); i++)
                     {
                         for (int j = 0; j < colors.GetLength(1); j++)
@@ -109,6 +110,8 @@ namespace LevelEditor
                         }
                     }
 
+                    //OVERLAY LAYER
+                  
                     for (int i = 0; i < overlayColors.GetLength(0); i++)
                     {
                         for (int j = 0; j < overlayColors.GetLength(1); j++)
@@ -241,8 +244,18 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// Formats a .level file into a .level_Appended file, which
+        /// removes the "../../../" from image paths
+        /// These files are readable by our game, and store tile, Vector2, and
+        /// Beginning rectangle data
+        /// </summary>
+        /// <param name="sender">Export button click</param>
+        /// <param name="e">Handles events</param>
         private void exportButton_Click(object sender, EventArgs e)
         {
+            //Opens a window to allow the user to
+            //choose a file
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Convert a .level file...";
             dialog.Filter = "Level Files|*.level";
@@ -271,18 +284,22 @@ namespace LevelEditor
                     height = reader.ReadInt32();
                     writer.Write(height);
 
-                    //Colors obtained
+                   
                     for (int i = 0; i < width; i++)
                     {
                         for (int j = 0; j < height * 2; j++)
                         {
                             string currentPicture = reader.ReadString();
+                            
+                            //Colors obtained (Vector2 data)
                             if (currentPicture.Contains("<"))
                             {
                                 writer.Write(currentPicture);
                                 continue;
                             }
 
+                            //Not a color, write the tile ID without the
+                            //path
                             if (currentPicture.Contains("../../../"))
                             {
                                 currentPicture = currentPicture.Substring
@@ -302,6 +319,7 @@ namespace LevelEditor
 
                 finally
                 {
+                    //File was successfully appended!
                     if (stream != null)
                     {
                         MessageBox.Show("Successfully appended the file for Bruh Overtime Defense!", ":D");
