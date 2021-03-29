@@ -4,7 +4,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+//HEADER=======================================
+//Author: Mukund Suresh
+//Purpose: To create a tower class that shoots bruhs, and needs to be paid a salary.
+//=============================================
 namespace Bruh_Overtime_Defense
 {
      class Tower : GameObject //not abstract FOR NOW
@@ -122,6 +125,42 @@ namespace Bruh_Overtime_Defense
         {
 
             sb.Draw(Sprite, Position, Color.White);
+        }
+
+        /// <summary>
+        /// If Salary is due and not paid (can change condition so some time should pass later)
+        /// then tower resigns and leaves. Will add the bruh generation feature after the enemy class is
+        /// worked on a bit more.
+        /// </summary>
+        /// <returns></returns>
+        public bool Resignation()
+        {
+            if (SalaryDue())
+            {
+                return true;
+            }
+
+            else return false;
+        }
+
+        /// <summary>
+        /// Checks if salary is due.
+        /// </summary>
+        /// <returns>True if salary is true, false if not.</returns>
+        public bool SalaryDue()
+        {
+            //I could make it subtract raw, but in this model, all towers 
+            //have to be paid at equal times. Could make it so that the expensive
+            //ones could be paid less often but we'll see
+            salary -= (int)(salary / 5); //5 is arbitrary
+
+            if (salary <= 0)
+            {
+                salary = 0; //doesn't really matter but don't want it to be -ve
+                return true;
+            }
+
+            else return false;
         }
     }
 }

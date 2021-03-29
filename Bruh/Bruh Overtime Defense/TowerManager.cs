@@ -4,7 +4,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+//HEADER================================================
+//Author: Mukund Suresh
+//Purpose: To create a Tower manager class that keeps track off
+//and executes all the tower interactions.
+//======================================================
 namespace Bruh_Overtime_Defense
 {
     class TowerManager
@@ -20,28 +24,6 @@ namespace Bruh_Overtime_Defense
 
         //Methods
         /// <summary>
-        /// Subtracts salary leftover after every round that it's called and
-        /// checks if salary is due yet.
-        /// </summary>
-        /// <param name="t">The tower it is being checked for.</param>
-        /// <returns>True if salary is due, false if not.</returns>
-        public bool SalaryDue(Tower t)
-        {
-            //I could make it subtract raw, but in this model, all towers 
-            //have to be paid at equal times. Could make it so that the expensive
-            //ones could be paid less often but we'll see
-            t.Salary -= (int)(t.Salary / 5); //5 is arbitrary
-
-            if (t.Salary <= 0)
-            {
-                t.Salary = 0; //doesn't really matter but don't want it to be -ve
-                return true;
-            }
-
-            else return false;
-        }
-
-        /// <summary>
         /// This method tops off the salary of the tower.
         /// </summary>
         /// <param name="t">The lucky tower that's getting paid.</param>
@@ -51,21 +33,18 @@ namespace Bruh_Overtime_Defense
         }
 
         /// <summary>
-        /// If Salary is due and not paid (can change condition so some time should pass later)
-        /// then tower resigns and leaves. Will add the bruh generation feature after the enemy class is
-        /// worked on a bit more.
+        /// The towers that resign are removed.
         /// </summary>
-        /// <param name="t">The tower that is checked to be resigning or not</param>
         /// <returns>True if it's resigning, false if not.</returns>
-        public bool Resignation(Tower t)
+        public void Resignations()
         {
-            if (SalaryDue(t))
+            foreach(Tower t in towers)
             {
-                towers.Remove(t);
-                return true;
+                if(t.Resignation())
+                {
+                    towers.Remove(t);
+                }
             }
-
-            else return false;
         }
 
         /// <summary>
@@ -84,6 +63,33 @@ namespace Bruh_Overtime_Defense
             }
         }
 
+        /// <summary>
+        /// Draws the towers on the map.
+        /// </summary>
+        /// <param name="sb">SpriteBatch</param>
+        public void DrawTowers(SpriteBatch sb)
+        {
+            for(int i = 0; i < towers.Count; i++)
+            {
+                towers[i].Draw(sb);
+            }
+        }
+
+        /// <summary>
+        /// Places the tower.
+        /// </summary>
+        /// <param name="t">The tower to be placed</param>
+        public void PlaceTower(Tower t)
+        {
+            towers.Add(t);
+        }
+
+        /// <summary>
+        /// Finds the distance between two rectangle positions
+        /// </summary>
+        /// <param name="p1">First point</param>
+        /// <param name="p2">Second point</param>
+        /// <returns>Distance between first point and second point</returns>
         public float Distance(Rectangle p1, Rectangle p2)
         {
             float distance = (float)Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
