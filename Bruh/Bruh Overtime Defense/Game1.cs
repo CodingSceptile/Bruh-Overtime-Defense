@@ -88,6 +88,8 @@ namespace Bruh_Overtime_Defense
         private bool placeTower;
         private Random random;
         private int totalMoney;
+        private bool gainMoney;
+        int numShoots;
 
         public Game1()
         {
@@ -145,6 +147,8 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             placeTower = false;
             totalMoney = 100;
+            gainMoney = false;
+            numShoots = 0;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
@@ -208,7 +212,7 @@ namespace Bruh_Overtime_Defense
             {
                 enemies.Add(new Enemy(
                 enemyTex,
-                5,
+                1,
                 3,
                 collisions.StartPosition));
             }          
@@ -301,9 +305,24 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
+                    if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 2000 < 1)
+                    {
+                        foreach (Tower t in towers)
+                        {
+                            gainMoney =
+                                towerManager.Shoot(t, enemies);
+                           
+                            if (gainMoney == true)
+                            {
+                                totalMoney++;
+                                gainMoney = false;
+                            }
+                        }                        
+                    }
+
                     enMan.Update(gameTime);
                     enMan.Draw(_spriteBatch);
-                                       
+
                     //draws buttons
                     towerMenuButton.Draw(_spriteBatch, mState);
                     pauseButton.Draw(_spriteBatch, mState);
@@ -341,7 +360,7 @@ namespace Bruh_Overtime_Defense
                                 //values of tower and temp and default
                                 towers.Add(new Tower(
                                     new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, 20, 20, 20));
+                                    baseTowerButton.DefaultSprite, 80, 20, 20));
                                 totalMoney -= 20;
                                 break;
                         }
@@ -453,8 +472,6 @@ namespace Bruh_Overtime_Defense
                         openTowerMenu = false;
                     }
                 }
-
-                
             }
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)

@@ -52,15 +52,26 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         /// <param name="t">The tower that is trying to pop</param>
         /// <param name="enemies">The enemies on the map.</param>
-        public void Shoot(Tower t, List<Enemy> enemies)
+        public bool Shoot(Tower t, List<Enemy> enemies)
         {
             foreach (Enemy e in enemies)
             {
                 if (Distance(t.Position, e.Position) <= t.Radius)
                 {
-                    e.Health -= 2;
+                    e.Health -= 1;
+                    if(e.Health <= 0)
+                    {
+                        e.IsDead = true;
+                        enemies.Remove(e);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }                   
                 }
             }
+            return false;
         }
 
         /// <summary>
@@ -81,7 +92,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="t">The tower to be placed</param>
         public void PlaceTower(Tower t)
         {
-            towers.Add(t);
+            
         }
 
         /// <summary>

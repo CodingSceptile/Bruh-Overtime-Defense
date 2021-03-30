@@ -66,14 +66,13 @@ namespace Bruh_Overtime_Defense
         {
 
             //Sets an interval in which enemies can spawn
-            if (gameTime.TotalGameTime.TotalSeconds > 0.5)
+            if (gameTime.TotalGameTime.TotalMilliseconds % 500 < 1)
             {
                 //checks if more enemies need to be spawned
                 if (enemyNum < enemies.Count - 1)
                 {
                     enemies[enemyNum].X = startX;
                     enemies[enemyNum].Y = startY;
-                    gameTime.TotalGameTime = TimeSpan.Zero;
                     enemies[enemyNum].IsDead = false;
                     enemyNum++;
                 }           
