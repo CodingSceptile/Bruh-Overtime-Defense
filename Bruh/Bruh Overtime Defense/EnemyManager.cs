@@ -69,7 +69,7 @@ namespace Bruh_Overtime_Defense
             if (gameTime.TotalGameTime.TotalMilliseconds % 500 < 1)
             {
                 //checks if more enemies need to be spawned
-                if (enemyNum < enemies.Count - 1)
+                if (enemyNum < enemies.Count)
                 {
                     enemies[enemyNum].X = startX;
                     enemies[enemyNum].Y = startY;
@@ -85,6 +85,12 @@ namespace Bruh_Overtime_Defense
                         enemies[i].X, enemies[i].Y,
                         enemies[i].Position.Width, enemies[i].Position.Height);
             }
+        }
+
+        public void ResetEnemies()
+        {
+            enemies.Clear();
+            enemyNum = 0;         
         }
     }
 }

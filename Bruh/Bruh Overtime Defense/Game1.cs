@@ -405,26 +405,13 @@ namespace Bruh_Overtime_Defense
             //if the player is on the map select screen
             else if(gState == GameState.MapSelect)
             {
-                Reset();
-
-                //Creates new enemies to be displayed
-                //on the screen
-                for (int i = 0; i < 20; i++)
-                {
-                    enemies.Add(new Enemy(
-                    enemyTex,
-                    1,
-                    3,
-                    collisions.StartPosition));
-
-                }
 
                 //check to see which map button they pressed
                 if (mapSelectButton1.Clicked(mState, prevMState))
                 {
-                    
-                    gState = GameState.Gameplay;
-                   
+                    Reset();
+
+                    gState = GameState.Gameplay;                  
                 }
             }
             //if the player is in gameplay
@@ -440,7 +427,9 @@ namespace Bruh_Overtime_Defense
                         enemies[i].Y += (int)enemies[i].Movement.Y;
                     }                                     
                 }
+
                 TakeDamage();
+
                 if(health <= 0)
                 {
                     gState = GameState.GameOver;
@@ -515,6 +504,7 @@ namespace Bruh_Overtime_Defense
                 //if they hit enter or space
                 if (SingleKeyPress(Keys.Enter) || SingleKeyPress(Keys.Space))
                 {
+                  
                     //return to the map select screen
                     gState = GameState.MapSelect;
                 }
@@ -556,7 +546,7 @@ namespace Bruh_Overtime_Defense
                     //reduce the player's health by one and kill the enemy to prevent repetition
                     health--;
                     enemies[i].IsDead = true;
-                    enemies.Remove(enemies[i]);
+
                     i--;
                 }
             }
@@ -579,7 +569,18 @@ namespace Bruh_Overtime_Defense
 
             //enemies and towers
             towers.Clear();
-            enemies.Clear();
+            enMan.ResetEnemies();
+
+            //Creates new enemies to be displayed
+            //on the screen
+            for (int i = 0; i < 20; i++)
+            {
+                enemies.Add(new Enemy(
+                enemyTex,
+                1,
+                3,
+                collisions.StartPosition));
+            }
         }
     }
 }
