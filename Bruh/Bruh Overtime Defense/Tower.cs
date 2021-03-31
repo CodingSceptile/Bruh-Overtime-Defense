@@ -115,7 +115,7 @@ namespace Bruh_Overtime_Defense
         {
             this.radius = radius;
             this.initialCost = initialCost;
-            originalSalary = (initialCost / 5);
+            originalSalary = initialCost;
             salary = originalSalary;
             this.activitySpeed = activitySpeed;
         }
