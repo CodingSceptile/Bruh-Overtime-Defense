@@ -115,7 +115,7 @@ namespace Bruh_Overtime_Defense
         {
             this.radius = radius;
             this.initialCost = initialCost;
-            originalSalary = (initialCost / 5);
+            originalSalary = initialCost;
             salary = originalSalary;
             this.activitySpeed = activitySpeed;
         }
@@ -152,7 +152,7 @@ namespace Bruh_Overtime_Defense
             //I could make it subtract raw, but in this model, all towers 
             //have to be paid at equal times. Could make it so that the expensive
             //ones could be paid less often but we'll see
-            salary -= (int)(salary / 5); //5 is arbitrary
+            salary -= (int)(originalSalary / 5); //5 is arbitrary
 
             if (salary <= 0)
             {

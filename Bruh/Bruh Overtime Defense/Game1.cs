@@ -312,9 +312,11 @@ namespace Bruh_Overtime_Defense
 
                     if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 2000 < 1)
                     {
-                        foreach (Tower t in towers)
+                        for(int i = 0; i < towers.Count; i++)
                         {
-                            gainMoney = towerManager.Shoot(t, enemies);
+                            gainMoney = towerManager.Shoot(towers[i], enemies);
+
+                            towerManager.Resignations(towers, enemies, enemyTex, collisions.StartPosition);
                            
                             if (gainMoney == true)
                             {
