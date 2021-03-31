@@ -157,20 +157,8 @@ namespace Bruh_Overtime_Defense
             //towers
             towers = new List<Tower>();
             towerManager = new TowerManager(towers);
-
-            //Creates new enemies to be displayed
-            //on the screen
-            for (int i = 0; i < 20; i++)
-            {
-                enemies.Add(new Enemy(
-                enemyTex,
-                1,
-                3,
-                collisions.StartPosition));
-                
-            }
             
-        _graphics.ApplyChanges();
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -418,6 +406,18 @@ namespace Bruh_Overtime_Defense
             else if(gState == GameState.MapSelect)
             {
                 Reset();
+
+                //Creates new enemies to be displayed
+                //on the screen
+                for (int i = 0; i < 20; i++)
+                {
+                    enemies.Add(new Enemy(
+                    enemyTex,
+                    1,
+                    3,
+                    collisions.StartPosition));
+
+                }
 
                 //check to see which map button they pressed
                 if (mapSelectButton1.Clicked(mState, prevMState))
