@@ -311,6 +311,8 @@ namespace Bruh_Overtime_Defense
                         {
                             gainMoney =
                                 towerManager.Shoot(t, enemies);
+
+                            towerManager.Resignations();
                            
                             if (gainMoney == true)
                             {
