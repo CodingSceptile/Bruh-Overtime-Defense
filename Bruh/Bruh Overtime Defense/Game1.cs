@@ -76,20 +76,21 @@ namespace Bruh_Overtime_Defense
         private EnemyManager enMan;
         private List<Enemy> enemies;
 
-        //tower manager
+        //Towers
         private List<Tower> towers;
         private TowerManager towerManager;
-
-        //misc
         private Towers selectedTower;
         private Texture2D towerMenuSprite;
         private Rectangle towerMenuPos;
         private bool openTowerMenu;
         private bool placeTower;
+
+        //misc
         private Random random;
         private int totalMoney;
         private bool gainMoney;
         int numShoots;
+        int health;
 
         public Game1()
         {
@@ -149,6 +150,7 @@ namespace Bruh_Overtime_Defense
             totalMoney = 100;
             gainMoney = false;
             numShoots = 0;
+            health = 10;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
@@ -309,8 +311,7 @@ namespace Bruh_Overtime_Defense
                     {
                         foreach (Tower t in towers)
                         {
-                            gainMoney =
-                                towerManager.Shoot(t, enemies);
+                            gainMoney = towerManager.Shoot(t, enemies);
                            
                             if (gainMoney == true)
                             {
@@ -330,9 +331,12 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial16, "Money: $" + totalMoney, 
                         new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 8), 0), 
                         Color.White);
+                    _spriteBatch.DrawString(arial16, "Health: " + health,
+                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 11), 0),
+                        Color.White);
 
                     //draw the towers
-                    for(int i = 0; i < towers.Count; i++)
+                    for (int i = 0; i < towers.Count; i++)
                     {
                         towers[i].Draw(_spriteBatch);
                     }
@@ -410,6 +414,7 @@ namespace Bruh_Overtime_Defense
                 //check to see which map button they pressed
                 if(mapSelectButton1.Clicked(mState, prevMState))
                 {
+                    Reset();
                     gState = GameState.Gameplay;
                 }
             }
@@ -426,6 +431,11 @@ namespace Bruh_Overtime_Defense
                         enemies[i].X += (int)enemies[i].Movement.X;
                         enemies[i].Y += (int)enemies[i].Movement.Y;
                     }                                     
+                }
+                TakeDamage();
+                if(health <= 0)
+                {
+                    gState = GameState.GameOver;
                 }
 
 
@@ -522,6 +532,43 @@ namespace Bruh_Overtime_Defense
                 //return false
                 return false;
             }
+        }
+
+        /// <summary>
+        /// takes damage for the player and kills enemies that are off the map
+        /// </summary>
+        public void TakeDamage()
+        {
+            //for each enemy
+            foreach(Enemy e in enemies)
+            {
+                //if the enemy is alive and off the map
+                if(e.IsDead == false && e.X > _graphics.PreferredBackBufferWidth)
+                {
+                    //reduce the player's health by one and kill the enemy to prevent repetition
+                    health--;
+                    e.IsDead = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// resets all variables for a new game
+        /// (such as when the player returns to the map select)
+        /// </summary>
+        public void Reset()
+        {
+            //game variables
+            selectedTower = Towers.None;
+            openTowerMenu = false;
+            placeTower = false;
+            totalMoney = 100;
+            gainMoney = false;
+            numShoots = 0;
+            health = 10;
+
+            //enemies and towers
+            towers.Clear();
         }
     }
 }
