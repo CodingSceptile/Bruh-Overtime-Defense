@@ -36,13 +36,14 @@ namespace Bruh_Overtime_Defense
         /// The towers that resign are removed.
         /// </summary>
         /// <returns>True if it's resigning, false if not.</returns>
-        public void Resignations(List<Tower> towers)
+        public void Resignations(List<Tower> towers, List<Enemy> enemies, Texture2D enemyTexture, Rectangle startPos)
         {
             for(int i = 0; i < towers.Count; i++)
             {
                 if(towers[i].Resignation())
                 {
                     towers.Remove(towers[i]);
+                    enemies.Add(new Enemy(enemyTexture, 1, 3, startPos));
                 }
             }
         }

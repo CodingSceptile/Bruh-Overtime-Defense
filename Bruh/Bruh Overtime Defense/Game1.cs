@@ -312,7 +312,7 @@ namespace Bruh_Overtime_Defense
                         {
                             gainMoney = towerManager.Shoot(towers[i], enemies);
 
-                            towerManager.Resignations(towers);
+                            towerManager.Resignations(towers, enemies, enemyTex, collisions.StartPosition);
                            
                             if (gainMoney == true)
                             {
