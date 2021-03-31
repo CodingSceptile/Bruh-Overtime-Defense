@@ -394,14 +394,27 @@ namespace Bruh_Overtime_Defense
             //if the player is in gameplay
             else if(gState == GameState.Gameplay)
             {
+                
+
                 for (int i = 0; i < enemies.Count; i++)
                 {
+                    
                     collisions.ChangeEnemyDirection(enemies[i]);
                     enemies[i].X += (int)enemies[i].Movement.X;
                     enemies[i].Y += (int)enemies[i].Movement.Y;
                     enemies[i].Position = new Rectangle(
                         enemies[i].X, enemies[i].Y,
                         enemies[i].Position.Width, enemies[i].Position.Height);
+                    //sends to game over, but does not allow for a reset
+                    if (enemies[i].Position.X > _graphics.PreferredBackBufferWidth)
+                    {
+                        for (int j = 0; j < enemies.Count; j++)
+                        {
+                            enemies[j].Position = collisions.StartPosition;
+                        }
+
+                        gState = GameState.GameOver;
+                    }
                 }
 
 
@@ -412,7 +425,7 @@ namespace Bruh_Overtime_Defense
                     placeTower = true;
                 }
 
-                //if the player hits escape
+                //if the player hits left or right control
                 if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
                 {
                     //return to gameplay
@@ -452,6 +465,7 @@ namespace Bruh_Overtime_Defense
                 }
 
                 
+
             }
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
