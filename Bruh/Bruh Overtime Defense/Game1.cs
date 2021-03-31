@@ -89,7 +89,6 @@ namespace Bruh_Overtime_Defense
         private Random random;
         private int totalMoney;
         private bool gainMoney;
-        int numShoots;
         int health;
 
         public Game1()
@@ -149,7 +148,6 @@ namespace Bruh_Overtime_Defense
             placeTower = false;
             totalMoney = 100;
             gainMoney = false;
-            numShoots = 0;
             health = 10;
 
             //Enemies, and enemy manager
@@ -160,7 +158,19 @@ namespace Bruh_Overtime_Defense
             towers = new List<Tower>();
             towerManager = new TowerManager(towers);
 
-            _graphics.ApplyChanges();
+            //Creates new enemies to be displayed
+            //on the screen
+            for (int i = 0; i < 20; i++)
+            {
+                enemies.Add(new Enemy(
+                enemyTex,
+                1,
+                3,
+                collisions.StartPosition));
+                
+            }
+            
+        _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -208,16 +218,7 @@ namespace Bruh_Overtime_Defense
             //Bruh enemy texture
             enemyTex = Content.Load<Texture2D>("bruh");
 
-            //Creates new enemies to be displayed
-            //on the screen
-            for(int i = 0; i < 20; i++)
-            {
-                enemies.Add(new Enemy(
-                enemyTex,
-                1,
-                3,
-                collisions.StartPosition));
-            }          
+            
         }
 
         /// <summary>
@@ -228,6 +229,7 @@ namespace Bruh_Overtime_Defense
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+          
 
             //get the current MouseState and KeyboardState (first thing to be done)
             mState = Mouse.GetState();
@@ -267,6 +269,7 @@ namespace Bruh_Overtime_Defense
                     mapSelectButton1.Draw(_spriteBatch, mState);
                     break;
                 case GameState.Gameplay:
+
                     //draws the map
                     //Manages the tiles locations and sizes
                     for (int i = 0; i < level.Width; i++)
@@ -398,8 +401,9 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void FiniteStateMachine()
         {
+
             //if the player is on the title screen
-            if(gState == GameState.TitleScreen)
+            if (gState == GameState.TitleScreen)
             {
                 //if the player hits enter or space
                 if(SingleKeyPress(Keys.Enter) || SingleKeyPress(Keys.Space))
@@ -411,17 +415,19 @@ namespace Bruh_Overtime_Defense
             //if the player is on the map select screen
             else if(gState == GameState.MapSelect)
             {
+                Reset();
+
                 //check to see which map button they pressed
-                if(mapSelectButton1.Clicked(mState, prevMState))
+                if (mapSelectButton1.Clicked(mState, prevMState))
                 {
-                    Reset();
+                    
                     gState = GameState.Gameplay;
+                   
                 }
             }
             //if the player is in gameplay
             else if(gState == GameState.Gameplay)
             {
-                
 
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -540,16 +546,19 @@ namespace Bruh_Overtime_Defense
         public void TakeDamage()
         {
             //for each enemy
-            foreach(Enemy e in enemies)
+            for(int i = 0; i < enemies.Count; i++)
             {
                 //if the enemy is alive and off the map
-                if(e.IsDead == false && e.X > _graphics.PreferredBackBufferWidth)
+                if(enemies[i].IsDead == false && enemies[i].X > _graphics.PreferredBackBufferWidth)
                 {
                     //reduce the player's health by one and kill the enemy to prevent repetition
                     health--;
-                    e.IsDead = true;
+                    enemies[i].IsDead = true;
+                    enemies.Remove(enemies[i]);
+                    i--;
                 }
             }
+           
         }
 
         /// <summary>
@@ -564,11 +573,11 @@ namespace Bruh_Overtime_Defense
             placeTower = false;
             totalMoney = 100;
             gainMoney = false;
-            numShoots = 0;
             health = 10;
 
             //enemies and towers
             towers.Clear();
+            enemies.Clear();
         }
     }
 }
