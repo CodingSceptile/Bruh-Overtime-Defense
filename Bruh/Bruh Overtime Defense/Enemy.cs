@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bruh_Overtime_Defense
 {
+    //HEADER===============================
+    //Name: Caleb Jeon
+    //Purpose: Creates Enemy objects that
+    //can be stopped with tower objects
+    //=====================================
+
     class Enemy : GameObject
     {
         private int health;

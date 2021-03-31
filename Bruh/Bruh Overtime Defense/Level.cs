@@ -8,6 +8,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bruh_Overtime_Defense
 {
+    //Name: Sami Chamberlain
+    //Date: 3/31/2021
+    //Purpose: Establishes all of the components of a level, 
+    //which is derived from an external file.
+
     class Level
     {
         //fields
@@ -74,32 +79,43 @@ namespace Bruh_Overtime_Defense
                   {
                       string textureCode = reader.ReadString();
 
+                        //Checks for Vector2/beginning tile indicators
                         if (textureCode.Contains('>') || textureCode == "begin_tile")
                         {
+                            //add a transparent tile
                             codes.Add("default-min");
                             
+                            //Vector that focuses on +x
                             if(textureCode == "<1, 0>")
                             {
                                 motionChange.Add(
                                     new Vector2(1, 0));                              
 
                             }
+
+                            //Vector that focuses on +y
                             else if(textureCode == "<0, 1>")
                             {
                                 motionChange.Add(
                                     new Vector2(0, 1));
                             }
+
+                            //Vector that focuses on -x
                             else if (textureCode == "<-1, 0>")
                             {
                                 motionChange.Add(
                                     new Vector2(-1, 0));
                             }
+
+                            //Vector that focuses on -y
                             else if (textureCode == "<0, -1>")
                             {
                                 motionChange.Add(
                                     new Vector2(0, -1));
                             }
 
+                            //Adds the location of the interactible
+                            //level component to another list
                             locations.Add(
                                     new Rectangle
                                     (new Point(((j * width) * 2) + width / 2,
@@ -108,14 +124,15 @@ namespace Bruh_Overtime_Defense
                         }
                         else
                         {
+                            //No vector data detected, 
+                            //simply add a level tile id to a list
                             codes.Add(textureCode);
                         }                                                                
                   }
               }
-
-                return codes;
-                
+                return codes;                
             }
+
             finally
             {
                 if (stream != null)
@@ -155,6 +172,7 @@ namespace Bruh_Overtime_Defense
 
         /// <summary>
         /// the side length in tiles
+        /// (UNUSED CURRENTLY)
         /// </summary>
         public int SideLength
         {

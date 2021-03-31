@@ -4,6 +4,12 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 
+//Names: Sami Chamberlain, Mukund Suresh,
+//Caleb Jeon, London Emmerich
+//Date: 3/31/2021
+//Purpose: Establishes game components, and controls
+//the logic present in the game
+
 namespace Bruh_Overtime_Defense
 {
     /// <summary>

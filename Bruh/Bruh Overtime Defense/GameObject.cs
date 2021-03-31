@@ -7,6 +7,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bruh_Overtime_Defense
 {
+    //HEADER=======================================
+    //Names: Mukund Suresh, London Emmerich, 
+    //Caleb Jeon
+    //Date: 3/31/2021
+    //Purpose: Creates the basis of all the objects
+    //used in the game
+    //=============================================
+
     class GameObject
     {
         //fields

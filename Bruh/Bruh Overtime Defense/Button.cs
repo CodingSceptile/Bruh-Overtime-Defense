@@ -7,9 +7,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Bruh_Overtime_Defense
 {
-    /// <summary>
-    /// creates a button that can be hovered over and clicked
-    /// </summary>
+    //HEADER========================================================
+    //Name: London Emmerich
+    //Purpose: creates a button that can be hovered over and clicked
+    //==============================================================
+
     class Button
     {
         //fields
