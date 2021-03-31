@@ -16,10 +16,10 @@ namespace Bruh_Overtime_Defense
         private string mapFile;
         private List<Vector2> motionChange;
         private List<Rectangle> locations;
-        int sideLengthInTiles;
-        int sideLengthInPixels;
-        int width;
-        int height;
+        private int sideLengthInTiles;
+        private int sideLengthInPixels;
+        private int width;
+        private int height;
 
         /// <summary>
         /// Constructor

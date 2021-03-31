@@ -88,6 +88,8 @@ namespace Bruh_Overtime_Defense
         private bool placeTower;
         private Random random;
         private int totalMoney;
+        private bool gainMoney;
+        int numShoots;
 
         public Game1()
         {
@@ -145,10 +147,12 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             placeTower = false;
             totalMoney = 100;
+            gainMoney = false;
+            numShoots = 0;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
-            enMan = new EnemyManager(enemies);
+            enMan = new EnemyManager(enemies, collisions.StartPosition);
             
             //towers
             towers = new List<Tower>();
@@ -208,7 +212,7 @@ namespace Bruh_Overtime_Defense
             {
                 enemies.Add(new Enemy(
                 enemyTex,
-                5,
+                1,
                 3,
                 collisions.StartPosition));
             }          
@@ -253,8 +257,8 @@ namespace Bruh_Overtime_Defense
             switch (gState)
             {
                 case GameState.TitleScreen:
-                    _spriteBatch.DrawString(arial64, "Bruh Tower Defense", new Vector2(0, 300), Color.White);
-                    _spriteBatch.DrawString(arial36, "Press Enter to start", new Vector2(200, 400), Color.White);
+                    _spriteBatch.DrawString(arial64, "Bruh Overtime \n    Defense", new Vector2(125, 250), Color.White);
+                    _spriteBatch.DrawString(arial36, "Press Enter to start", new Vector2(175, 450), Color.White);
                     break;
                 case GameState.MapSelect:
                     _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
@@ -300,7 +304,25 @@ namespace Bruh_Overtime_Defense
 
                         }
                     }
+
+                    if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 2000 < 1)
+                    {
+                        foreach (Tower t in towers)
+                        {
+                            gainMoney =
+                                towerManager.Shoot(t, enemies);
+                           
+                            if (gainMoney == true)
+                            {
+                                totalMoney++;
+                                gainMoney = false;
+                            }
+                        }                        
+                    }
+
+                    enMan.Update(gameTime);
                     enMan.Draw(_spriteBatch);
+
                     //draws buttons
                     towerMenuButton.Draw(_spriteBatch, mState);
                     pauseButton.Draw(_spriteBatch, mState);
@@ -338,7 +360,7 @@ namespace Bruh_Overtime_Defense
                                 //values of tower and temp and default
                                 towers.Add(new Tower(
                                     new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, 20, 20, 20));
+                                    baseTowerButton.DefaultSprite, 80, 20, 20));
                                 totalMoney -= 20;
                                 break;
                         }
@@ -398,23 +420,12 @@ namespace Bruh_Overtime_Defense
 
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    
-                    collisions.ChangeEnemyDirection(enemies[i]);
-                    enemies[i].X += (int)enemies[i].Movement.X;
-                    enemies[i].Y += (int)enemies[i].Movement.Y;
-                    enemies[i].Position = new Rectangle(
-                        enemies[i].X, enemies[i].Y,
-                        enemies[i].Position.Width, enemies[i].Position.Height);
-                    //sends to game over, but does not allow for a reset
-                    if (enemies[i].Position.X > _graphics.PreferredBackBufferWidth)
+                    if(enemies[i].IsDead == false)
                     {
-                        for (int j = 0; j < enemies.Count; j++)
-                        {
-                            enemies[j].Position = collisions.StartPosition;
-                        }
-
-                        gState = GameState.GameOver;
-                    }
+                        collisions.ChangeEnemyDirection(enemies[i]);
+                        enemies[i].X += (int)enemies[i].Movement.X;
+                        enemies[i].Y += (int)enemies[i].Movement.Y;
+                    }                                     
                 }
 
 
@@ -463,9 +474,6 @@ namespace Bruh_Overtime_Defense
                         openTowerMenu = false;
                     }
                 }
-
-                
-
             }
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)

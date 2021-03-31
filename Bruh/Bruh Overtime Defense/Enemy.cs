@@ -69,6 +69,8 @@ namespace Bruh_Overtime_Defense
             this.health = health;
             this.speed = speed;
             this.position = position;
+            this.isDead = true;
+
             if(position.X == 0)
             {
                 this.movement = new Vector2(speed, 0);
