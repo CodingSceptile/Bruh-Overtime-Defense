@@ -325,7 +325,7 @@ namespace Bruh_Overtime_Defense
                            
                             if (gainMoney == true)
                             {
-                                bruhEffect.Play(0.05f, -1, 0);
+                                bruhEffect.Play(0.05f, -0.2f, 0);
                                 totalMoney++;
                                 gainMoney = false;
                             }
