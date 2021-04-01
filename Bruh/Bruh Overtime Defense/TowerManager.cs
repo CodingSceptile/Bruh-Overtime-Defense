@@ -16,7 +16,6 @@ namespace Bruh_Overtime_Defense
         //Fields
         private List<Tower> towers;
 
-
         public TowerManager(List<Tower> towers)
         {
             this.towers = towers;
