@@ -15,6 +15,7 @@ namespace Bruh_Overtime_Defense
 
     class Enemy : GameObject
     {
+        //Fields
         private int health;
         private float speed;
         protected Rectangle position;
@@ -23,6 +24,7 @@ namespace Bruh_Overtime_Defense
         private Vector2 movement;
         private int vectorInteractions;
 
+        //Properties
         public int Health { get { return health; } set { health = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public bool IsDead { get { return isDead; } set { isDead = value; } }
@@ -68,6 +70,13 @@ namespace Bruh_Overtime_Defense
             set { vectorInteractions = value; }      
         }
 
+        /// <summary>
+        /// Constructor that initializes the enemy object.
+        /// </summary>
+        /// <param name="texture">Texture of the enemy</param>
+        /// <param name="health">Health of the enemy</param>
+        /// <param name="speed">Movement speed of the enemy</param>
+        /// <param name="position">Position of the enemy on the map</param>
         public Enemy( Texture2D texture, int health, float speed, Rectangle position)
             : base(position, texture)
         {
