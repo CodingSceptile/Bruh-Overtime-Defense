@@ -117,5 +117,31 @@ namespace Bruh_Overtime_Defense
             enemies.Clear();
             enemyNum = 0;         
         }
+
+        /// <summary>
+        /// Checks whether or not every enemy is currently dead.
+        /// </summary>
+        /// <returns>True - yes, False - no</returns>
+        public bool AllEnemiesDead()
+        {
+            int deadEnemies = 0;
+
+            foreach(Enemy enemy in enemies)
+            {
+                if(enemy.IsDead == true)
+                {
+                    deadEnemies++;
+                }
+            }
+
+            if(deadEnemies == enemies.Count)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

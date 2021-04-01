@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin ../../../../../../Desktop/bruhEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../../../../../Desktop/bruhEffect.wav;bruhEffect.wav
+
 #begin arial10.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

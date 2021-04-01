@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 //Names: Sami Chamberlain, Mukund Suresh,
 //Caleb Jeon, London Emmerich
@@ -74,6 +76,8 @@ namespace Bruh_Overtime_Defense
         private SpriteFont arial36;
         private SpriteFont arial64;
 
+        private SoundEffect bruhEffect;
+
         //Collision Manager
         private CollisionManager collisions;
 
@@ -81,6 +85,8 @@ namespace Bruh_Overtime_Defense
         private Texture2D enemyTex;
         private EnemyManager enMan;
         private List<Enemy> enemies;
+        private float enemySpeed;
+        private int enemyHealth;
 
         //Towers
         private List<Tower> towers;
@@ -206,6 +212,7 @@ namespace Bruh_Overtime_Defense
             nextWaveButton.ActiveSprite = Content.Load<Texture2D>("NextWaveButtonActive");
             baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
             baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
+            bruhEffect = Content.Load<SoundEffect>("bruhEffect");
 
             towerMenuSprite = Content.Load<Texture2D>("towerSelector");
 
@@ -315,11 +322,10 @@ namespace Bruh_Overtime_Defense
                         for(int i = 0; i < towers.Count; i++)
                         {
                             gainMoney = towerManager.Shoot(towers[i], enemies);
-
-                            towerManager.Resignations(towers, enemies, enemyTex, collisions.StartPosition);
                            
                             if (gainMoney == true)
                             {
+                                bruhEffect.Play();
                                 totalMoney++;
                                 gainMoney = false;
                             }
@@ -338,6 +344,13 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial16, "Health: " + health,
                         new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 11), 0),
                         Color.White);
+                    _spriteBatch.DrawString(arial16, "Wave: " + currWave,
+                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 0),
+                        Color.White);
+                    _spriteBatch.DrawString(arial16, "Number of Enemies: " + enemies.Count,
+                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 40),
+                        Color.White);
+
 
                     //draw the towers
                     for (int i = 0; i < towers.Count; i++)
@@ -368,7 +381,7 @@ namespace Bruh_Overtime_Defense
                                 //values of tower and temp and default
                                 towers.Add(new Tower(
                                     new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, 80, 20, 20));
+                                    baseTowerButton.DefaultSprite, 100, 20, 20));
                                 totalMoney -= 20;
                                 break;
                         }
@@ -378,11 +391,13 @@ namespace Bruh_Overtime_Defense
                         selectedTower = Towers.None;
                     }
 
+                    //Only spawns new enemies if a new wave is active
                     if(newWave == true)
                     {
                         enMan.Update(gameTime);
                         enMan.Draw(_spriteBatch);
                     }
+
                     break;
                 case GameState.PauseScreen:
                     _spriteBatch.DrawString(arial64, "Paused",
@@ -497,22 +512,50 @@ namespace Bruh_Overtime_Defense
                         openTowerMenu = false;
                     }
                 }
+
                 if (nextWaveButton.Clicked(mState,prevMState))
                 {
-                    newWave = true;
-                    currWave += 1;
-                    enemies.Clear();
-                    for (int i = 0; i < waveAmont; i++)
+                    if(currWave < 10)
                     {
-                        enemies.Add(new Enemy(
-                        enemyTex,
-                        1,
-                        3,
-                        collisions.StartPosition));
+                        enemySpeed = 3;
+                        enemyHealth = 1;
                     }
-                    waveAmont += 5;
+                    else if(currWave <= 20)
+                    {
+                        enemySpeed = 3.333f;
+                        enemyHealth = 2;                        
+                    }
+                    else
+                    {
+                        enemySpeed = 3.5f;
+                        enemyHealth = 3;
+                    }
+
+                    if(enMan.AllEnemiesDead() == true)
+                    {
+                        newWave = true;
+                        currWave += 1;
+
+                        for (int i = 0; i < waveAmont; i++)
+                        {
+                            enemies.Add(new Enemy(
+                            enemyTex,
+                            enemyHealth,
+                            enemySpeed,
+                            collisions.StartPosition));
+                        }
+
+                        for(int i = 0; i < enemies.Count; i++)
+                        {
+                            enemies[i].Position = collisions.StartPosition;
+                        }
+
+                        towerManager.Resignations(towers, enemies, enemyTex, collisions.StartPosition);
+                        waveAmont += 5;
+                    }                    
                 }
             }
+
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
             {
@@ -604,17 +647,6 @@ namespace Bruh_Overtime_Defense
             //enemies and towers
             towers.Clear();
             enMan.ResetEnemies();
-
-            //Creates new enemies to be displayed
-            //on the screen
-            for (int i = 0; i < 20; i++)
-            {
-                enemies.Add(new Enemy(
-                enemyTex,
-                1,
-                3,
-                collisions.StartPosition));
-            }
         }
     }
 }
