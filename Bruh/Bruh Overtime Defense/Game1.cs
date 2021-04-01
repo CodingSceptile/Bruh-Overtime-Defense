@@ -436,7 +436,6 @@ namespace Bruh_Overtime_Defense
             //if the player is on the map select screen
             else if(gState == GameState.MapSelect)
             {
-
                 //check to see which map button they pressed
                 if (mapSelectButton1.Clicked(mState, prevMState))
                 {

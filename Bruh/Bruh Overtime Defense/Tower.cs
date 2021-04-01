@@ -121,6 +121,11 @@ namespace Bruh_Overtime_Defense
         }
 
         //Methods
+
+        /// <summary>
+        /// Draws a tower to the sreen
+        /// </summary>
+        /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb)
         {
 
