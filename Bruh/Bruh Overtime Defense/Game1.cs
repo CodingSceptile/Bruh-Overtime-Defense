@@ -315,7 +315,7 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
-                    if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 2000 < 1)
+                    if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % random.Next(1, 2001) < 1)
                     {
                         for(int i = 0; i < towers.Count; i++)
                         {
@@ -648,8 +648,7 @@ namespace Bruh_Overtime_Defense
 
                     i--;
                 }
-            }
-           
+            }           
         }
 
         /// <summary>
