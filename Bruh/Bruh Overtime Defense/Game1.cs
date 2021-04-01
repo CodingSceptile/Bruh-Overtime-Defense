@@ -106,6 +106,7 @@ namespace Bruh_Overtime_Defense
         private int waveAmont;
         private int enemyCount;
         int health;
+        TimeSpan timeSpanSincePause;
 
         public Game1()
         {
@@ -582,6 +583,7 @@ namespace Bruh_Overtime_Defense
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
             {
+                timeSpanSincePause = gameTime.TotalGameTime;
                 //if the player hits escape
                 if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
                 {
@@ -591,7 +593,8 @@ namespace Bruh_Overtime_Defense
                 //if the player hits escape
                 else if (SingleKeyPress(Keys.Enter))
                 {
-                    //game over
+                    //back to game play
+                    gameTime.TotalGameTime = timeSpanSincePause;
                     gState = GameState.Gameplay;
                 }
             }

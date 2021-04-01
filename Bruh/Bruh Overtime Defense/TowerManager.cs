@@ -16,6 +16,10 @@ namespace Bruh_Overtime_Defense
         //Fields
         private List<Tower> towers;
 
+        /// <summary>
+        /// Constructor that initializes the tower manager
+        /// </summary>
+        /// <param name="towers">List of towers</param>
         public TowerManager(List<Tower> towers)
         {
             this.towers = towers;
