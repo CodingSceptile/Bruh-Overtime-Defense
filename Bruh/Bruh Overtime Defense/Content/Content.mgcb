@@ -13,11 +13,11 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../../../../Non-programs/Game assets/bruhEffect.wav
+#begin ../../../../../../Desktop/bruhEffect.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:../../../../../Non-programs/Game assets/bruhEffect.wav;bruhEffect.wav
+/build:../../../../../../Desktop/bruhEffect.wav;bruhEffect.wav
 
 #begin arial10.spritefont
 /importer:FontDescriptionImporter

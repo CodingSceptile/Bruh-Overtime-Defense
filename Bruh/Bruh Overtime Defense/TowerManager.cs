@@ -36,7 +36,8 @@ namespace Bruh_Overtime_Defense
         /// The towers that resign are removed.
         /// </summary>
         /// <returns>True if it's resigning, false if not.</returns>
-        public void Resignations(List<Tower> towers, List<Enemy> enemies, Texture2D enemyTexture, Rectangle startPos)
+        public void Resignations(List<Tower> towers, List<Enemy> enemies,
+            Texture2D enemyTexture, Rectangle startPos)
         {
             for(int i = 0; i < towers.Count; i++)
             {
@@ -62,15 +63,10 @@ namespace Bruh_Overtime_Defense
                 if (Distance(t.Position, e.Position) <= t.Radius)
                 {
                     e.Health -= 1;
-                    if(e.Health <= 0)
+                    if(e.Health == 0)
                     {
                         e.IsDead = true;
-                        enemies.Remove(e);
                         return true;
-                    }
-                    else
-                    {
-                        return false;
                     }                   
                 }
             }

@@ -104,6 +104,7 @@ namespace Bruh_Overtime_Defense
         private bool newWave;
         private int currWave;
         private int waveAmont;
+        private int enemyCount;
         int health;
 
         public Game1()
@@ -166,11 +167,12 @@ namespace Bruh_Overtime_Defense
             health = 10;
             newWave = false;
             currWave = 0;
-            waveAmont = 20;
+            waveAmont = 0;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
             enMan = new EnemyManager(enemies, collisions.StartPosition);
+            enemyCount = 0;
             
             //towers
             towers = new List<Tower>();
@@ -283,7 +285,6 @@ namespace Bruh_Overtime_Defense
                     {
                         for (int j = 0; j < level.Height; j++)
                         {
-
                             //gets the textures for each collumn,
                             //draws each with an equal widths and heights, 
                             //as well as locates them depending on the individual widths
@@ -293,8 +294,7 @@ namespace Bruh_Overtime_Defense
                             level.Draw(_spriteBatch, textures[(i * level.Width) + j],
                             new Rectangle(
                                 new Point(tileWidth * j, tileHeight * i),
-                                new Point(tileWidth, tileHeight)));
-                        
+                                new Point(tileWidth, tileHeight)));                        
                         }
                     }
 
@@ -302,7 +302,6 @@ namespace Bruh_Overtime_Defense
                     {
                         for (int j = 0; j < level.Height; j++)
                         {
-
                             //gets the textures for each collumn,
                             //draws each with an equal widths and heights, 
                             //as well as locates them depending on the individual widths
@@ -313,7 +312,6 @@ namespace Bruh_Overtime_Defense
                             new Rectangle(
                                 new Point(tileWidth * j, (tileHeight * (i - level.Width))),
                                 new Point(tileWidth, tileHeight)));
-
                         }
                     }
 
@@ -325,8 +323,9 @@ namespace Bruh_Overtime_Defense
                            
                             if (gainMoney == true)
                             {
-                                bruhEffect.Play(0.05f, -1, 0);
+                                bruhEffect.Play(0.01f, -0.1f, 0);
                                 totalMoney++;
+                                enemyCount--;
                                 gainMoney = false;
                             }
                         }                        
@@ -347,7 +346,7 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial16, "Wave: " + currWave,
                         new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 0),
                         Color.White);
-                    _spriteBatch.DrawString(arial16, "Number of Enemies: " + enemies.Count,
+                    _spriteBatch.DrawString(arial16, "Number of Enemies: " + enemyCount,
                         new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 40),
                         Color.White);
 
@@ -449,6 +448,7 @@ namespace Bruh_Overtime_Defense
             else if(gState == GameState.Gameplay)
             {
 
+                //Check for changes in movement
                 for (int i = 0; i < enemies.Count; i++)
                 {
                     if (enemies[i].IsDead == false)
@@ -459,8 +459,10 @@ namespace Bruh_Overtime_Defense
                     }
                 }
 
+                //Checks if the user needs to take damage
                 TakeDamage();
 
+                //No more health left! Game over!
                 if(health <= 0)
                 {
                     gState = GameState.GameOver;
@@ -513,29 +515,52 @@ namespace Bruh_Overtime_Defense
                     }
                 }
 
+                //Next wave button clicked
                 if (nextWaveButton.Clicked(mState,prevMState))
                 {
-                    if(currWave < 10)
+                    //Checks for the current wave, and how that
+                    //affects the enemies
+
+                    //easy enemies, only require one hit
+                    //to kill. normal speed
+                    if(currWave < 10 && currWave != 10)
                     {
                         enemySpeed = 3;
                         enemyHealth = 1;
                     }
+
+                    //normal enemies, require 3 hits to kill
+                    //and have a slightly elevated speed
                     else if(currWave <= 20)
                     {
-                        enemySpeed = 3.333f;
-                        enemyHealth = 2;                        
-                    }
-                    else
-                    {
-                        enemySpeed = 3.5f;
-                        enemyHealth = 3;
+                        enemySpeed = 4;
+                        enemyHealth = 3;                        
                     }
 
+                    //hard enemies, require 4 hits to kill,
+                    //have a very fast speed
+                    else
+                    {
+                        enemySpeed = 5;
+                        enemyHealth = 4;
+                    }
+
+                    //checks if all the enemies in the enemies
+                    //list are dead
                     if(enMan.AllEnemiesDead() == true)
                     {
                         newWave = true;
+                        //increment the wave
                         currWave += 1;
+                        //reset the enemy list
+                        enMan.ResetEnemies();
 
+                        //check for resignations (which
+                        //adds an enemy to the list)
+                        towerManager.Resignations(towers,
+                            enemies, enemyTex, collisions.StartPosition);
+                          
+                        //adds new enemies to the list
                         for (int i = 0; i < waveAmont; i++)
                         {
                             enemies.Add(new Enemy(
@@ -545,13 +570,12 @@ namespace Bruh_Overtime_Defense
                             collisions.StartPosition));
                         }
 
-                        for(int i = 0; i < enemies.Count; i++)
-                        {
-                            enemies[i].Position = collisions.StartPosition;
-                        }
-
-                        towerManager.Resignations(towers, enemies, enemyTex, collisions.StartPosition);
-                        waveAmont += 5;
+                        //changes the display to the current
+                        //amount of enemies in the list
+                        enemyCount = enemies.Count;
+                        //increments the # of enemies
+                        //for next time
+                        waveAmont += 5;                    
                     }                    
                 }
             }
@@ -619,6 +643,7 @@ namespace Bruh_Overtime_Defense
                 {
                     //reduce the player's health by one and kill the enemy to prevent repetition
                     health--;
+                    enemyCount--;
                     enemies[i].IsDead = true;
 
                     i--;
@@ -639,8 +664,8 @@ namespace Bruh_Overtime_Defense
             placeTower = false;
             totalMoney = 100;
             gainMoney = false;
-            health = 10;
-            waveAmont = 20;
+            health = 9999;
+            waveAmont = 5;
             newWave = false;
             currWave = 0;
 
