@@ -323,7 +323,7 @@ namespace Bruh_Overtime_Defense
                            
                             if (gainMoney == true)
                             {
-                                bruhEffect.Play(0.01f, -0.1f, 0);
+                                bruhEffect.Play(0.005f, -0.05f, 0);
                                 totalMoney++;
                                 enemyCount--;
                                 gainMoney = false;

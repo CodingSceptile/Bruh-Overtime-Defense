@@ -62,6 +62,11 @@ namespace Bruh_Overtime_Defense
             {
                 if (Distance(t.Position, e.Position) <= t.Radius)
                 {
+                    if(e.IsDead == true)
+                    {
+                        continue;
+                    }
+
                     e.Health -= 1;
                     if(e.Health == 0)
                     {
