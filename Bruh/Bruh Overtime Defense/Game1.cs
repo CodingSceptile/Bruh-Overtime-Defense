@@ -106,6 +106,7 @@ namespace Bruh_Overtime_Defense
         private int waveAmont;
         private int enemyCount;
         int health;
+        TimeSpan timeSpanSincePause;
 
         public Game1()
         {
@@ -245,7 +246,7 @@ namespace Bruh_Overtime_Defense
             kState = Keyboard.GetState();
 
             //check the game state and see if it needs to be moved
-            FiniteStateMachine();
+            FiniteStateMachine(gameTime);
 
             //make the current state the previous state (last thing to be done)
             prevMState = mState;
@@ -419,7 +420,7 @@ namespace Bruh_Overtime_Defense
         /// <summary>
         /// the FSM for the game, to be called during Update()
         /// </summary>
-        public void FiniteStateMachine()
+        public void FiniteStateMachine(GameTime gameTime)
         {
 
             //if the player is on the title screen
@@ -583,6 +584,7 @@ namespace Bruh_Overtime_Defense
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
             {
+                timeSpanSincePause = gameTime.TotalGameTime;
                 //if the player hits escape
                 if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
                 {
@@ -592,7 +594,8 @@ namespace Bruh_Overtime_Defense
                 //if the player hits escape
                 else if (SingleKeyPress(Keys.Enter))
                 {
-                    //game over
+                    //back to game play
+                    gameTime.TotalGameTime = timeSpanSincePause;
                     gState = GameState.Gameplay;
                 }
             }
