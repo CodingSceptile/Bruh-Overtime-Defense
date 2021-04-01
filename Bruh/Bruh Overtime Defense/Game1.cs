@@ -95,6 +95,9 @@ namespace Bruh_Overtime_Defense
         private Random random;
         private int totalMoney;
         private bool gainMoney;
+        private bool newWave;
+        private int currWave;
+        private int waveAmont;
         int health;
 
         public Game1()
@@ -155,6 +158,9 @@ namespace Bruh_Overtime_Defense
             totalMoney = 100;
             gainMoney = false;
             health = 10;
+            newWave = false;
+            currWave = 0;
+            waveAmont = 20;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
@@ -320,8 +326,7 @@ namespace Bruh_Overtime_Defense
                         }                        
                     }
 
-                    enMan.Update(gameTime);
-                    enMan.Draw(_spriteBatch);
+                    
 
                     //draws buttons
                     towerMenuButton.Draw(_spriteBatch, mState);
@@ -373,6 +378,11 @@ namespace Bruh_Overtime_Defense
                         selectedTower = Towers.None;
                     }
 
+                    if(newWave == true)
+                    {
+                        enMan.Update(gameTime);
+                        enMan.Draw(_spriteBatch);
+                    }
                     break;
                 case GameState.PauseScreen:
                     _spriteBatch.DrawString(arial64, "Paused",
@@ -426,12 +436,12 @@ namespace Bruh_Overtime_Defense
 
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    if(enemies[i].IsDead == false)
+                    if (enemies[i].IsDead == false)
                     {
                         collisions.ChangeEnemyDirection(enemies[i]);
                         enemies[i].X += (int)enemies[i].Movement.X;
                         enemies[i].Y += (int)enemies[i].Movement.Y;
-                    }                                     
+                    }
                 }
 
                 TakeDamage();
@@ -486,6 +496,21 @@ namespace Bruh_Overtime_Defense
                         selectedTower = Towers.BaseTower;
                         openTowerMenu = false;
                     }
+                }
+                if (nextWaveButton.Clicked(mState,prevMState))
+                {
+                    newWave = true;
+                    currWave += 1;
+                    enemies.Clear();
+                    for (int i = 0; i < waveAmont; i++)
+                    {
+                        enemies.Add(new Enemy(
+                        enemyTex,
+                        1,
+                        3,
+                        collisions.StartPosition));
+                    }
+                    waveAmont += 5;
                 }
             }
             //if the player is on the pause screen
@@ -572,6 +597,9 @@ namespace Bruh_Overtime_Defense
             totalMoney = 100;
             gainMoney = false;
             health = 10;
+            waveAmont = 20;
+            newWave = false;
+            currWave = 0;
 
             //enemies and towers
             towers.Clear();
