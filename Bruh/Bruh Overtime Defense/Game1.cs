@@ -108,7 +108,6 @@ namespace Bruh_Overtime_Defense
         private int enemyCount;
         int health;
         private TimeSpan timeSpanSincePause;
-        private double timeForSpawn;
 
         public Game1()
         {
@@ -172,7 +171,6 @@ namespace Bruh_Overtime_Defense
             currWave = 0;
             waveAmont = 0;
             isActive = true;
-            timeForSpawn = 500;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
@@ -399,7 +397,7 @@ namespace Bruh_Overtime_Defense
                     //Only spawns new enemies if a new wave is active
                     if(newWave == true)
                     {
-                        enMan.Update(gameTime, timeForSpawn);
+                        enMan.Update(gameTime);
                         enMan.Draw(_spriteBatch);
                     }
 
@@ -581,7 +579,6 @@ namespace Bruh_Overtime_Defense
                         //increments the # of enemies
                         //for next time
                         waveAmont += 5;
-                        timeForSpawn *= 0.95;
                     }                    
                 }
             }
