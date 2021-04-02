@@ -70,7 +70,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     e.Health -= 1;
-                    if(e.Health == 0)
+                    if(e.Health <= 0)
                     {
                         e.IsDead = true;
                         return true;

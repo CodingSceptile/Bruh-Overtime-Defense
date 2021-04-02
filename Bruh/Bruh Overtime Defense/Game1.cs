@@ -69,6 +69,7 @@ namespace Bruh_Overtime_Defense
         private Button pauseButton;
         private Button nextWaveButton;
         private Button baseTowerButton;
+        private bool isActive;
 
         //SpriteFonts
         private SpriteFont arial10;
@@ -106,7 +107,8 @@ namespace Bruh_Overtime_Defense
         private int waveAmont;
         private int enemyCount;
         int health;
-        TimeSpan timeSpanSincePause;
+        private TimeSpan timeSpanSincePause;
+        private double timeForSpawn;
 
         public Game1()
         {
@@ -169,6 +171,8 @@ namespace Bruh_Overtime_Defense
             newWave = false;
             currWave = 0;
             waveAmont = 0;
+            isActive = true;
+            timeForSpawn = 500;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
@@ -316,7 +320,8 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
-                    if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 1500 < 1)
+                    if (towers.Count > 0 &&
+                        gameTime.TotalGameTime.Milliseconds % random.Next(500, 4001) < 1)
                     {
                         for(int i = 0; i < towers.Count; i++)
                         {
@@ -394,7 +399,7 @@ namespace Bruh_Overtime_Defense
                     //Only spawns new enemies if a new wave is active
                     if(newWave == true)
                     {
-                        enMan.Update(gameTime);
+                        enMan.Update(gameTime, timeForSpawn);
                         enMan.Draw(_spriteBatch);
                     }
 
@@ -518,6 +523,7 @@ namespace Bruh_Overtime_Defense
                 //Next wave button clicked
                 if (nextWaveButton.Clicked(mState,prevMState))
                 {
+                   
                     //Checks for the current wave, and how that
                     //affects the enemies
                     //easy enemies, only require one hit
@@ -546,7 +552,7 @@ namespace Bruh_Overtime_Defense
 
                     //checks if all the enemies in the enemies
                     //list are dead
-                    if(enMan.AllEnemiesDead() == true)
+                    if(enMan.AllEnemiesDead())
                     {
                         newWave = true;
                         //increment the wave
@@ -567,11 +573,6 @@ namespace Bruh_Overtime_Defense
                             enemyHealth,
                             enemySpeed,
                             collisions.StartPosition));
-
-                            if(i == 0)
-                            {
-                                enemies[i].IsDead = false;
-                            }
                         }
                         
                         //changes the display to the current
@@ -579,7 +580,8 @@ namespace Bruh_Overtime_Defense
                         enemyCount = enemies.Count;
                         //increments the # of enemies
                         //for next time
-                        waveAmont += 5;                    
+                        waveAmont += 5;
+                        timeForSpawn *= 0.95;
                     }                    
                 }
             }
