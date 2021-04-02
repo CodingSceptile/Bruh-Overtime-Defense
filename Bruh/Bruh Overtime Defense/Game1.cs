@@ -520,7 +520,6 @@ namespace Bruh_Overtime_Defense
                 {
                     //Checks for the current wave, and how that
                     //affects the enemies
-
                     //easy enemies, only require one hit
                     //to kill. normal speed
                     if(currWave < 10 && currWave != 10)
@@ -568,8 +567,13 @@ namespace Bruh_Overtime_Defense
                             enemyHealth,
                             enemySpeed,
                             collisions.StartPosition));
-                        }
 
+                            if(i == 0)
+                            {
+                                enemies[i].IsDead = false;
+                            }
+                        }
+                        
                         //changes the display to the current
                         //amount of enemies in the list
                         enemyCount = enemies.Count;
