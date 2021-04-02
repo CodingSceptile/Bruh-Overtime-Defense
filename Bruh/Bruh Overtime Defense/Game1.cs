@@ -316,7 +316,7 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
-                    if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % random.Next(1, 2001) < 1)
+                    if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 1500 < 1)
                     {
                         for(int i = 0; i < towers.Count; i++)
                         {

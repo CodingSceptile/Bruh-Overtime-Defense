@@ -48,7 +48,6 @@ namespace Bruh_Overtime_Defense
                 {
                     towers.Remove(towers[i]);
                     Enemy newEnemy = new Enemy(enemyTexture, 1, 3, startPos);
-                    newEnemy.IsDead = true;
                     enemies.Add(newEnemy);
                 }
             }
