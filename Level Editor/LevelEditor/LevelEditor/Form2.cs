@@ -270,7 +270,7 @@ namespace LevelEditor
                             }
                             else if (b.BackColor == Color.HotPink)
                             {
-                                writer.Write("<1, -1>");
+                                writer.Write("<0, -1>");
                             }
                             else if(b.BackColor == Color.Green)
                             {
@@ -405,6 +405,10 @@ namespace LevelEditor
                             else if (currentPicture == "<0, -1>")
                             {
                                 overlayColors[i, j] = Color.HotPink.ToString();
+                            }
+                            else if(currentPicture == "begin_tile")
+                            {
+                                overlayColors[i, j] = Color.Violet.ToString();
                             }
                             else
                             {
