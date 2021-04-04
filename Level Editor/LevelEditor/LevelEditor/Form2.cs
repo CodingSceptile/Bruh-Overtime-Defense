@@ -25,15 +25,20 @@ namespace LevelEditor
         private int boxWidth;
         private PictureBox[,] boxes;
         private PictureBox[,] overlay;
+        private PictureBox[,] collisions;
         private List<Button> buttons;
         private FileStream stream;
         private string[,] colors;
         private string[,] overlayColors;
+        private string[,] collisionColors;
         private bool isSaved;
 
         private Color currentColor;
 
         private string path;
+
+        //ROTATION
+        private float rotation;
 
         /// <summary>
         /// Creates the level editor form
@@ -49,6 +54,7 @@ namespace LevelEditor
 
             boxes = new PictureBox[height, width];
             overlay = new PictureBox[height, width];
+            collisions = new PictureBox[height, width];
             isSaved = true;
 
             buttons = new List<Button>();
@@ -61,6 +67,7 @@ namespace LevelEditor
             texturePic.SizeMode = PictureBoxSizeMode.Zoom;
 
             backgroundButton.BackColor = Color.Green;
+            rotation = 0;
         }
 
         /// <summary>
@@ -126,6 +133,8 @@ namespace LevelEditor
                     p.SizeMode = PictureBoxSizeMode.Zoom;
                     //Load image
                     p.Load("../../../" + path);
+                    Rotate(p);
+                    
 
                     //Shows indicator that the user needs to save!
                     if (this.Text.IndexOf("*") == -1)
@@ -207,45 +216,10 @@ namespace LevelEditor
                     //Background
 
                     //Saves the ARGB colors of the pictureboxes
-                    foreach (PictureBox b in boxes)
-                    {
-                        //writes the location of the image
-                        if(b.Image != null)
-                        {
-                            writer.Write(b.ImageLocation);
-                        }
 
-                        //Vector data detected, write the data in
-                        //Vector notation!
-                        else
-                        {
-                            if (b.BackColor == Color.Red)
-                            {
-                                writer.Write("<1, 0>");
-                            }
-                            else if (b.BackColor == Color.Blue)
-                            {
-                                writer.Write("<0, 1>");
-                            }
-                            else if (b.BackColor == Color.Violet)
-                            {
-                                writer.Write("begin_tile");
-                            }
-                            else if (b.BackColor == Color.HotPink)
-                            {
-                                writer.Write("<1, -1>");
-                            }
-                            else if(b.BackColor == Color.Green)
-                            {
-                                writer.Write("<-1, 1>");
-                            }
-                            //Nothing detected
-                            else
-                            {
-                                writer.Write("../../../default-min.png");
-                            }                            
-                        }
-                    }
+                    Save(boxes, writer);
+                    Save(overlay, writer);
+                    Save(collisions, writer);
 
                     //Overlay
                     foreach(PictureBox b in overlay)
@@ -344,78 +318,16 @@ namespace LevelEditor
                     //creates a new array that is able to store colors
                     colors = new string[height, width];
                     overlayColors = new string[height, width];
+                    collisionColors = new string[height, width];
 
                     //Background
 
-                    //Fills the array with the colors of the loaded data
-                    //(Vector2/Begin tile)
-                    for (int i = 0; i < colors.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < colors.GetLength(1); j++)
-                        {
-                            string currentPicture = reader.ReadString();
-                            
-                            if (currentPicture == "<1, 0>")
-                            {
-                                colors[i, j] = Color.Red.ToString();
-                            }
-                            else if (currentPicture == "<0, 1>")
-                            {
-                                colors[i, j] = Color.Blue.ToString();
-                            }
-                            else if(currentPicture == "<-1, 0>")
-                            {
-                                colors[i, j] = Color.Green.ToString();
-                            }
-                            else if (currentPicture == "<0, -1>")
-                            {
-                                colors[i, j] = Color.HotPink.ToString();
-                            }
-                            else if (currentPicture == "begin_tile")
-                            {
-                                colors[i, j] = Color.Violet.ToString();
-                            }
-                            else
-                            {
-                                colors[i, j] = currentPicture;
-                            }                           
-                        }
-                    }
+                    LoadColors(colors, reader);
+
 
                     //Overlay 
 
-                    for (int i = 0; i < overlayColors.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < overlayColors.GetLength(1); j++)
-                        {
-                            string currentPicture = reader.ReadString();
-
-                            if (currentPicture == "<1, 0>")
-                            {
-                                overlayColors[i, j] = Color.Red.ToString();
-                            }
-                            else if (currentPicture == "<0, 1>")
-                            {
-                                overlayColors[i, j] = Color.Blue.ToString();
-                            }
-                            else if (currentPicture == "<-1, 0>")
-                            {
-                                overlayColors[i, j] = Color.Green.ToString();
-                            }
-                            else if (currentPicture == "<0, -1>")
-                            {
-                                overlayColors[i, j] = Color.HotPink.ToString();
-                            }
-                            else if(currentPicture == "begin_tile")
-                            {
-                                overlayColors[i, j] = Color.Violet.ToString();
-                            }
-                            else
-                            {
-                                overlayColors[i, j] = currentPicture;
-                            }
-                        }
-                    }
+                    LoadColors(overlayColors, reader);
                 }
 
                 //User cancels decision
@@ -471,6 +383,7 @@ namespace LevelEditor
                     //Creates width # of Picture boxes height # of times
                     PictureBox box = new PictureBox();
                     PictureBox overlayBox = new PictureBox();
+                    PictureBox collisionBox = new PictureBox();
                    
                     //Sizes the boxes to the map width/height
                     //Horizontal is bigger, base off of the width
@@ -478,6 +391,7 @@ namespace LevelEditor
                     {
                         box.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
                         overlayBox.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
+                        collisionBox.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
                     }
                    
                     //Vertical is bigger, base off of the height
@@ -485,6 +399,7 @@ namespace LevelEditor
                     {
                         box.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
                         overlayBox.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
+                        collisionBox.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
 
                     }
                     
@@ -495,9 +410,14 @@ namespace LevelEditor
 
                     overlayBox.Location = new Point
                         (10 + box.Width * j, 15 + box.Height * i);
+
+                    collisionBox.Location = new Point
+                        (10 + box.Width * j, 15 + box.Height * i);
+
                     //Boxes are visible
                     box.Visible = true;
                     overlayBox.Visible = true;
+                    collisionBox.Visible = true;
                     //Adds the box to the list of controls (for the group box)
                     mapBox.Controls.Add(box);
                     //Subscribes box's MouseDown to the button_Click method, so
@@ -510,13 +430,18 @@ namespace LevelEditor
                     overlayBox.MouseDown += button_Click;
                     overlayBox.MouseEnter += button_Click;
 
+                    collisionBox.MouseDown += button_Click;
+                    collisionBox.MouseEnter += button_Click;
+
 
                     box.BackColor = Color.White;
                     overlayBox.BackColor = Color.White;
+                    collisionBox.BackColor = Color.White;
                     //saves in an array in case the data
                     //is saved to an external file
                     boxes[i, j] = box;
                     overlay[i, j] = overlayBox;
+                    collisions[i, j] = collisionBox;
                 }
             }
 
@@ -547,107 +472,8 @@ namespace LevelEditor
             boxes = new PictureBox[height, width];
             overlay = new PictureBox[height, width];
 
-            for (int i = 0; i < height; i++)
-            {
-               
-                for (int j = 0; j < width; j++)
-                {
-                    PictureBox box = new PictureBox();
-                    PictureBox overlayBox = new PictureBox();
-                   
-                    if (width > height || width == height)
-                    {
-                        box.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
-                        overlayBox.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
-                    }
-                  
-                    else if (height > width)
-                    {
-                        box.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
-                        overlayBox.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
-                    }
-                    
-                    box.Location = new Point
-                        (10 + box.Width * j, 15 + box.Height * i);
-
-                    overlayBox.Location = new Point
-                        (10 + box.Width * j, 15 + box.Height * i);
-
-                    overlayBox.Visible = true;
-                    box.Visible = true;
-
-                    box.MouseDown += button_Click;
-                    box.MouseEnter += button_Click;
-
-                    overlayBox.MouseEnter += button_Click;
-                    overlayBox.MouseDown += button_Click;
-
-                    //assigns a box the color from the corresponding
-                    //colors array index
-
-                    if(colors[i, j] == "../../../default-min.png")
-                    {
-                        box.BackColor = Color.White;
-                    }
-                    else if(colors[i, j].Contains("../../../") == false)
-                    {
-                        if(colors[i,j] == "Color [Red]")
-                        {
-                            box.BackColor = Color.Red;
-                        }
-                        else if(colors[i, j] == "Color [Blue]")
-                        {
-                            box.BackColor = Color.Blue;
-                        }
-                        else if(colors[i, j] == "Color [Violet]")
-                        {
-                            box.BackColor = Color.Violet;
-                        }
-                    }
-
-                    //image path detected, load the image and resize
-                    else
-                    {
-                        box.Load(colors[i, j]);
-                        box.SizeMode = PictureBoxSizeMode.Zoom;
-                    }
-
-                    //Default picture detected, Color the tile white.
-                    if (overlayColors[i, j] == "../../../default-min.png")
-                    {
-                        overlayBox.BackColor = Color.White;
-                    }
-                    //Vector2 data detected, color the image a respective color.
-                    else if (overlayColors[i, j].Contains("../../../") == false)
-                    {
-                        if (overlayColors[i, j] == "Color [Red]")
-                        {
-                            overlayBox.BackColor = Color.Red;
-                        }
-                        else if (overlayColors[i, j] == "Color [Blue]")
-                        {
-                            overlayBox.BackColor = Color.Blue;
-                        }
-                        else if (overlayColors[i, j] == "Color [Violet]")
-                        {
-                            overlayBox.BackColor = Color.Violet;
-                        }
-                    }
-                    else
-                    {
-                        overlayBox.Load(overlayColors[i, j]);
-                        overlayBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    }
-
-                    //Add the pictureboxes to the controls
-                    mapBox.Controls.Add(box);
-
-                    //add data to 2d arrays
-                    boxes[i, j] = box;
-                    overlay[i, j] = overlayBox;
-
-                }
-            }
+            LoadPictureBoxLists(boxes, Width, Height, colors);
+            LoadPictureBoxLists(overlay, Width, Height, overlayColors);
             
         }
 
@@ -752,6 +578,8 @@ namespace LevelEditor
                 //loads the image for preview, resizes accordingly
                 texturePic.Load("../../../" + path);
                 texturePic.SizeMode = PictureBoxSizeMode.Zoom;
+                Rotate(texturePic);
+                texturePic.Refresh();
             }
         }
 
@@ -780,6 +608,8 @@ namespace LevelEditor
                 path = (string)b.Items[index];
 
                 texturePic.Load("../../../" + path);
+                Rotate(texturePic);
+                texturePic.Refresh();
             }
         }
 
@@ -824,6 +654,9 @@ namespace LevelEditor
 
             color4.BackColor = Color.HotPink;
             buttons.Add(color4);
+
+            color15.BackColor = Color.Yellow;
+            buttons.Add(color15);
         }
 
 
@@ -840,6 +673,7 @@ namespace LevelEditor
             //changes the color of the buttons to indicate
             //that the user is on the overlay tab
             backgroundButton.BackColor = Color.LavenderBlush;
+            collisionsButton.BackColor = Color.LavenderBlush;
             overlayButton.BackColor = Color.Green;
             
             //changes the pictureboxes to the overlay stored data
@@ -849,6 +683,7 @@ namespace LevelEditor
                 {
                     boxes[i, j].Enabled = false;
                     overlay[i, j].Enabled = true;
+                    collisions[i, j].Enabled = false;
 
                     mapBox.Controls.Add(overlay[i, j]);
                 }
@@ -868,6 +703,7 @@ namespace LevelEditor
             //changes color of buttons to indicate that the user
             //is selecting the background later
             overlayButton.BackColor = Color.LavenderBlush;
+            collisionsButton.BackColor = Color.LavenderBlush;
             backgroundButton.BackColor = Color.Green;
 
             //replaces pictureBox data with the background data
@@ -877,9 +713,246 @@ namespace LevelEditor
                 {
                     boxes[i, j].Enabled = true;
                     overlay[i, j].Enabled = false;
+                    collisions[i, j].Enabled = false;
 
                     mapBox.Controls.Add(boxes[i, j]);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Switches the current active layer to the
+        /// collisions layer
+        /// </summary>
+        /// <param name="sender">collisions layer button</param>
+        /// <param name="e">Handles events</param>
+        private void collisionsButton_Click(object sender, EventArgs e)
+        {
+            mapBox.Controls.Clear();
+
+            //changes color of buttons to indicate that the user
+            //is selecting the background later
+            overlayButton.BackColor = Color.LavenderBlush;
+            collisionsButton.BackColor = Color.Green;
+            backgroundButton.BackColor = Color.LavenderBlush;
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    boxes[i, j].Enabled = false;
+                    overlay[i, j].Enabled = false;
+                    collisions[i, j].Enabled = true;
+
+                    mapBox.Controls.Add(collisions[i, j]);
+                }
+            }
+        }
+
+        private void LoadPictureBoxLists(PictureBox[,] boxes,
+            int width, int height, string[,] codeList)
+        {
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    PictureBox box = new PictureBox();
+
+                    if (width > height || width == height)
+                    {
+                        box.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
+                    }
+
+                    else if (height > width)
+                    {
+                        box.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
+                    }
+
+                    box.Location = new Point
+                        (10 + box.Width * j, 15 + box.Height * i);
+
+                    box.Visible = true;
+
+                    box.MouseDown += button_Click;
+                    box.MouseEnter += button_Click;
+
+                    //assigns a box the color from the corresponding
+                    //colors array index
+
+
+                    //Default picture detected, Color the tile white.
+                    if (codeList[i, j] == "../../../default-min.png")
+                    {
+                        box.BackColor = Color.White;
+                    }
+                    //Vector2 data detected, color the image a respective color.
+                    else if (codeList[i, j].Contains("../../../") == false)
+                    {
+                        if (codeList[i, j] == "Color [Red]")
+                        {
+                            box.BackColor = Color.Red;
+                        }
+                        else if (codeList[i, j] == "Color [Blue]")
+                        {
+                            box.BackColor = Color.Blue;
+                        }
+                        else if (codeList[i, j] == "Color [Violet]")
+                        {
+                            box.BackColor = Color.Violet;
+                        }
+                        else if (codeList[i, j] == "<1, -1>")
+                        {
+                            box.BackColor = Color.HotPink;
+                        }
+                        else if (codeList[i, j] == "<-1, 1>")
+                        {
+                            box.BackColor = Color.Green;
+                        }
+                    }
+                    else
+                    {
+                        box.Load(codeList[i, j]);
+                        box.SizeMode = PictureBoxSizeMode.Zoom;
+                    }
+
+                    //Add the pictureboxes to the controls
+                    mapBox.Controls.Add(box);
+
+                    //add data to 2d arrays
+                    boxes[i, j] = box;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Simplifies the code when loading in files, allows
+        /// the user to specify which list they want data stored in
+        /// instead of hard coding it
+        /// </summary>
+        /// <param name="codeList">array of data</param>
+        /// <param name="reader">reads in data</param>
+        private void LoadColors(string[,] codeList, BinaryReader reader)
+        {
+            //Fills the array with the colors of the loaded data
+            //(Vector2/Begin tile)
+            for (int i = 0; i < codeList.GetLength(0); i++)
+            {
+                for (int j = 0; j < codeList.GetLength(1); j++)
+                {
+                    string currentPicture = reader.ReadString();
+
+                    if (currentPicture == "<1, 0>")
+                    {
+                        codeList[i, j] = Color.Red.ToString();
+                    }
+                    else if (currentPicture == "<0, 1>")
+                    {
+                        codeList[i, j] = Color.Blue.ToString();
+                    }
+                    else if (currentPicture == "<-1, 0>")
+                    {
+                        codeList[i, j] = Color.Green.ToString();
+                    }
+                    else if (currentPicture == "<0, -1>")
+                    {
+                        codeList[i, j] = Color.HotPink.ToString();
+                    }
+                    else if (currentPicture == "begin_tile")
+                    {
+                        codeList[i, j] = Color.Violet.ToString();
+                    }
+                    else
+                    {
+                        codeList[i, j] = currentPicture;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Facilitates saving files
+        /// </summary>
+        /// <param name="boxes">current List of pictureBoxes</param>
+        /// <param name="writer">BinaryWriter</param>
+        private void Save(PictureBox[,] boxes, BinaryWriter writer)
+        {
+            foreach (PictureBox b in boxes)
+            {
+                //writes the location of the image
+                if (b.Image != null)
+                {
+                    writer.Write(b.ImageLocation);
+                }
+
+                //Vector data detected, write the data in
+                //Vector notation!
+                else
+                {
+                    if (b.BackColor == Color.Red)
+                    {
+                        writer.Write("<1, 0>");
+                    }
+                    else if (b.BackColor == Color.Blue)
+                    {
+                        writer.Write("<0, 1>");
+                    }
+                    else if (b.BackColor == Color.Violet)
+                    {
+                        writer.Write("begin_tile");
+                    }
+                    else if (b.BackColor == Color.HotPink)
+                    {
+                        writer.Write("<1, -1>");
+                    }
+                    else if (b.BackColor == Color.Green)
+                    {
+                        writer.Write("<-1, 1>");
+                    }
+                    //Nothing detected
+                    else
+                    {
+                        writer.Write("../../../default-min.png");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Rotates a texture on the screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rotateTexture_Click(object sender, EventArgs e)
+        {
+            if(rotation == 360)
+            {
+                rotation = 0;
+            }
+
+            texturePic.Image.RotateFlip
+                (RotateFlipType.Rotate90FlipNone);
+            texturePic.Refresh();
+
+            rotation += 90f;
+        }
+
+        /// <summary>
+        /// Rotates an image inside of a pictureBox
+        /// </summary>
+        /// <param name="p"></param>
+        private void Rotate(PictureBox p)
+        {
+            if (rotation == 90)
+            {
+                p.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            }
+            else if (rotation == 180)
+            {
+                p.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
+            }
+            else if (rotation == 270)
+            {
+                p.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
             }
         }
     }   
