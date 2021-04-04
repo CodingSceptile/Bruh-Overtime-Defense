@@ -69,7 +69,9 @@ namespace Bruh_Overtime_Defense
         private Button pauseButton;
         private Button nextWaveButton;
         private Button baseTowerButton;
+        private Button erinModeButton;
         private bool isActive;
+        private bool isErinMode;
 
         //SpriteFonts
         private SpriteFont arial10;
@@ -106,8 +108,10 @@ namespace Bruh_Overtime_Defense
         private int currWave;
         private int waveAmount;
         private int enemyCount;
-        int health;
+        private int health;
         private TimeSpan timeSpanSincePause;
+        private int screenWidth;
+        private int screenHeight;
 
         public Game1()
         {
@@ -133,9 +137,11 @@ namespace Bruh_Overtime_Defense
 
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 800;
+            screenWidth = _graphics.PreferredBackBufferWidth;
+            screenHeight = _graphics.PreferredBackBufferHeight;
 
-            tileWidth = _graphics.PreferredBackBufferWidth / level.Width;
-            tileHeight = _graphics.PreferredBackBufferHeight / level.Height;
+            tileWidth = screenWidth / level.Width;
+            tileHeight = screenHeight / level.Height;
 
             //initialize the mouse and keyboard states
             mState = Mouse.GetState();
@@ -148,16 +154,18 @@ namespace Bruh_Overtime_Defense
 
             //buttons
             mapSelectButton1 = new Button(200, 200, 200, 200);
-            towerMenuButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 2), 
+            towerMenuButton = new Button(screenWidth - (tileWidth * 2), 
                 0, tileWidth, tileHeight);
-            pauseButton = new Button(_graphics.PreferredBackBufferWidth - tileWidth,
+            pauseButton = new Button(screenWidth - tileWidth,
                 0, tileWidth, tileHeight);
-            nextWaveButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 4),
+            nextWaveButton = new Button(screenWidth - (tileWidth * 4),
                 0, tileWidth * 2, tileHeight);
-            baseTowerButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 3),
+            baseTowerButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 2) - 5, tileWidth, tileHeight);
+            erinModeButton = new Button(screenWidth - (tileWidth * 2),
+                0, tileWidth * 2, tileHeight);
 
-            towerMenuPos = new Rectangle(_graphics.PreferredBackBufferWidth - (tileWidth * 3),
+            towerMenuPos = new Rectangle(screenWidth - (tileWidth * 3),
                 tileHeight, tileWidth * 3, tileHeight * 6);
 
             //misc
@@ -171,6 +179,7 @@ namespace Bruh_Overtime_Defense
             currWave = 0;
             isActive = true;
             waveAmount = 0;
+            isErinMode = false;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
@@ -207,16 +216,9 @@ namespace Bruh_Overtime_Defense
             }
 
             //buttons
-            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("testMap1");
-            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("testMap1");
-            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile087");
-            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile091");
-            pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile085");
-            pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile089");
-            nextWaveButton.DefaultSprite = Content.Load<Texture2D>("NextWaveButton");
-            nextWaveButton.ActiveSprite = Content.Load<Texture2D>("NextWaveButtonActive");
-            baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
-            baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
+            LoadButtons();
+
+            //load other things
             bruhEffect = Content.Load<SoundEffect>("bruhEffect");
 
             towerMenuSprite = Content.Load<Texture2D>("towerSelector");
@@ -279,6 +281,7 @@ namespace Bruh_Overtime_Defense
                 case GameState.MapSelect:
                     _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
                     mapSelectButton1.Draw(_spriteBatch, mState);
+                    erinModeButton.Draw(_spriteBatch, mState);
                     break;
                 case GameState.Gameplay:
 
@@ -365,8 +368,26 @@ namespace Bruh_Overtime_Defense
                 if (mapSelectButton1.Clicked(mState, prevMState))
                 {
                     Reset();
+                    if(isErinMode == true)
+                    {
+                        health = 9999;
+                        totalMoney = 9999;
+                    }
 
                     gState = GameState.Gameplay;                  
+                }
+
+                if(erinModeButton.Clicked(mState, prevMState) && isErinMode == false)
+                {
+                    isErinMode = true;
+                    erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeON");
+                    erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeONActive");
+                }
+                else if(erinModeButton.Clicked(mState, prevMState) && isErinMode == true)
+                {
+                    isErinMode = false;
+                    erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeOFF");
+                    erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
                 }
             }
             //if the player is in gameplay
@@ -567,7 +588,7 @@ namespace Bruh_Overtime_Defense
             for(int i = 0; i < enemies.Count; i++)
             {
                 //if the enemy is alive and off the map
-                if(enemies[i].IsDead == false && enemies[i].X > _graphics.PreferredBackBufferWidth)
+                if(enemies[i].IsDead == false && enemies[i].X > screenWidth)
                 {
                     //reduce the player's health by one and kill the enemy to prevent repetition
                     health--;
@@ -591,7 +612,7 @@ namespace Bruh_Overtime_Defense
             placeTower = false;
             totalMoney = 100;
             gainMoney = false;
-            health = 9999;
+            health = 20;
             waveAmount = 5;
             newWave = false;
             currWave = 0;
@@ -647,16 +668,16 @@ namespace Bruh_Overtime_Defense
             pauseButton.Draw(_spriteBatch, mState);
             nextWaveButton.Draw(_spriteBatch, mState);
             _spriteBatch.DrawString(arial16, "Money: $" + totalMoney,
-                new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 8), 0),
+                new Vector2(screenWidth - (tileWidth * 8), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Health: " + health,
-                new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 11), 0),
+                new Vector2(screenWidth - (tileWidth * 11), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Wave: " + currWave,
-                new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 0),
+                new Vector2(screenWidth - (tileWidth * 14), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Number of Enemies: " + enemyCount,
-                new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 40),
+                new Vector2(screenWidth - (tileWidth * 14), 40),
                 Color.White);
         }
 
@@ -693,14 +714,37 @@ namespace Bruh_Overtime_Defense
             {
                 _spriteBatch.Draw(towerMenuSprite, towerMenuPos, Color.White);
                 _spriteBatch.DrawString(arial10, " Tower  Cost  Salary",
-                    new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 3), tileHeight),
+                    new Vector2(screenWidth - (tileWidth * 3), tileHeight),
                     Color.White);
                 _spriteBatch.DrawString(arial16, "  20  20",
-                    new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 2),
+                    new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 2),
                     Color.White);
                 baseTowerButton.Draw(_spriteBatch, mState);
             }
+        }
+
+        /// <summary>
+        /// loads the sprites for all the buttons
+        /// </summary>
+        public void LoadButtons()
+        {
+            //map select buttons
+            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("testMap1");
+            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("testMap1");
+            //gameplay UI buttons
+            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile087");
+            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile091");
+            pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile085");
+            pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile089");
+            nextWaveButton.DefaultSprite = Content.Load<Texture2D>("NextWaveButton");
+            nextWaveButton.ActiveSprite = Content.Load<Texture2D>("NextWaveButtonActive");
+            //tower buttons
+            baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
+            baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
+            //other buttons
+            erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeOFF");
+            erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
         }
     }
 }
