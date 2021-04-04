@@ -21,6 +21,7 @@ namespace Bruh_Overtime_Defense
         private Rectangle startPos;
         private int startX;
         private int startY;
+        private int numEnemiesSpawned;
 
         /// <summary>
         /// Creates a new EnemyManager object
@@ -86,7 +87,11 @@ namespace Bruh_Overtime_Defense
         /// <param name="gameTime">keeps track of the time in game</param>
         public void Update(GameTime gameTime)
         {
-
+            if(numEnemiesSpawned == 0)
+            {
+                gameTime.TotalGameTime = TimeSpan.FromMilliseconds(500);
+            }
+            
             //Sets an interval in which enemies can spawn
             if (gameTime.TotalGameTime.TotalMilliseconds % 500 < 1)
             {
@@ -97,6 +102,7 @@ namespace Bruh_Overtime_Defense
                     enemies[enemyNum].Y = startY;
                     enemies[enemyNum].IsDead = false;
                     enemyNum++;
+                    numEnemiesSpawned++;
                 }           
             }
 
@@ -136,6 +142,7 @@ namespace Bruh_Overtime_Defense
 
             if(deadEnemies == enemies.Count)
             {
+                numEnemiesSpawned = 0;
                 return true;
             }
             else

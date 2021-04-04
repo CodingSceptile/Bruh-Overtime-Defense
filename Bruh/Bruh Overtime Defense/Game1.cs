@@ -69,6 +69,7 @@ namespace Bruh_Overtime_Defense
         private Button pauseButton;
         private Button nextWaveButton;
         private Button baseTowerButton;
+        private bool isActive;
 
         //SpriteFonts
         private SpriteFont arial10;
@@ -103,10 +104,10 @@ namespace Bruh_Overtime_Defense
         private bool gainMoney;
         private bool newWave;
         private int currWave;
-        private int waveAmont;
+        private int waveAmount;
         private int enemyCount;
         int health;
-        TimeSpan timeSpanSincePause;
+        private TimeSpan timeSpanSincePause;
 
         public Game1()
         {
@@ -153,11 +154,11 @@ namespace Bruh_Overtime_Defense
                 0, tileWidth, tileHeight);
             nextWaveButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 4),
                 0, tileWidth * 2, tileHeight);
-            baseTowerButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 2) + 5,
-                (tileHeight * 2) + 5, tileWidth, tileHeight);
+            baseTowerButton = new Button(_graphics.PreferredBackBufferWidth - (tileWidth * 3),
+                (tileHeight * 2) - 5, tileWidth, tileHeight);
 
-            towerMenuPos = new Rectangle(_graphics.PreferredBackBufferWidth - (tileWidth * 2),
-                tileHeight, tileWidth * 2, tileHeight * 6);
+            towerMenuPos = new Rectangle(_graphics.PreferredBackBufferWidth - (tileWidth * 3),
+                tileHeight, tileWidth * 3, tileHeight * 6);
 
             //misc
             selectedTower = Towers.None;
@@ -168,7 +169,8 @@ namespace Bruh_Overtime_Defense
             health = 10;
             newWave = false;
             currWave = 0;
-            waveAmont = 0;
+            isActive = true;
+            waveAmount = 0;
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
@@ -207,8 +209,8 @@ namespace Bruh_Overtime_Defense
             //buttons
             mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("testMap1");
             mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("testMap1");
-            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile086");
-            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile090");
+            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile087");
+            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile091");
             pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile085");
             pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile089");
             nextWaveButton.DefaultSprite = Content.Load<Texture2D>("NextWaveButton");
@@ -280,77 +282,7 @@ namespace Bruh_Overtime_Defense
                     break;
                 case GameState.Gameplay:
 
-                    //draws the map
-                    //Manages the tiles locations and sizes
-                    for (int i = 0; i < level.Width; i++)
-                    {
-                        for (int j = 0; j < level.Height; j++)
-                        {
-                            //gets the textures for each collumn,
-                            //draws each with an equal widths and heights, 
-                            //as well as locates them depending on the individual widths
-                            //and heights
-
-                            //Background draw
-                            level.Draw(_spriteBatch, textures[(i * level.Width) + j],
-                            new Rectangle(
-                                new Point(tileWidth * j, tileHeight * i),
-                                new Point(tileWidth, tileHeight)));                        
-                        }
-                    }
-
-                    for (int i = level.Width; i < level.Width * 2; i++)
-                    {
-                        for (int j = 0; j < level.Height; j++)
-                        {
-                            //gets the textures for each collumn,
-                            //draws each with an equal widths and heights, 
-                            //as well as locates them depending on the individual widths
-                            //and heights
-
-                            //Draws Objects on the screen
-                            level.Draw(_spriteBatch, textures[(level.Width * i) + j],
-                            new Rectangle(
-                                new Point(tileWidth * j, (tileHeight * (i - level.Width))),
-                                new Point(tileWidth, tileHeight)));
-                        }
-                    }
-
-                    if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % random.Next(1, 2001) < 1)
-                    {
-                        for(int i = 0; i < towers.Count; i++)
-                        {
-                            gainMoney = towerManager.Shoot(towers[i], enemies);
-                           
-                            if (gainMoney == true)
-                            {
-                                bruhEffect.Play(0.005f, -0.05f, 0);
-                                totalMoney++;
-                                enemyCount--;
-                                gainMoney = false;
-                            }
-                        }                        
-                    }
-
-                    
-
-                    //draws buttons
-                    towerMenuButton.Draw(_spriteBatch, mState);
-                    pauseButton.Draw(_spriteBatch, mState);
-                    nextWaveButton.Draw(_spriteBatch, mState);
-                    _spriteBatch.DrawString(arial16, "Money: $" + totalMoney, 
-                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 8), 0), 
-                        Color.White);
-                    _spriteBatch.DrawString(arial16, "Health: " + health,
-                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 11), 0),
-                        Color.White);
-                    _spriteBatch.DrawString(arial16, "Wave: " + currWave,
-                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 0),
-                        Color.White);
-                    _spriteBatch.DrawString(arial16, "Number of Enemies: " + enemyCount,
-                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 40),
-                        Color.White);
-
+                    DrawMap();
 
                     //draw the towers
                     for (int i = 0; i < towers.Count; i++)
@@ -358,18 +290,7 @@ namespace Bruh_Overtime_Defense
                         towers[i].Draw(_spriteBatch);
                     }
 
-                    //draw the towerMenu if it is open
-                    if(openTowerMenu == true)
-                    {
-                        _spriteBatch.Draw(towerMenuSprite, towerMenuPos, Color.White);
-                        _spriteBatch.DrawString(arial10, "Tower  Cost",
-                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 2), tileHeight),
-                        Color.White);
-                        _spriteBatch.DrawString(arial16, "20",
-                        new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth), tileHeight * 2),
-                        Color.White);
-                        baseTowerButton.Draw(_spriteBatch, mState);
-                    }
+                    DrawTowerMenu();
 
                     //if the player has a tower to place and clicks
                     if(placeTower == true)
@@ -401,7 +322,11 @@ namespace Bruh_Overtime_Defense
                     break;
                 case GameState.PauseScreen:
                     _spriteBatch.DrawString(arial64, "Paused",
-                        new Vector2(200, 300), Color.White);
+                        new Vector2(220, 300), Color.White);
+                    _spriteBatch.DrawString(arial36, "Press Enter to return to game",
+                        new Vector2(80, 390), Color.White);
+                    _spriteBatch.DrawString(arial36, "Press Ctrl to return to map select",
+                        new Vector2(50, 450), Color.White);
                     break;
                 case GameState.GameOver:
                     _spriteBatch.DrawString(arial64, "Game Over",
@@ -461,6 +386,7 @@ namespace Bruh_Overtime_Defense
 
                 //Checks if the user needs to take damage
                 TakeDamage();
+                ResolveShot(gameTime);
 
                 //No more health left! Game over!
                 if(health <= 0)
@@ -518,6 +444,7 @@ namespace Bruh_Overtime_Defense
                 //Next wave button clicked
                 if (nextWaveButton.Clicked(mState,prevMState))
                 {
+                   
                     //Checks for the current wave, and how that
                     //affects the enemies
                     //easy enemies, only require one hit
@@ -546,7 +473,7 @@ namespace Bruh_Overtime_Defense
 
                     //checks if all the enemies in the enemies
                     //list are dead
-                    if(enMan.AllEnemiesDead() == true)
+                    if(enMan.AllEnemiesDead())
                     {
                         newWave = true;
                         //increment the wave
@@ -560,18 +487,13 @@ namespace Bruh_Overtime_Defense
                             enemies, enemyTex, collisions.StartPosition);
                           
                         //adds new enemies to the list
-                        for (int i = 0; i < waveAmont; i++)
+                        for (int i = 0; i < waveAmount; i++)
                         {
                             enemies.Add(new Enemy(
                             enemyTex,
                             enemyHealth,
                             enemySpeed,
                             collisions.StartPosition));
-
-                            if(i == 0)
-                            {
-                                enemies[i].IsDead = false;
-                            }
                         }
                         
                         //changes the display to the current
@@ -579,7 +501,7 @@ namespace Bruh_Overtime_Defense
                         enemyCount = enemies.Count;
                         //increments the # of enemies
                         //for next time
-                        waveAmont += 5;                    
+                        waveAmount += 5;                    
                     }                    
                 }
             }
@@ -670,13 +592,115 @@ namespace Bruh_Overtime_Defense
             totalMoney = 100;
             gainMoney = false;
             health = 9999;
-            waveAmont = 5;
+            waveAmount = 5;
             newWave = false;
             currWave = 0;
 
             //enemies and towers
             towers.Clear();
             enMan.ResetEnemies();
+        }
+
+        /// <summary>
+        /// draws the level map
+        /// </summary>
+        public void DrawMap()
+        {
+            //draws the map
+            //Manages the tiles locations and sizes
+            for (int i = 0; i < level.Width; i++)
+            {
+                for (int j = 0; j < level.Height; j++)
+                {
+                    //gets the textures for each collumn,
+                    //draws each with an equal widths and heights, 
+                    //as well as locates them depending on the individual widths
+                    //and heights
+
+                    //Background draw
+                    level.Draw(_spriteBatch, textures[(i * level.Width) + j],
+                    new Rectangle(
+                        new Point(tileWidth * j, tileHeight * i),
+                        new Point(tileWidth, tileHeight)));
+                }
+            }
+
+            for (int i = level.Width; i < level.Width * 2; i++)
+            {
+                for (int j = 0; j < level.Height; j++)
+                {
+                    //gets the textures for each collumn,
+                    //draws each with an equal widths and heights, 
+                    //as well as locates them depending on the individual widths
+                    //and heights
+
+                    //Draws Objects on the screen
+                    level.Draw(_spriteBatch, textures[(level.Width * i) + j],
+                    new Rectangle(
+                        new Point(tileWidth * j, (tileHeight * (i - level.Width))),
+                        new Point(tileWidth, tileHeight)));
+                }
+            }
+
+            //draws buttons
+            towerMenuButton.Draw(_spriteBatch, mState);
+            pauseButton.Draw(_spriteBatch, mState);
+            nextWaveButton.Draw(_spriteBatch, mState);
+            _spriteBatch.DrawString(arial16, "Money: $" + totalMoney,
+                new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 8), 0),
+                Color.White);
+            _spriteBatch.DrawString(arial16, "Health: " + health,
+                new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 11), 0),
+                Color.White);
+            _spriteBatch.DrawString(arial16, "Wave: " + currWave,
+                new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 0),
+                Color.White);
+            _spriteBatch.DrawString(arial16, "Number of Enemies: " + enemyCount,
+                new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 14), 40),
+                Color.White);
+        }
+
+        /// <summary>
+        /// resolves the effects of shooting
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public void ResolveShot(GameTime gameTime)
+        {
+            if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 1500 < 1)
+            {
+                for (int i = 0; i < towers.Count; i++)
+                {
+                    gainMoney = towerManager.Shoot(towers[i], enemies);
+
+                    if (gainMoney == true)
+                    {
+                        bruhEffect.Play(0.005f, -0.05f, 0);
+                        totalMoney++;
+                        enemyCount--;
+                        gainMoney = false;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// draws the tower menu
+        /// </summary>
+        public void DrawTowerMenu()
+        {
+            //draw the towerMenu if it is open
+            if (openTowerMenu == true)
+            {
+                _spriteBatch.Draw(towerMenuSprite, towerMenuPos, Color.White);
+                _spriteBatch.DrawString(arial10, " Tower  Cost  Salary",
+                    new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 3), tileHeight),
+                    Color.White);
+                _spriteBatch.DrawString(arial16, "  20  20",
+                    new Vector2(_graphics.PreferredBackBufferWidth - (tileWidth * 2),
+                    tileHeight * 2),
+                    Color.White);
+                baseTowerButton.Draw(_spriteBatch, mState);
+            }
         }
     }
 }
