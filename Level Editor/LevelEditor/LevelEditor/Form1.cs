@@ -23,6 +23,7 @@ namespace LevelEditor
         private string message;
         private string[,] colors;
         private string[,] overlayColors;
+        private string[,] collisionColors;
 
         //Constructor
 
@@ -71,84 +72,24 @@ namespace LevelEditor
                     width = reader.ReadInt32();
                     height = reader.ReadInt32();
 
-                    colors = new string[width, height];
-                    overlayColors = new string[width, height];
-                    
-                    //BACKGROUND LAYER
-
-                    //Reads Vector2/beginning data and turns it into a color indicator                   
-                    for (int i = 0; i < colors.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < colors.GetLength(1); j++)
-                        {
-                            string currentPicture = reader.ReadString();
-
-                            if (currentPicture == "<1, 0>")
-                            {
-                                colors[i, j] = Color.Red.ToString();
-                            }
-                            else if (currentPicture == "<0, 1>")
-                            {
-                                colors[i, j] = Color.Blue.ToString();
-                            }
-                            else if (currentPicture == "<-1, 0>")
-                            {
-                                colors[i, j] = Color.Green.ToString();
-                            }
-                            else if (currentPicture == "<0, -1>")
-                            {
-                                colors[i, j] = Color.HotPink.ToString();
-                            }
-                            else if(currentPicture == "begin_tile")
-                            {
-                                colors[i, j] = Color.Violet.ToString();
-                            }
-                            else
-                            {
-                                colors[i, j] = currentPicture;
-                            }
-                        }
-                    }
-
-                    //OVERLAY LAYER
-                  
-                    for (int i = 0; i < overlayColors.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < overlayColors.GetLength(1); j++)
-                        {
-                            string currentPicture = reader.ReadString();
-
-                            if (currentPicture == "<1, 0>")
-                            {
-                                overlayColors[i, j] = Color.Red.ToString();
-                            }
-                            else if (currentPicture == "<0, 1>")
-                            {
-                                overlayColors[i, j] = Color.Blue.ToString();
-                            }
-                            else if (currentPicture == "<-1, 0>")
-                            {
-                                overlayColors[i, j] = Color.Green.ToString();
-                            }
-                            else if (currentPicture == "<0, -1>")
-                            {
-                                overlayColors[i, j] = Color.HotPink.ToString();
-                            }
-                            else if (currentPicture == "begin_tile")
-                            {
-                                overlayColors[i, j] = Color.Violet.ToString();
-                            }
-                            else
-                            {
-                                overlayColors[i, j] = currentPicture;
-                            }
-                        }
-                    }
-
                     //establishes the level editor with the given information
                     editor = new levelEditor(width, height);
+
+
+                    colors = new string[width, height];
+                    overlayColors = new string[width, height];
+                    collisionColors = new string[width, height];
+
+
+                    //BACKGROUND LAYER
+
+                    editor.LoadColors(colors, reader);
+                    editor.LoadColors(overlayColors, reader);
+                    editor.LoadColors(collisionColors, reader);
+                    
                     //loads the picture boxes and matches the colors
-                    editor.LoadBoxes(colors, overlayColors);
+                    editor.LoadBoxes(colors, overlayColors, collisionColors);
+
                     //Properly sizes the form
                     editor.ResizeForm();
 

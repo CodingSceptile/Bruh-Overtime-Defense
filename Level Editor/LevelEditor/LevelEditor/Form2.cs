@@ -337,7 +337,7 @@ namespace LevelEditor
                 }
                 
                 //Displays the data on the map
-                LoadBoxes(colors, overlayColors);
+                LoadBoxes(colors, overlayColors, collisionColors);
                 //Resizes the form accordingly
                 ResizeForm();
 
@@ -454,7 +454,7 @@ namespace LevelEditor
         /// data and loads the boxes based on that
         /// </summary>
         /// <param name="colors">The array of loaded colors</param>
-        public void LoadBoxes(string[,] colors, string[,] overlayColors)
+        public void LoadBoxes(string[,] colors, string[,] overlayColors, string[,] collisionColors)
         {
             //Clears the controls (so we dont 
             //get overlap)
@@ -474,6 +474,7 @@ namespace LevelEditor
 
             LoadPictureBoxLists(boxes, Width, Height, colors);
             LoadPictureBoxLists(overlay, Width, Height, overlayColors);
+            LoadPictureBoxLists(collisions, Width, Height, collisionColors);
             
         }
 
@@ -831,7 +832,7 @@ namespace LevelEditor
         /// </summary>
         /// <param name="codeList">array of data</param>
         /// <param name="reader">reads in data</param>
-        private void LoadColors(string[,] codeList, BinaryReader reader)
+        public void LoadColors(string[,] codeList, BinaryReader reader)
         {
             //Fills the array with the colors of the loaded data
             //(Vector2/Begin tile)
@@ -858,6 +859,10 @@ namespace LevelEditor
                         codeList[i, j] = Color.HotPink.ToString();
                     }
                     else if (currentPicture == "begin_tile")
+                    {
+                        codeList[i, j] = Color.Violet.ToString();
+                    }
+                    else if(currentPicture == "track")
                     {
                         codeList[i, j] = Color.Violet.ToString();
                     }
@@ -907,6 +912,10 @@ namespace LevelEditor
                     else if (b.BackColor == Color.Green)
                     {
                         writer.Write("<-1, 1>");
+                    }
+                    else if(b.BackColor == Color.Yellow)
+                    {
+                        writer.Write("track");
                     }
                     //Nothing detected
                     else
