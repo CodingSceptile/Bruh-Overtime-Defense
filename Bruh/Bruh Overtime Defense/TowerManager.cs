@@ -60,24 +60,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="enemies">The enemies on the map.</param>
         public bool Shoot(Tower t, List<Enemy> enemies)
         {
-            foreach (Enemy e in enemies)
-            {
-                if (Distance(t.Position, e.Position) <= t.Radius)
-                {
-                    if(e.IsDead == true)
-                    {
-                        continue;
-                    }
-
-                    e.Health -= 1;
-                    if(e.Health <= 0)
-                    {
-                        e.IsDead = true;
-                        return true;
-                    }                   
-                }
-            }
-            return false;
+            return t.Shoot(enemies);
         }
 
         /// <summary>
@@ -101,16 +84,5 @@ namespace Bruh_Overtime_Defense
             
         }
 
-        /// <summary>
-        /// Finds the distance between two rectangle positions
-        /// </summary>
-        /// <param name="p1">First point</param>
-        /// <param name="p2">Second point</param>
-        /// <returns>Distance between first point and second point</returns>
-        public float Distance(Rectangle p1, Rectangle p2)
-        {
-            float distance = (float)Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
-            return distance;
-        }
     }
 }
