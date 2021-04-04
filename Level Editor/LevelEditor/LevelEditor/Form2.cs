@@ -228,43 +228,6 @@ namespace LevelEditor
                     Save(overlay, writer);
                     Save(collisions, writer);
 
-                    //Overlay
-                    foreach(PictureBox b in overlay)
-                    {
-                        if (b.Image != null)
-                        {
-                            writer.Write(b.ImageLocation);
-                        }
-                        else
-                        {
-                            if (b.BackColor == Color.Red)
-                            {
-                                writer.Write("<1, 0>");
-                            }
-                            else if (b.BackColor == Color.Blue)
-                            {
-                                writer.Write("<0, 1>");
-                            }
-                            else if (b.BackColor == Color.Violet)
-                            {
-                                writer.Write("begin_tile");
-                            }
-                            else if (b.BackColor == Color.HotPink)
-                            {
-                                writer.Write("<0, -1>");
-                            }
-                            else if(b.BackColor == Color.Green)
-                            {
-                                writer.Write("<-1, 0>");
-                            }
-                            else
-                            {
-                                writer.Write("../../../default-min.png");
-                            }
-                        }
-
-                    }
-
                     //prompts the user that the file was successfully saved.
                     MessageBox.Show("Successfully Saved the file!", ":)");
                     this.Text = $"Level Editor - {saveMenu.FileName.Remove(0, saveMenu.FileName.LastIndexOf('\\') + 1)}";
@@ -335,6 +298,9 @@ namespace LevelEditor
                     //Overlay 
 
                     LoadColors(overlayColors, reader);
+
+                    //Collisions
+                    LoadColors(collisionColors, reader);
                 }
 
                 //User cancels decision
