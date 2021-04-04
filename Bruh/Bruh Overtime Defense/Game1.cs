@@ -231,8 +231,6 @@ namespace Bruh_Overtime_Defense
 
             //Bruh enemy texture
             enemyTex = Content.Load<Texture2D>("bruh");
-
-            
         }
 
         /// <summary>
@@ -274,15 +272,18 @@ namespace Bruh_Overtime_Defense
             //draws different things based on the game state
             switch (gState)
             {
+                //TITLE SCREEN
                 case GameState.TitleScreen:
                     _spriteBatch.DrawString(arial64, "Bruh Overtime \n    Defense", new Vector2(125, 250), Color.White);
                     _spriteBatch.DrawString(arial36, "Press Enter to start", new Vector2(175, 450), Color.White);
                     break;
+                //MAP SELECT SCREEN
                 case GameState.MapSelect:
                     _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
                     mapSelectButton1.Draw(_spriteBatch, mState);
                     erinModeButton.Draw(_spriteBatch, mState);
                     break;
+                //GAMEPLAY SCREEN
                 case GameState.Gameplay:
 
                     DrawMap();
@@ -323,6 +324,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     break;
+                //PAUSE SCREEN
                 case GameState.PauseScreen:
                     _spriteBatch.DrawString(arial64, "Paused",
                         new Vector2(220, 300), Color.White);
@@ -331,9 +333,12 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial36, "Press Ctrl to return to map select",
                         new Vector2(50, 450), Color.White);
                     break;
+                //GAME OVER SCREEN
                 case GameState.GameOver:
                     _spriteBatch.DrawString(arial64, "Game Over",
                         new Vector2(200, 300), Color.Red);
+                    _spriteBatch.DrawString(arial36, "Press Enter to return to map select",
+                        new Vector2(40, 450), Color.Red);
                     break;
             }
 
@@ -367,24 +372,32 @@ namespace Bruh_Overtime_Defense
                 //check to see which map button they pressed
                 if (mapSelectButton1.Clicked(mState, prevMState))
                 {
+                    //reset the game
                     Reset();
+                    //if Erin Mode is on
                     if(isErinMode == true)
                     {
+                        //massively increase health and money
                         health = 9999;
                         totalMoney = 9999;
                     }
 
+                    //go to the gameplay state
                     gState = GameState.Gameplay;                  
                 }
 
+                //if the ErinModeButton is clicked when ErinMode is off
                 if(erinModeButton.Clicked(mState, prevMState) && isErinMode == false)
                 {
+                    //turn on Erin Mode and change the button look
                     isErinMode = true;
                     erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeON");
                     erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeONActive");
                 }
-                else if(erinModeButton.Clicked(mState, prevMState) && isErinMode == true)
+                //if the ErinModeButton is clicked when ErinMode is on
+                else if (erinModeButton.Clicked(mState, prevMState) && isErinMode == true)
                 {
+                    //turn off Erin Mode and change the button look
                     isErinMode = false;
                     erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeOFF");
                     erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
@@ -393,7 +406,6 @@ namespace Bruh_Overtime_Defense
             //if the player is in gameplay
             else if(gState == GameState.Gameplay)
             {
-
                 //Check for changes in movement
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -407,6 +419,7 @@ namespace Bruh_Overtime_Defense
 
                 //Checks if the user needs to take damage
                 TakeDamage();
+                //checks if bruhs are hit
                 ResolveShot(gameTime);
 
                 //No more health left! Game over!
@@ -416,23 +429,24 @@ namespace Bruh_Overtime_Defense
                 }
 
 
-                //if the mouse button is clicked and none of the buttons are
+                //if the mouse button is clicked and none of the buttons are pressed
                 if (mState.LeftButton == ButtonState.Pressed && !pauseButton.RollOver(mState) &&
                     !nextWaveButton.RollOver(mState) && !towerMenuButton.RollOver(mState) && !baseTowerButton.RollOver(mState))
                 {
+                    //let the user place a tower
                     placeTower = true;
                 }
 
                 //if the player hits left or right control
                 if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
                 {
-                    //return to gameplay
+                    //pause the game
                     gState = GameState.PauseScreen;
                 }
                 //if the player hits the pause button
                 if (pauseButton.Clicked(mState, prevMState))
                 {
-                    //return to gameplay
+                    //pause the game
                     gState = GameState.PauseScreen;
                 }
 
@@ -465,65 +479,8 @@ namespace Bruh_Overtime_Defense
                 //Next wave button clicked
                 if (nextWaveButton.Clicked(mState,prevMState))
                 {
-                   
-                    //Checks for the current wave, and how that
-                    //affects the enemies
-                    //easy enemies, only require one hit
-                    //to kill. normal speed
-                    if(currWave < 10 && currWave != 10)
-                    {
-                        enemySpeed = 3;
-                        enemyHealth = 1;
-                    }
-
-                    //normal enemies, require 3 hits to kill
-                    //and have a slightly elevated speed
-                    else if(currWave <= 20)
-                    {
-                        enemySpeed = 4;
-                        enemyHealth = 3;                        
-                    }
-
-                    //hard enemies, require 4 hits to kill,
-                    //have a very fast speed
-                    else
-                    {
-                        enemySpeed = 5;
-                        enemyHealth = 4;
-                    }
-
-                    //checks if all the enemies in the enemies
-                    //list are dead
-                    if(enMan.AllEnemiesDead())
-                    {
-                        newWave = true;
-                        //increment the wave
-                        currWave += 1;
-                        //reset the enemy list
-                        enMan.ResetEnemies();
-
-                        //check for resignations (which
-                        //adds an enemy to the list)
-                        towerManager.Resignations(towers,
-                            enemies, enemyTex, collisions.StartPosition);
-                          
-                        //adds new enemies to the list
-                        for (int i = 0; i < waveAmount; i++)
-                        {
-                            enemies.Add(new Enemy(
-                            enemyTex,
-                            enemyHealth,
-                            enemySpeed,
-                            collisions.StartPosition));
-                        }
-                        
-                        //changes the display to the current
-                        //amount of enemies in the list
-                        enemyCount = enemies.Count;
-                        //increments the # of enemies
-                        //for next time
-                        waveAmount += 5;                    
-                    }                    
+                    NextWave();
+                                       
                 }
             }
 
@@ -745,6 +702,69 @@ namespace Bruh_Overtime_Defense
             //other buttons
             erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeOFF");
             erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
+        }
+
+        //triggers the next wave
+        public void NextWave()
+        {
+            //Checks for the current wave, and how that
+            //affects the enemies
+            //easy enemies, only require one hit
+            //to kill. normal speed
+            if (currWave < 10 && currWave != 10)
+            {
+                enemySpeed = 3;
+                enemyHealth = 1;
+            }
+
+            //normal enemies, require 3 hits to kill
+            //and have a slightly elevated speed
+            else if (currWave <= 20)
+            {
+                enemySpeed = 4;
+                enemyHealth = 3;
+            }
+
+            //hard enemies, require 4 hits to kill,
+            //have a very fast speed
+            else
+            {
+                enemySpeed = 5;
+                enemyHealth = 4;
+            }
+
+            //checks if all the enemies in the enemies
+            //list are dead
+            if (enMan.AllEnemiesDead())
+            {
+                newWave = true;
+                //increment the wave
+                currWave += 1;
+                //reset the enemy list
+                enMan.ResetEnemies();
+
+                //check for resignations (which
+                //adds an enemy to the list)
+                towerManager.Resignations(towers,
+                    enemies, enemyTex, collisions.StartPosition);
+
+                //adds new enemies to the list
+                for (int i = 0; i < waveAmount; i++)
+                {
+                    enemies.Add(new Enemy(
+                    enemyTex,
+                    enemyHealth,
+                    enemySpeed,
+                    collisions.StartPosition));
+                }
+
+                //changes the display to the current
+                //amount of enemies in the list
+                enemyCount = enemies.Count;
+                //increments the # of enemies
+                //for next time
+                waveAmount += 5;
+            }
         }
     }
 }
