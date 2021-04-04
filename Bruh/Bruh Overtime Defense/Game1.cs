@@ -69,6 +69,7 @@ namespace Bruh_Overtime_Defense
         private Button pauseButton;
         private Button nextWaveButton;
         private Button baseTowerButton;
+        private bool isActive;
 
         //SpriteFonts
         private SpriteFont arial10;
@@ -106,7 +107,7 @@ namespace Bruh_Overtime_Defense
         private int waveAmount;
         private int enemyCount;
         int health;
-        TimeSpan timeSpanSincePause;
+        private TimeSpan timeSpanSincePause;
 
         public Game1()
         {
@@ -168,6 +169,7 @@ namespace Bruh_Overtime_Defense
             health = 10;
             newWave = false;
             currWave = 0;
+            isActive = true;
             waveAmount = 0;
 
             //Enemies, and enemy manager
@@ -442,6 +444,7 @@ namespace Bruh_Overtime_Defense
                 //Next wave button clicked
                 if (nextWaveButton.Clicked(mState,prevMState))
                 {
+                   
                     //Checks for the current wave, and how that
                     //affects the enemies
                     //easy enemies, only require one hit
@@ -470,7 +473,7 @@ namespace Bruh_Overtime_Defense
 
                     //checks if all the enemies in the enemies
                     //list are dead
-                    if(enMan.AllEnemiesDead() == true)
+                    if(enMan.AllEnemiesDead())
                     {
                         newWave = true;
                         //increment the wave
@@ -491,11 +494,6 @@ namespace Bruh_Overtime_Defense
                             enemyHealth,
                             enemySpeed,
                             collisions.StartPosition));
-
-                            if(i == 0)
-                            {
-                                enemies[i].IsDead = false;
-                            }
                         }
                         
                         //changes the display to the current
