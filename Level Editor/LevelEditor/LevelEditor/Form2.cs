@@ -33,9 +33,11 @@ namespace LevelEditor
         private string[,] collisionColors;
         private bool isSaved;
 
+
         private Color currentColor;
 
         private string path;
+        private float[,] rotationValues;
 
         //ROTATION
         private float rotation;
@@ -55,6 +57,7 @@ namespace LevelEditor
             boxes = new PictureBox[height, width];
             overlay = new PictureBox[height, width];
             collisions = new PictureBox[height, width];
+            rotationValues = new float[height, width];
             isSaved = true;
 
             buttons = new List<Button>();
@@ -117,6 +120,9 @@ namespace LevelEditor
 
                 PictureBox p = (PictureBox)sender;
 
+                int widthLoc = p.Location.X / p.Width;
+                int heightLoc = p.Location.Y / p.Height;
+
                 p.Capture = false;
 
                 //Allows for drawing pictures
@@ -134,6 +140,7 @@ namespace LevelEditor
                     //Load image
                     p.Load("../../../" + path);
                     Rotate(p);
+                    rotationValues[heightLoc, widthLoc] = rotation;
                     
 
                     //Shows indicator that the user needs to save!
@@ -582,6 +589,8 @@ namespace LevelEditor
                 Rotate(texturePic);
                 texturePic.Refresh();
             }
+
+            
         }
 
         /// <summary>
@@ -670,6 +679,9 @@ namespace LevelEditor
         {
             //clears the controls
             mapBox.Controls.Clear();
+            rotateTexture.Enabled = false;
+            Rotate(texturePic);
+            texturePic.Refresh();
 
             //changes the color of the buttons to indicate
             //that the user is on the overlay tab
@@ -700,6 +712,10 @@ namespace LevelEditor
         {
             //clears the controls
             mapBox.Controls.Clear();
+            rotation = 0;
+            rotateTexture.Enabled = true;
+            Rotate(texturePic);
+            texturePic.Refresh();
 
             //changes color of buttons to indicate that the user
             //is selecting the background later
@@ -730,6 +746,10 @@ namespace LevelEditor
         private void collisionsButton_Click(object sender, EventArgs e)
         {
             mapBox.Controls.Clear();
+            rotation = 0;
+            rotateTexture.Enabled = false;
+            Rotate(texturePic);
+            texturePic.Refresh();
 
             //changes color of buttons to indicate that the user
             //is selecting the background later
@@ -951,7 +971,12 @@ namespace LevelEditor
         /// <param name="p"></param>
         private void Rotate(PictureBox p)
         {
-            if (rotation == 90)
+            if(rotation == 0)
+            {
+                p.Image.Dispose();
+                p.Load("../../../" + path);
+            }
+            else if (rotation == 90)
             {
                 p.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
             }
