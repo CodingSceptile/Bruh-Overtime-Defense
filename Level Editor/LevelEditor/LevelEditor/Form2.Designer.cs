@@ -43,13 +43,16 @@
             this.colorSelect = new System.Windows.Forms.PictureBox();
             this.currentColorLabel = new System.Windows.Forms.Label();
             this.vectorIndicators = new System.Windows.Forms.GroupBox();
+            this.color15 = new System.Windows.Forms.Button();
+            this.color3 = new System.Windows.Forms.Button();
+            this.color4 = new System.Windows.Forms.Button();
             this.color14 = new System.Windows.Forms.Button();
             this.color11 = new System.Windows.Forms.Button();
             this.color2 = new System.Windows.Forms.Button();
             this.color1 = new System.Windows.Forms.Button();
             this.colorPick = new System.Windows.Forms.ColorDialog();
-            this.color4 = new System.Windows.Forms.Button();
-            this.color3 = new System.Windows.Forms.Button();
+            this.collisionsButton = new System.Windows.Forms.Button();
+            this.rotateTexture = new System.Windows.Forms.Button();
             this.textureBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.texturePic)).BeginInit();
             this.basicColors.SuspendLayout();
@@ -62,7 +65,7 @@
             this.saveButton.BackColor = System.Drawing.Color.LavenderBlush;
             this.saveButton.Location = new System.Drawing.Point(223, 434);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(90, 86);
+            this.saveButton.Size = new System.Drawing.Size(90, 80);
             this.saveButton.TabIndex = 7;
             this.saveButton.Text = "Save File";
             this.saveButton.UseVisualStyleBackColor = false;
@@ -71,9 +74,9 @@
             // loadButton
             // 
             this.loadButton.BackColor = System.Drawing.Color.LavenderBlush;
-            this.loadButton.Location = new System.Drawing.Point(319, 434);
+            this.loadButton.Location = new System.Drawing.Point(223, 352);
             this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(91, 86);
+            this.loadButton.Size = new System.Drawing.Size(90, 80);
             this.loadButton.TabIndex = 8;
             this.loadButton.Text = "Load File";
             this.loadButton.UseVisualStyleBackColor = false;
@@ -154,9 +157,9 @@
             // backgroundButton
             // 
             this.backgroundButton.BackColor = System.Drawing.Color.LavenderBlush;
-            this.backgroundButton.Location = new System.Drawing.Point(223, 274);
+            this.backgroundButton.Location = new System.Drawing.Point(320, 273);
             this.backgroundButton.Name = "backgroundButton";
-            this.backgroundButton.Size = new System.Drawing.Size(187, 72);
+            this.backgroundButton.Size = new System.Drawing.Size(107, 72);
             this.backgroundButton.TabIndex = 15;
             this.backgroundButton.Text = "Background";
             this.backgroundButton.UseVisualStyleBackColor = false;
@@ -165,9 +168,9 @@
             // overlayButton
             // 
             this.overlayButton.BackColor = System.Drawing.Color.LavenderBlush;
-            this.overlayButton.Location = new System.Drawing.Point(223, 353);
+            this.overlayButton.Location = new System.Drawing.Point(320, 434);
             this.overlayButton.Name = "overlayButton";
-            this.overlayButton.Size = new System.Drawing.Size(187, 75);
+            this.overlayButton.Size = new System.Drawing.Size(107, 80);
             this.overlayButton.TabIndex = 16;
             this.overlayButton.Text = "Overlay";
             this.overlayButton.UseVisualStyleBackColor = false;
@@ -205,6 +208,7 @@
             // 
             // vectorIndicators
             // 
+            this.vectorIndicators.Controls.Add(this.color15);
             this.vectorIndicators.Controls.Add(this.color3);
             this.vectorIndicators.Controls.Add(this.color4);
             this.vectorIndicators.Controls.Add(this.color14);
@@ -213,14 +217,44 @@
             this.vectorIndicators.Controls.Add(this.color1);
             this.vectorIndicators.Location = new System.Drawing.Point(6, 21);
             this.vectorIndicators.Name = "vectorIndicators";
-            this.vectorIndicators.Size = new System.Drawing.Size(327, 134);
+            this.vectorIndicators.Size = new System.Drawing.Size(385, 134);
             this.vectorIndicators.TabIndex = 0;
             this.vectorIndicators.TabStop = false;
             this.vectorIndicators.Text = "Vector2 Indicators (Right Click)";
             // 
+            // color15
+            // 
+            this.color15.Location = new System.Drawing.Point(314, 21);
+            this.color15.Name = "color15";
+            this.color15.Size = new System.Drawing.Size(43, 107);
+            this.color15.TabIndex = 16;
+            this.color15.Text = "T\r\nR\r\nA\r\nC\r\nK";
+            this.color15.UseVisualStyleBackColor = true;
+            this.color15.Click += new System.EventHandler(this.ColorPicker);
+            // 
+            // color3
+            // 
+            this.color3.Location = new System.Drawing.Point(118, 23);
+            this.color3.Name = "color3";
+            this.color3.Size = new System.Drawing.Size(43, 105);
+            this.color3.TabIndex = 15;
+            this.color3.Text = "-1\r\n0";
+            this.color3.UseVisualStyleBackColor = true;
+            this.color3.Click += new System.EventHandler(this.ColorPicker);
+            // 
+            // color4
+            // 
+            this.color4.Location = new System.Drawing.Point(167, 23);
+            this.color4.Name = "color4";
+            this.color4.Size = new System.Drawing.Size(43, 105);
+            this.color4.TabIndex = 14;
+            this.color4.Text = "0\r\n-1";
+            this.color4.UseVisualStyleBackColor = true;
+            this.color4.Click += new System.EventHandler(this.ColorPicker);
+            // 
             // color14
             // 
-            this.color14.Location = new System.Drawing.Point(265, 23);
+            this.color14.Location = new System.Drawing.Point(265, 21);
             this.color14.Name = "color14";
             this.color14.Size = new System.Drawing.Size(43, 107);
             this.color14.TabIndex = 13;
@@ -258,25 +292,27 @@
             this.color1.UseVisualStyleBackColor = true;
             this.color1.Click += new System.EventHandler(this.ColorPicker);
             // 
-            // color4
+            // collisionsButton
             // 
-            this.color4.Location = new System.Drawing.Point(167, 23);
-            this.color4.Name = "color4";
-            this.color4.Size = new System.Drawing.Size(43, 105);
-            this.color4.TabIndex = 14;
-            this.color4.Text = "0\r\n-1";
-            this.color4.UseVisualStyleBackColor = true;
-            this.color4.Click += new System.EventHandler(this.ColorPicker);
+            this.collisionsButton.BackColor = System.Drawing.Color.LavenderBlush;
+            this.collisionsButton.Location = new System.Drawing.Point(320, 352);
+            this.collisionsButton.Name = "collisionsButton";
+            this.collisionsButton.Size = new System.Drawing.Size(107, 75);
+            this.collisionsButton.TabIndex = 18;
+            this.collisionsButton.Text = "Collisions";
+            this.collisionsButton.UseVisualStyleBackColor = false;
+            this.collisionsButton.Click += new System.EventHandler(this.collisionsButton_Click);
             // 
-            // color3
+            // rotateTexture
             // 
-            this.color3.Location = new System.Drawing.Point(118, 23);
-            this.color3.Name = "color3";
-            this.color3.Size = new System.Drawing.Size(43, 105);
-            this.color3.TabIndex = 15;
-            this.color3.Text = "-1\r\n0";
-            this.color3.UseVisualStyleBackColor = true;
-            this.color3.Click += new System.EventHandler(this.ColorPicker);
+            this.rotateTexture.BackColor = System.Drawing.Color.LavenderBlush;
+            this.rotateTexture.Location = new System.Drawing.Point(222, 273);
+            this.rotateTexture.Name = "rotateTexture";
+            this.rotateTexture.Size = new System.Drawing.Size(91, 72);
+            this.rotateTexture.TabIndex = 19;
+            this.rotateTexture.Text = "Rotate \r\nTexture\r\n";
+            this.rotateTexture.UseVisualStyleBackColor = false;
+            this.rotateTexture.Click += new System.EventHandler(this.rotateTexture_Click);
             // 
             // levelEditor
             // 
@@ -284,8 +320,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
             this.ClientSize = new System.Drawing.Size(1252, 854);
-            this.Controls.Add(this.basicColors);
             this.Controls.Add(this.overlayButton);
+            this.Controls.Add(this.rotateTexture);
+            this.Controls.Add(this.collisionsButton);
+            this.Controls.Add(this.basicColors);
             this.Controls.Add(this.backgroundButton);
             this.Controls.Add(this.recentlyUsedLabel);
             this.Controls.Add(this.texturesLabel);
@@ -333,5 +371,8 @@
         private System.Windows.Forms.Label currentColorLabel;
         private System.Windows.Forms.Button color3;
         private System.Windows.Forms.Button color4;
+        private System.Windows.Forms.Button color15;
+        private System.Windows.Forms.Button collisionsButton;
+        private System.Windows.Forms.Button rotateTexture;
     }
 }
