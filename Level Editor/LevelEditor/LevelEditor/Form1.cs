@@ -239,13 +239,41 @@ namespace LevelEditor
                     height = reader.ReadInt32();
                     writer.Write(height);
 
-                   
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            string currentPicture = reader.ReadString();
+                            int rotationValue = reader.ReadInt32();
+
+                            //Colors obtained (Vector2 data)
+                            if (currentPicture.Contains("<"))
+                            {
+                                writer.Write(currentPicture);
+                                continue;
+                            }
+
+                            //Not a color, write the tile ID without the
+                            //path
+                            if (currentPicture.Contains("../../../"))
+                            {
+                                currentPicture = currentPicture.Substring
+                                    (currentPicture.LastIndexOf('/') + 1,
+                                    currentPicture.LastIndexOf('.') - currentPicture.LastIndexOf('/') - 1);
+                            }
+                            writer.Write(currentPicture);
+                            writer.Write(rotationValue);
+                            
+                        }
+                    }
+                
                     for (int i = 0; i < width; i++)
                     {
                         for (int j = 0; j < height * 2; j++)
                         {
                             string currentPicture = reader.ReadString();
                             
+
                             //Colors obtained (Vector2 data)
                             if (currentPicture.Contains("<"))
                             {
