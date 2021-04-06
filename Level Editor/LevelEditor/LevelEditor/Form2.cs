@@ -32,12 +32,16 @@ namespace LevelEditor
         private string[,] overlayColors;
         private string[,] collisionColors;
         private bool isSaved;
+        private int rotationSaveX;
+        private int rotationSaveY;
+        private bool rotationsSaved;
+        private bool rotationsLoaded;
 
 
         private Color currentColor;
 
         private string path;
-        private float[,] rotationValues;
+        private int[,] rotationValues;
 
         //ROTATION
         private float rotation;
@@ -57,8 +61,10 @@ namespace LevelEditor
             boxes = new PictureBox[height, width];
             overlay = new PictureBox[height, width];
             collisions = new PictureBox[height, width];
-            rotationValues = new float[height, width];
+            rotationValues = new int[height, width];
             isSaved = true;
+            rotationsSaved = false;
+            rotationsLoaded = false;
 
             buttons = new List<Button>();
             AssignColors();
@@ -71,6 +77,8 @@ namespace LevelEditor
 
             backgroundButton.BackColor = Color.Green;
             rotation = 0;
+            rotationSaveX = 0;
+            rotationSaveY = 0;
         }
 
         /// <summary>
@@ -140,9 +148,12 @@ namespace LevelEditor
                     //Load image
                     p.Load("../../../" + path);
                     Rotate(p);
-                    rotationValues[heightLoc, widthLoc] = rotation;
-                    
 
+                    if(boxes[0,0].Enabled == true)
+                    {
+                        rotationValues[heightLoc, widthLoc] = (int)rotation;
+                    }
+                                     
                     //Shows indicator that the user needs to save!
                     if (this.Text.IndexOf("*") == -1)
                     {
@@ -223,7 +234,8 @@ namespace LevelEditor
                     //Background
 
                     //Saves the ARGB colors of the pictureboxes
-
+                    rotationSaveX = 0;
+                    rotationSaveY = 0;
                     Save(boxes, writer);
                     Save(overlay, writer);
                     Save(collisions, writer);
@@ -245,6 +257,7 @@ namespace LevelEditor
                     if(stream != null)
                     {
                         writer.Close();
+                        rotationsSaved = false;
                     }                    
                 }
             }            
@@ -292,8 +305,9 @@ namespace LevelEditor
 
                     //Background
 
+                    rotationValues = new int[height, width];
                     LoadColors(colors, reader);
-
+                    rotationsLoaded = true;
 
                     //Overlay 
 
@@ -335,6 +349,9 @@ namespace LevelEditor
                 if (stream != null)
                 {
                     reader.Close();
+                    rotation = 0;
+                    Rotate(texturePic);
+                    texturePic.Refresh();
                 }
             }                 
         }
@@ -446,6 +463,7 @@ namespace LevelEditor
             overlay = new PictureBox[height, width];
 
             LoadPictureBoxLists(boxes, Width, Height, colors);
+            rotationsLoaded = false;
             LoadPictureBoxLists(overlay, Width, Height, overlayColors);
             LoadPictureBoxLists(collisions, Width, Height, collisionColors);
             
@@ -554,9 +572,7 @@ namespace LevelEditor
                 texturePic.SizeMode = PictureBoxSizeMode.Zoom;
                 Rotate(texturePic);
                 texturePic.Refresh();
-            }
-
-            
+            }            
         }
 
         /// <summary>
@@ -646,7 +662,8 @@ namespace LevelEditor
             //clears the controls
             mapBox.Controls.Clear();
             rotateTexture.Enabled = false;
-            Rotate(texturePic);
+            texturePic.Image.Dispose();
+            texturePic.Load("../../../" + path);
             texturePic.Refresh();
 
             //changes the color of the buttons to indicate
@@ -680,7 +697,8 @@ namespace LevelEditor
             mapBox.Controls.Clear();
             rotation = 0;
             rotateTexture.Enabled = true;
-            Rotate(texturePic);
+            texturePic.Image.Dispose();
+            texturePic.Load("../../../" + path);
             texturePic.Refresh();
 
             //changes color of buttons to indicate that the user
@@ -714,7 +732,8 @@ namespace LevelEditor
             mapBox.Controls.Clear();
             rotation = 0;
             rotateTexture.Enabled = false;
-            Rotate(texturePic);
+            texturePic.Image.Dispose();
+            texturePic.Load("../../../" + path);
             texturePic.Refresh();
 
             //changes color of buttons to indicate that the user
@@ -800,6 +819,12 @@ namespace LevelEditor
                     {
                         box.Load(codeList[i, j]);
                         box.SizeMode = PictureBoxSizeMode.Zoom;
+                        if(rotationsLoaded == true)
+                        {
+                            rotation = rotationValues[i, j];
+                            Rotate(box);
+                            box.Refresh();
+                        }                       
                     }
 
                     //Add the pictureboxes to the controls
@@ -856,11 +881,17 @@ namespace LevelEditor
                     {
                         codeList[i, j] = currentPicture;
                     }
+
+                    if(rotationsLoaded == false)
+                    {
+                        int rotationValue = reader.ReadInt32();
+                        rotationValues[i, j] = rotationValue;
+                    }
                 }
             }
         }
 
-        /// <summary>
+        /// <summary
         /// Facilitates saving files
         /// </summary>
         /// <param name="boxes">current List of pictureBoxes</param>
@@ -909,7 +940,20 @@ namespace LevelEditor
                         writer.Write("../../../default-min.png");
                     }
                 }
+
+                if(rotationsSaved == false)
+                {
+                    writer.Write(rotationValues[rotationSaveY, rotationSaveX]);
+                    rotationSaveX++;
+                    if(rotationSaveX == Width)
+                    {
+                        rotationSaveY++;
+                        rotationSaveX = 0;
+                    }
+                }
             }
+
+            rotationsSaved = true;
         }
 
         /// <summary>
@@ -937,12 +981,7 @@ namespace LevelEditor
         /// <param name="p"></param>
         private void Rotate(PictureBox p)
         {
-            if(rotation == 0)
-            {
-                p.Image.Dispose();
-                p.Load("../../../" + path);
-            }
-            else if (rotation == 90)
+            if (rotation == 90)
             {
                 p.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
             }
