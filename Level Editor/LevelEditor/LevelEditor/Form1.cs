@@ -24,6 +24,9 @@ namespace LevelEditor
         private string[,] colors;
         private string[,] overlayColors;
         private string[,] collisionColors;
+        private bool rotationsLoaded;
+        private int[,] rotationValues;
+
 
         //Constructor
 
@@ -33,6 +36,7 @@ namespace LevelEditor
         public Form1()
         {
             InitializeComponent();
+            rotationsLoaded = false;
 
         }
 
@@ -80,12 +84,18 @@ namespace LevelEditor
                     overlayColors = new string[width, height];
                     collisionColors = new string[width, height];
 
+                    rotationValues = new int[width, height];
+
 
                     //BACKGROUND LAYER
+                    editor.LoadColors(colors, reader, rotationValues, rotationsLoaded);
+                    rotationsLoaded = true;
 
-                    editor.LoadColors(colors, reader);
-                    editor.LoadColors(overlayColors, reader);
-                    editor.LoadColors(collisionColors, reader);
+                    editor.LoadColors(overlayColors, reader, rotationValues, rotationsLoaded);
+                    editor.LoadColors(collisionColors, reader, rotationValues, rotationsLoaded);
+
+                    editor.RotationValues = rotationValues;
+                    editor.RotationsLoaded = rotationsLoaded;
                     
                     //loads the picture boxes and matches the colors
                     editor.LoadBoxes(colors, overlayColors, collisionColors);
@@ -105,6 +115,10 @@ namespace LevelEditor
                     //Something was wrong with the file
                     MessageBox.Show("Error reading file! " + ex.Message, ":(");
                     stream.Close();
+                }
+                finally
+                {
+                    rotationsLoaded = false;
                 }
             }
 

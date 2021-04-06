@@ -46,6 +46,21 @@ namespace LevelEditor
         //ROTATION
         private float rotation;
 
+        //Properties
+        public int[,] RotationValues 
+        {
+            get { return rotationValues; }
+            set { rotationValues = value; }
+        }
+
+        public bool RotationsLoaded
+        {
+            get { return rotationsLoaded; }
+            set { rotationsLoaded = value; }
+        }
+
+
+
         /// <summary>
         /// Creates the level editor form
         /// </summary>
@@ -306,15 +321,15 @@ namespace LevelEditor
                     //Background
 
                     rotationValues = new int[height, width];
-                    LoadColors(colors, reader);
+                    LoadColors(colors, reader, rotationValues, rotationsLoaded);
                     rotationsLoaded = true;
 
                     //Overlay 
 
-                    LoadColors(overlayColors, reader);
+                    LoadColors(overlayColors, reader, rotationValues, rotationsLoaded);
 
                     //Collisions
-                    LoadColors(collisionColors, reader);
+                    LoadColors(collisionColors, reader, rotationValues, rotationsLoaded);
                 }
 
                 //User cancels decision
@@ -843,7 +858,8 @@ namespace LevelEditor
         /// </summary>
         /// <param name="codeList">array of data</param>
         /// <param name="reader">reads in data</param>
-        public void LoadColors(string[,] codeList, BinaryReader reader)
+        public void LoadColors(string[,] codeList, BinaryReader reader,
+            int[,] rotationValues, bool rotationsLoaded)
         {
             //Fills the array with the colors of the loaded data
             //(Vector2/Begin tile)
