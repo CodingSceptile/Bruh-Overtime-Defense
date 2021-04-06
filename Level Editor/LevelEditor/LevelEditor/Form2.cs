@@ -86,8 +86,8 @@ namespace LevelEditor
 
             currentColor = Color.Red;
 
-            path = "Default size/towerDefense_tile001.png";
-            texturePic.Load("../../../" + path);
+            path = "../../../Default size/towerDefense_tile001.png";
+            texturePic.Load(path);
             texturePic.SizeMode = PictureBoxSizeMode.Zoom;
 
             backgroundButton.BackColor = Color.Green;
@@ -114,11 +114,22 @@ namespace LevelEditor
         private void LevelEditor_Load(object sender, EventArgs e)
         {           
             ResizeForm();
-
-            for (int i = 1; i < 300; i++)
-            {
-                pictureSelect.Items.Add("Tower defense texture " + i);
-            }
+            texture1.Load("../../../Default size/towerDefense_tile001.png");
+            texture1.SizeMode = PictureBoxSizeMode.Zoom;
+            texture2.Load("../../../Default size/towerDefense_tile002.png");
+            texture2.SizeMode = PictureBoxSizeMode.Zoom;
+            texture3.Load("../../../Default size/towerDefense_tile003.png");
+            texture3.SizeMode = PictureBoxSizeMode.Zoom;
+            texture4.Load("../../../Default size/towerDefense_tile004.png");
+            texture4.SizeMode = PictureBoxSizeMode.Zoom;
+            texture5.Load("../../../Default size/towerDefense_tile005.png");
+            texture5.SizeMode = PictureBoxSizeMode.Zoom;
+            texture6.Load("../../../Default size/towerDefense_tile006.png");
+            texture6.SizeMode = PictureBoxSizeMode.Zoom;
+            texture7.Load("../../../Default size/towerDefense_tile007.png");
+            texture7.SizeMode = PictureBoxSizeMode.Zoom;
+            texture8.Load("../../../Default size/towerDefense_tile008.png");
+            texture8.SizeMode = PictureBoxSizeMode.Zoom;
 
         }
 
@@ -161,7 +172,7 @@ namespace LevelEditor
                     //Resize image
                     p.SizeMode = PictureBoxSizeMode.Zoom;
                     //Load image
-                    p.Load("../../../" + path);
+                    p.Load(path);
                     Rotate(p);
 
                     if(boxes[0,0].Enabled == true)
@@ -177,18 +188,7 @@ namespace LevelEditor
 
                         //Unsaved changes...
                         isSaved = false;
-                    }
-
-                    //Adds the path to recently used if it wasn't
-                    //already there
-                    if (recentlyUsed.Items.Contains(path))
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        recentlyUsed.Items.Add(path);
-                    }                   
+                    }                 
                 }
 
                 //Draws colors
@@ -552,43 +552,6 @@ namespace LevelEditor
                 }
             }
         }
-        
-        /// <summary>
-        /// Checks for which texture a user chooses
-        /// from the list displayed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void pictureSelect_SelectedIndexChanged(object sender, EventArgs e)
-        {
-           if(sender is ListBox)
-            {
-                ListBox b = (ListBox)sender;
-
-                //determines the index that was selected
-                int index = b.SelectedIndex + 1;
-
-                //Determines the path that the user chose
-                if(index < 10)
-                {
-                    path = "Default size/towerDefense_tile" + $"00{index}.png";
-                }
-                else if(index < 100)
-                {
-                    path = "Default size/towerDefense_tile" + $"0{index}.png";
-                }
-                else
-                {
-                    path = "Default size/towerDefense_tile" + $"{index}.png";
-                }
-
-                //loads the image for preview, resizes accordingly
-                texturePic.Load("../../../" + path);
-                texturePic.SizeMode = PictureBoxSizeMode.Zoom;
-                Rotate(texturePic);
-                texturePic.Refresh();
-            }            
-        }
 
         /// <summary>
         /// Displays recently selected tiles
@@ -600,21 +563,15 @@ namespace LevelEditor
         {
             //Works much the same as pictureSelect_SelectedIndexChanged(object sender, EventArgs e)
             //but is operated in a different section.
-            if (sender is ListBox)
+            if (sender is PictureBox)
             {
-                ListBox b = (ListBox)sender;
+                PictureBox p = (PictureBox)sender;
 
-               
-                int index = b.SelectedIndex;
 
-                if(index == -1)
-                {
-                    return;
-                }
 
-                path = (string)b.Items[index];
+                path = p.ImageLocation;
 
-                texturePic.Load("../../../" + path);
+                texturePic.Load(path);
                 Rotate(texturePic);
                 texturePic.Refresh();
             }
@@ -678,7 +635,7 @@ namespace LevelEditor
             mapBox.Controls.Clear();
             rotateTexture.Enabled = false;
             texturePic.Image.Dispose();
-            texturePic.Load("../../../" + path);
+            texturePic.Load(path);
             texturePic.Refresh();
 
             //changes the color of the buttons to indicate
@@ -713,7 +670,7 @@ namespace LevelEditor
             rotation = 0;
             rotateTexture.Enabled = true;
             texturePic.Image.Dispose();
-            texturePic.Load("../../../" + path);
+            texturePic.Load(path);
             texturePic.Refresh();
 
             //changes color of buttons to indicate that the user
@@ -748,7 +705,7 @@ namespace LevelEditor
             rotation = 0;
             rotateTexture.Enabled = false;
             texturePic.Image.Dispose();
-            texturePic.Load("../../../" + path);
+            texturePic.Load(path);
             texturePic.Refresh();
 
             //changes color of buttons to indicate that the user
@@ -821,6 +778,10 @@ namespace LevelEditor
                         {
                             box.BackColor = Color.Violet;
                         }
+                        else if(codeList[i, j] == "Color [Yellow]")
+                        {
+                            box.BackColor = Color.Yellow;
+                        }
                         else if (codeList[i, j] == "<1, -1>")
                         {
                             box.BackColor = Color.HotPink;
@@ -891,7 +852,7 @@ namespace LevelEditor
                     }
                     else if(currentPicture == "track")
                     {
-                        codeList[i, j] = Color.Violet.ToString();
+                        codeList[i, j] = Color.Yellow.ToString();
                     }
                     else
                     {
@@ -904,6 +865,21 @@ namespace LevelEditor
                         rotationValues[i, j] = rotationValue;
                     }
                 }
+            }
+        }
+
+        private void ChangePath(Object sender, EventArgs e)
+        {
+            if(sender is PictureBox)
+            {
+                PictureBox p = (PictureBox)sender;
+
+                path = p.ImageLocation;
+
+                texturePic.Image.Dispose();
+                texturePic.Load(path);
+                Rotate(texturePic);
+                texturePic.Refresh();
             }
         }
 
