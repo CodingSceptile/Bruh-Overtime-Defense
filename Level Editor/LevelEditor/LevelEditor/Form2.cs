@@ -184,6 +184,7 @@ namespace LevelEditor
                     p.SizeMode = PictureBoxSizeMode.Zoom;
                     //Load image
                     p.Load(path);
+                    p.BackColor = Color.Transparent;
                     Rotate(p);
 
                     if(boxes[0,0].Enabled == true)
@@ -648,6 +649,7 @@ namespace LevelEditor
             texturePic.Image.Dispose();
             texturePic.Load(path);
             texturePic.Refresh();
+            paintButton.Enabled = false;
 
             //changes the color of the buttons to indicate
             //that the user is on the overlay tab
@@ -683,6 +685,7 @@ namespace LevelEditor
             texturePic.Image.Dispose();
             texturePic.Load(path);
             texturePic.Refresh();
+            paintButton.Enabled = true;
 
             //changes color of buttons to indicate that the user
             //is selecting the background later
@@ -718,6 +721,7 @@ namespace LevelEditor
             texturePic.Image.Dispose();
             texturePic.Load(path);
             texturePic.Refresh();
+            paintButton.Enabled = false;
 
             //changes color of buttons to indicate that the user
             //is selecting the background later
@@ -971,6 +975,7 @@ namespace LevelEditor
                     }
                 }
 
+                //saves rotation values to the external file
                 if(rotationsSaved == false)
                 {
                     writer.Write(rotationValues[rotationSaveY, rotationSaveX]);
@@ -983,6 +988,8 @@ namespace LevelEditor
                 }
             }
 
+            //signifies that the rotations are saved, and
+            //do not have to be written again. (would cause an error)
             rotationsSaved = true;
         }
 
@@ -998,10 +1005,12 @@ namespace LevelEditor
                 rotation = 0;
             }
 
+            //rotates the texturePic image
             texturePic.Image.RotateFlip
                 (RotateFlipType.Rotate90FlipNone);
             texturePic.Refresh();
 
+            //adds to the current rotatiom
             rotation += 90f;
         }
 
@@ -1013,17 +1022,58 @@ namespace LevelEditor
         {
             if (rotation == 90)
             {
+                //rotates the image 90 degrees
                 p.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
             }
             else if (rotation == 180)
             {
+                //rotates the image 180 degrees
                 p.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
             }
             else if (rotation == 270)
             {
+                //rotates the image 270 degrees
                 p.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
             }
         }
 
+        /// <summary>
+        /// Paints all tiles to one tile
+        /// (Background layer only)
+        /// </summary>
+        /// <param name="sender">button</param>
+        /// <param name="e">handles events</param>
+        public void PaintBox(object sender, EventArgs e)
+        {
+            if(sender is Button)
+            {
+                //Makes sure the user wants to recolor the
+                //entire background by showing a popup
+                DialogResult rs = 
+                    MessageBox.Show(
+                        "Are you sure you want to recolor the whole background?",
+                        "?",
+                        MessageBoxButtons.YesNo);
+
+                //user wants to recolor the whole background
+                if(rs == DialogResult.Yes)
+                {
+                    //goes through all of the pictureBoxes
+                    foreach (PictureBox p in boxes)
+                    {
+                        //checks if an image is present
+                        if (p.Image != null)
+                        {
+                            p.Image.Dispose();
+                        }
+                        //Replaces the image
+                        p.Load(path);
+                        p.SizeMode = PictureBoxSizeMode.Zoom;
+                        Rotate(p);
+                        p.Update();
+                    }
+                }               
+            }           
+        }
     }   
 }
