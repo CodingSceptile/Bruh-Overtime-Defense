@@ -118,6 +118,7 @@ namespace Bruh_Overtime_Defense
             originalSalary = initialCost;
             salary = originalSalary;
             this.activitySpeed = activitySpeed;
+            gameTime = new GameTime();
         }
 
         //Methods
