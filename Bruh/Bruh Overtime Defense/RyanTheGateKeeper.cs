@@ -62,6 +62,7 @@ namespace Bruh_Overtime_Defense
         {
             double time = (gameTime.TotalGameTime.TotalSeconds % 10);
 
+            //if time between 0-2, 4-6, 8-9 then tower activates.
             if ((time > 0) && time < 2 ||
                (time > 4 && time < 6) ||
                (time > 8 && time < 9))
