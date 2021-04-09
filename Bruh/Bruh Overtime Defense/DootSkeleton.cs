@@ -14,10 +14,5 @@ namespace Bruh_Overtime_Defense
         {
 
         }
-
-        public override bool Shoot(List<Enemy> enemies)
-        {
-            return base.Shoot(enemies);
-        }
     }
 }
