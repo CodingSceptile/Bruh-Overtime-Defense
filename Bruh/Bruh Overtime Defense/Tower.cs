@@ -18,7 +18,7 @@ namespace Bruh_Overtime_Defense
         private float originalSalary; 
         private float salary;
         private int activitySpeed;
-
+        private GameTime gameTime;
 
         //Properties
         /// <summary>
@@ -118,6 +118,7 @@ namespace Bruh_Overtime_Defense
             originalSalary = initialCost;
             salary = originalSalary;
             this.activitySpeed = activitySpeed;
+            gameTime = new GameTime();
         }
 
         //Methods
@@ -172,20 +173,24 @@ namespace Bruh_Overtime_Defense
         {
             foreach (Enemy e in enemies)
             {
-                if (Distance(Position, e.Position) <= Radius)
+                //Shoots every activitySpeed amount of seconds.
+                if(gameTime.TotalGameTime.TotalSeconds % activitySpeed == 0)
                 {
-                    if (e.IsDead == true)
+                    if (Distance(Position, e.Position) <= Radius)
                     {
-                        continue;
-                    }
+                        if (e.IsDead == true)
+                        {
+                            continue;
+                        }
 
-                    e.Health -= 1;
-                    if (e.Health <= 0)
-                    {
-                        e.IsDead = true;
-                        return true;
+                        e.Health -= 1;
+                        if (e.Health <= 0)
+                        {
+                            e.IsDead = true;
+                            return true;
+                        }
                     }
-                }
+                } 
             }
             return false;
         }
