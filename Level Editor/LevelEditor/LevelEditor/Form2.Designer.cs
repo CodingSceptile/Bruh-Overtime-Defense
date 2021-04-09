@@ -156,7 +156,7 @@
             this.basicColors.Size = new System.Drawing.Size(397, 242);
             this.basicColors.TabIndex = 17;
             this.basicColors.TabStop = false;
-            this.basicColors.Text = "Vector2 and Tower(?) indicators";
+            this.basicColors.Text = "Vector2 and collision indicators";
             // 
             // colorSelect
             // 
