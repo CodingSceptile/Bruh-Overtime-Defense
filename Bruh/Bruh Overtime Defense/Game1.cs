@@ -21,6 +21,7 @@ namespace Bruh_Overtime_Defense
     {
         TitleScreen,
         MapSelect,
+        InstructionsScreen,
         Gameplay,
         PauseScreen,
         GameOver
@@ -112,6 +113,7 @@ namespace Bruh_Overtime_Defense
         private TimeSpan timeSpanSincePause;
         private int screenWidth;
         private int screenHeight;
+        private Texture2D uiInstructions;
 
         public Game1()
         {
@@ -222,6 +224,7 @@ namespace Bruh_Overtime_Defense
             bruhEffect = Content.Load<SoundEffect>("bruhEffect");
 
             towerMenuSprite = Content.Load<Texture2D>("towerSelector");
+            uiInstructions = Content.Load<Texture2D>("BOD UI instructions");
 
             //SpriteFonts
             arial10 = Content.Load<SpriteFont>("arial10");
@@ -282,6 +285,16 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
                     mapSelectButton1.Draw(_spriteBatch, mState);
                     erinModeButton.Draw(_spriteBatch, mState);
+                    _spriteBatch.DrawString(arial36, "Press Enter to view Instructions",
+                        new Vector2(70, 700), Color.White);
+                    break;
+                //INSTRUCTIONS SCREEN
+                case GameState.InstructionsScreen:
+                    _spriteBatch.DrawString(arial64, "Instructions", new Vector2(200, 0), Color.White);
+                    DrawInstructions();
+                    _spriteBatch.Draw(uiInstructions, new Rectangle(250, 450, 250, 250), Color.White);
+                    _spriteBatch.DrawString(arial36, "Press Enter to return to Map Select", 
+                        new Vector2(25, 720), Color.White);
                     break;
                 //GAMEPLAY SCREEN
                 case GameState.Gameplay:
@@ -327,11 +340,12 @@ namespace Bruh_Overtime_Defense
                 //PAUSE SCREEN
                 case GameState.PauseScreen:
                     _spriteBatch.DrawString(arial64, "Paused",
-                        new Vector2(220, 300), Color.White);
+                        new Vector2(240, 0), Color.White);
+                    DrawInstructions();
                     _spriteBatch.DrawString(arial36, "Press Enter to return to game",
-                        new Vector2(80, 390), Color.White);
+                        new Vector2(80, 490), Color.White);
                     _spriteBatch.DrawString(arial36, "Press Ctrl to return to map select",
-                        new Vector2(50, 450), Color.White);
+                        new Vector2(50, 600), Color.White);
                     break;
                 //GAME OVER SCREEN
                 case GameState.GameOver:
@@ -401,6 +415,21 @@ namespace Bruh_Overtime_Defense
                     isErinMode = false;
                     erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeOFF");
                     erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
+                }
+
+                //if enter is pressed, view the instructions
+                if (SingleKeyPress(Keys.Enter))
+                {
+                    gState = GameState.InstructionsScreen;
+                }
+            }
+            //if the player is viewing the instructions
+            else if(gState == GameState.InstructionsScreen)
+            {
+                //if enter is pressed, return to map select
+                if (SingleKeyPress(Keys.Enter))
+                {
+                    gState = GameState.MapSelect;
                 }
             }
             //if the player is in gameplay
@@ -765,6 +794,27 @@ namespace Bruh_Overtime_Defense
                 //for next time
                 waveAmount += 5;
             }
+        }
+
+        /// <summary>
+        /// writes out the game instructions to the screen
+        /// </summary>
+        public void DrawInstructions()
+        {
+            string instructions = "Welcome to Bruh Overtime Defense! Protect your workforce by paying " +
+                "towers to \nstop the intrusive bruhs from reaching your office at the end of the " +
+                "path.\n\n";
+            instructions += "Use the Tower Menu in the top right to click on your tower, then click " +
+                "again on the \nfield to place it. This costs money, which you get when your towers " +
+                "automatically \nshoot the bruhs.\n\n";
+            instructions += "Your towers also have to be paid a salary every few waves, " +
+                "which you can do by \nclicking on each tower and pressing the pay button. " +
+                "Failing to pay this salary \ncauses the tower to leave and spawn more bruhs " +
+                "in retaliation.\n\n";
+            instructions += "When your defenses are set up, hit the Next Wave button to let the bruhs " +
+                "flow in. \n\nGood luck.";
+
+            _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.White);
         }
     }
 }
