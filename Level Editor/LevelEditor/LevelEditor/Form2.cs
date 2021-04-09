@@ -631,7 +631,7 @@ namespace LevelEditor
             buttons.Add(color4);
 
             color15.BackColor = Color.Yellow;
-            buttons.Add(color15);
+            buttons.Add(color15); 
         }
 
 
