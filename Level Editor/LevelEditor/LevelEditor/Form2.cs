@@ -1024,5 +1024,6 @@ namespace LevelEditor
                 p.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
             }
         }
+
     }   
 }
