@@ -23,6 +23,10 @@ namespace LevelEditor
         private string message;
         private string[,] colors;
         private string[,] overlayColors;
+        private string[,] collisionColors;
+        private bool rotationsLoaded;
+        private int[,] rotationValues;
+
 
         //Constructor
 
@@ -32,6 +36,7 @@ namespace LevelEditor
         public Form1()
         {
             InitializeComponent();
+            rotationsLoaded = false;
 
         }
 
@@ -71,84 +76,30 @@ namespace LevelEditor
                     width = reader.ReadInt32();
                     height = reader.ReadInt32();
 
-                    colors = new string[width, height];
-                    overlayColors = new string[width, height];
-                    
-                    //BACKGROUND LAYER
-
-                    //Reads Vector2/beginning data and turns it into a color indicator                   
-                    for (int i = 0; i < colors.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < colors.GetLength(1); j++)
-                        {
-                            string currentPicture = reader.ReadString();
-
-                            if (currentPicture == "<1, 0>")
-                            {
-                                colors[i, j] = Color.Red.ToString();
-                            }
-                            else if (currentPicture == "<0, 1>")
-                            {
-                                colors[i, j] = Color.Blue.ToString();
-                            }
-                            else if (currentPicture == "<-1, 0>")
-                            {
-                                colors[i, j] = Color.Green.ToString();
-                            }
-                            else if (currentPicture == "<0, -1>")
-                            {
-                                colors[i, j] = Color.HotPink.ToString();
-                            }
-                            else if(currentPicture == "begin_tile")
-                            {
-                                colors[i, j] = Color.Violet.ToString();
-                            }
-                            else
-                            {
-                                colors[i, j] = currentPicture;
-                            }
-                        }
-                    }
-
-                    //OVERLAY LAYER
-                  
-                    for (int i = 0; i < overlayColors.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < overlayColors.GetLength(1); j++)
-                        {
-                            string currentPicture = reader.ReadString();
-
-                            if (currentPicture == "<1, 0>")
-                            {
-                                overlayColors[i, j] = Color.Red.ToString();
-                            }
-                            else if (currentPicture == "<0, 1>")
-                            {
-                                overlayColors[i, j] = Color.Blue.ToString();
-                            }
-                            else if (currentPicture == "<-1, 0>")
-                            {
-                                overlayColors[i, j] = Color.Green.ToString();
-                            }
-                            else if (currentPicture == "<0, -1>")
-                            {
-                                overlayColors[i, j] = Color.HotPink.ToString();
-                            }
-                            else if (currentPicture == "begin_tile")
-                            {
-                                overlayColors[i, j] = Color.Violet.ToString();
-                            }
-                            else
-                            {
-                                overlayColors[i, j] = currentPicture;
-                            }
-                        }
-                    }
-
                     //establishes the level editor with the given information
                     editor = new levelEditor(width, height);
+
+
+                    colors = new string[width, height];
+                    overlayColors = new string[width, height];
+                    collisionColors = new string[width, height];
+
+                    rotationValues = new int[width, height];
+
+
+                    //BACKGROUND LAYER
+                    editor.LoadColors(colors, reader, rotationValues, rotationsLoaded);
+                    rotationsLoaded = true;
+
+                    editor.LoadColors(overlayColors, reader, rotationValues, rotationsLoaded);
+                    editor.LoadColors(collisionColors, reader, rotationValues, rotationsLoaded);
+
+                    editor.RotationValues = rotationValues;
+                    editor.RotationsLoaded = rotationsLoaded;
+                    
                     //loads the picture boxes and matches the colors
-                    editor.LoadBoxes(colors, overlayColors);
+                    editor.LoadBoxes(colors, overlayColors, collisionColors);
+
                     //Properly sizes the form
                     editor.ResizeForm();
 
@@ -164,6 +115,10 @@ namespace LevelEditor
                     //Something was wrong with the file
                     MessageBox.Show("Error reading file! " + ex.Message, ":(");
                     stream.Close();
+                }
+                finally
+                {
+                    rotationsLoaded = false;
                 }
             }
 
@@ -284,13 +239,49 @@ namespace LevelEditor
                     height = reader.ReadInt32();
                     writer.Write(height);
 
-                   
+                    //Handles the background layer, along with it's rotation
+                    //values
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            //gets the path
+                            string currentPicture = reader.ReadString();
+                            //gets the rotation value stored next to it
+                            int rotationValue = reader.ReadInt32();
+
+                            //Colors obtained (Vector2 data)
+                            if (currentPicture.Contains("<"))
+                            {
+                                writer.Write(currentPicture);
+                                continue;
+                            }
+
+                            //Not a color, write the tile ID without the
+                            //path
+                            if (currentPicture.Contains("../../../"))
+                            {
+                                currentPicture = currentPicture.Substring
+                                    (currentPicture.LastIndexOf('/') + 1,
+                                    currentPicture.LastIndexOf('.') - currentPicture.LastIndexOf('/') - 1);
+                            }
+
+                            //writes the altered picture path and rotation value
+                            //to a new file
+                            writer.Write(currentPicture);
+                            writer.Write(rotationValue);
+                            
+                        }
+                    }
+                
+                    //Handles the collision and overlay layers
                     for (int i = 0; i < width; i++)
                     {
                         for (int j = 0; j < height * 2; j++)
                         {
                             string currentPicture = reader.ReadString();
                             
+
                             //Colors obtained (Vector2 data)
                             if (currentPicture.Contains("<"))
                             {
