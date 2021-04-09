@@ -239,11 +239,15 @@ namespace LevelEditor
                     height = reader.ReadInt32();
                     writer.Write(height);
 
+                    //Handles the background layer, along with it's rotation
+                    //values
                     for (int i = 0; i < width; i++)
                     {
                         for (int j = 0; j < height; j++)
                         {
+                            //gets the path
                             string currentPicture = reader.ReadString();
+                            //gets the rotation value stored next to it
                             int rotationValue = reader.ReadInt32();
 
                             //Colors obtained (Vector2 data)
@@ -261,12 +265,16 @@ namespace LevelEditor
                                     (currentPicture.LastIndexOf('/') + 1,
                                     currentPicture.LastIndexOf('.') - currentPicture.LastIndexOf('/') - 1);
                             }
+
+                            //writes the altered picture path and rotation value
+                            //to a new file
                             writer.Write(currentPicture);
                             writer.Write(rotationValue);
                             
                         }
                     }
                 
+                    //Handles the collision and overlay layers
                     for (int i = 0; i < width; i++)
                     {
                         for (int j = 0; j < height * 2; j++)

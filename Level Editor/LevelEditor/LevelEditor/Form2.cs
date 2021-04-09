@@ -47,12 +47,23 @@ namespace LevelEditor
         private float rotation;
 
         //Properties
+        
+        /// <summary>
+        /// Returns a list of rotation values
+        /// or alters the list of rotation values
+        /// </summary>
         public int[,] RotationValues 
         {
             get { return rotationValues; }
             set { rotationValues = value; }
         }
 
+        /// <summary>
+        /// Returns whether or not 
+        /// the rotations are loaded, or
+        /// changes the variable to delcare
+        /// whether or not the rotations are loaded
+        /// </summary>
         public bool RotationsLoaded
         {
             get { return rotationsLoaded; }
@@ -727,6 +738,14 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// A method that simplifies loading the data
+        /// of picture boxes
+        /// </summary>
+        /// <param name="boxes">list of picture boxes</param>
+        /// <param name="width">width of the box</param>
+        /// <param name="height">height of the box</param>
+        /// <param name="codeList">list of image paths</param>
         private void LoadPictureBoxLists(PictureBox[,] boxes,
             int width, int height, string[,] codeList)
         {
@@ -734,8 +753,10 @@ namespace LevelEditor
             {
                 for (int j = 0; j < width; j++)
                 {
+                    //creates a new picture box
                     PictureBox box = new PictureBox();
 
+                    //sizes the boxes accordingly
                     if (width > height || width == height)
                     {
                         box.Size = new Size((mapBox.Width) / width, (mapBox.Width) / width);
@@ -746,11 +767,13 @@ namespace LevelEditor
                         box.Size = new Size((mapBox.Height - 17) / height, (mapBox.Height - 17) / height);
                     }
 
+                    //Puts a location to the box
                     box.Location = new Point
                         (10 + box.Width * j, 15 + box.Height * i);
 
                     box.Visible = true;
 
+                    //subscribes the box to various methods
                     box.MouseDown += button_Click;
                     box.MouseEnter += button_Click;
 
@@ -793,8 +816,12 @@ namespace LevelEditor
                     }
                     else
                     {
+                        //loads the img
                         box.Load(codeList[i, j]);
+                        //resizes the image
                         box.SizeMode = PictureBoxSizeMode.Zoom;
+
+                        //checks if a rotation is needed
                         if(rotationsLoaded == true)
                         {
                             rotation = rotationValues[i, j];
@@ -823,7 +850,7 @@ namespace LevelEditor
             int[,] rotationValues, bool rotationsLoaded)
         {
             //Fills the array with the colors of the loaded data
-            //(Vector2/Begin tile)
+            //(Vector2/Begin tile/track)
             for (int i = 0; i < codeList.GetLength(0); i++)
             {
                 for (int j = 0; j < codeList.GetLength(1); j++)
@@ -868,6 +895,13 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// Changes the image displayed
+        /// in the currently selected tile 
+        /// picture box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChangePath(Object sender, EventArgs e)
         {
             if(sender is PictureBox)
@@ -876,9 +910,13 @@ namespace LevelEditor
 
                 path = p.ImageLocation;
 
+                //removes the image
                 texturePic.Image.Dispose();
+                //loads a new image
                 texturePic.Load(path);
+                //rotates the image (if necessary)
                 Rotate(texturePic);
+                //refreshes the box to show the change
                 texturePic.Refresh();
             }
         }
