@@ -13,12 +13,12 @@ namespace Bruh_Overtime_Defense
      class Tower : GameObject //not abstract FOR NOW
     {
         //Fields
-        private int radius;
-        private int initialCost;
-        private float originalSalary; 
-        private float salary;
-        private int activitySpeed;
-        private GameTime gameTime;
+        protected int radius;
+        protected int initialCost;
+        protected float originalSalary; 
+        protected float salary;
+        protected int activitySpeed;
+        protected GameTime gameTime;
 
         //Properties
         /// <summary>
@@ -101,6 +101,11 @@ namespace Bruh_Overtime_Defense
             }
         }
             
+        /// <summary>
+        /// Property to get gametime. 
+        /// </summary>
+        public GameTime GameTime { get { return gameTime; } }
+
         //Constructor
         /// <summary>
         /// Constructor that initializes Tower class
