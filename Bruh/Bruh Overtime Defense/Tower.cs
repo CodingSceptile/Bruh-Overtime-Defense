@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 //=============================================
 namespace Bruh_Overtime_Defense
 {
-     class Tower : GameObject //not abstract FOR NOW
+     abstract class Tower : GameObject //not abstract FOR NOW
     {
         //Fields
         protected int radius;
@@ -125,6 +125,7 @@ namespace Bruh_Overtime_Defense
             originalSalary = initialCost;
             salary = originalSalary;
             this.activitySpeed = activitySpeed;
+            moneyYield = new List<Enemy>();
             gameTime = new GameTime();
         }
 

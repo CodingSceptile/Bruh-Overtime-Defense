@@ -317,7 +317,7 @@ namespace Bruh_Overtime_Defense
                         {
                             case Towers.BaseTower:
                                 //values of tower and temp and default
-                                towers.Add(new Tower(
+                                towers.Add(new DootSkeleton(
                                     new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
                                     baseTowerButton.DefaultSprite, 100, 20, 20));
                                 totalMoney -= 20;
