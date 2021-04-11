@@ -33,7 +33,11 @@ namespace Bruh_Overtime_Defense
     enum Towers
     {
         None,
-        BaseTower
+        BaseTower,
+        SniperTower,
+        GatekeeperTower,
+        ErinTower,
+        BuffTower
     }
 
     /// <summary>
@@ -70,6 +74,9 @@ namespace Bruh_Overtime_Defense
         private Button pauseButton;
         private Button nextWaveButton;
         private Button baseTowerButton;
+        private Button sniperButton;
+        private Button gatekeeperButton;
+        private Button notErinButton;
         private Button erinModeButton;
         private bool isActive;
         private bool isErinMode;
@@ -100,6 +107,8 @@ namespace Bruh_Overtime_Defense
         private Rectangle towerMenuPos;
         private bool openTowerMenu;
         private bool placeTower;
+        private List<Button> placedButtons;
+        private Texture2D placedButtonTexture;
 
         //misc
         private Random random;
@@ -164,6 +173,12 @@ namespace Bruh_Overtime_Defense
                 0, tileWidth * 2, tileHeight);
             baseTowerButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 2) - 5, tileWidth, tileHeight);
+            sniperButton = new Button(screenWidth - (tileWidth * 3),
+                (tileHeight * 3) - 5, tileWidth, tileHeight);
+            gatekeeperButton = new Button(screenWidth - (tileWidth * 3),
+                (tileHeight * 4) - 5, tileWidth, tileHeight);
+            notErinButton = new Button(screenWidth - (tileWidth * 3),
+                (tileHeight * 6) - 5, tileWidth, tileHeight);
             erinModeButton = new Button(screenWidth - (tileWidth * 2),
                 0, tileWidth * 2, tileHeight);
 
@@ -191,6 +206,7 @@ namespace Bruh_Overtime_Defense
             //towers
             towers = new List<Tower>();
             towerManager = new TowerManager(towers);
+            placedButtons = new List<Button>();
             
             _graphics.ApplyChanges();
 
@@ -219,6 +235,7 @@ namespace Bruh_Overtime_Defense
 
             //buttons
             LoadButtons();
+            placedButtonTexture = Content.Load<Texture2D>("Textures/towerDefense_tile084");
 
             //load other things
             bruhEffect = Content.Load<SoundEffect>("bruhEffect");
@@ -301,36 +318,71 @@ namespace Bruh_Overtime_Defense
 
                     DrawMap();
 
-                    //draw the towers
-                    for (int i = 0; i < towers.Count; i++)
-                    {
-                        towers[i].Draw(_spriteBatch);
-                    }
+                    
 
                     DrawTowerMenu();
 
                     //if the player has a tower to place and clicks
                     if(placeTower == true)
                     {
-                        //draw the selected tower (needs to be changed to add a tower to some sort of list to be drawn permanently
+                        
+                        //draw the selected tower
                         switch (selectedTower)
                         {
                             case Towers.BaseTower:
                                 //values of tower and temp and default
                                 towers.Add(new DootSkeleton(
                                     new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, 100, 20, 20));
+                                    baseTowerButton.DefaultSprite, 200, 20, 20));
                                 totalMoney -= 20;
                                 break;
+                            case Towers.SniperTower:
+                                //values of tower and temp and default
+                                towers.Add(new SniperMonke(
+                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    sniperButton.DefaultSprite, int.MaxValue, 40, 20));
+                                totalMoney -= 40;
+                                break;
+                            case Towers.GatekeeperTower:
+                                //values of tower and temp and default
+                                towers.Add(new RyanTheGateKeeper(
+                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    gatekeeperButton.DefaultSprite, 100, 20, 30));
+                                totalMoney -= 20;
+                                break;
+                            case Towers.ErinTower:
+                                //values of tower and temp and default
+                                towers.Add(new Not_Erin(
+                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    notErinButton.DefaultSprite, 200, 200, 100));
+                                totalMoney -= 200;
+                                break;
                         }
+                        //if(towers.Count > 0)
+                        //{
+                        //    placedButtons.Add(new Button(towers[towers.Count - 1].Position.X,
+                        //        towers[towers.Count - 1].Position.Y, tileWidth, tileHeight));
+                        //    placedButtons[placedButtons.Count - 1].DefaultSprite = placedButtonTexture;
+                        //    placedButtons[placedButtons.Count - 1].ActiveSprite = placedButtonTexture;
+                        //}
+                        
 
                         //turns off place tower and empties the selectedTower
                         placeTower = false;
                         selectedTower = Towers.None;
                     }
 
+                    //draw the towers
+                    for (int i = 0; i < towers.Count; i++)
+                    {
+                        //placedButtons[i].Draw(_spriteBatch, mState);
+                        //System.Diagnostics.Debug.WriteLine($"Button: {placedButtons[i].X}, {placedButtons[i].Y}");
+                        towers[i].Draw(_spriteBatch);
+                        System.Diagnostics.Debug.WriteLine($"Tower: {towers[i].Position.X}, {towers[i].Position.Y}");
+                    }
+
                     //Only spawns new enemies if a new wave is active
-                    if(newWave == true)
+                    if (newWave == true)
                     {
                         enMan.Update(gameTime);
                         enMan.Draw(_spriteBatch);
@@ -460,7 +512,9 @@ namespace Bruh_Overtime_Defense
 
                 //if the mouse button is clicked and none of the buttons are pressed
                 if (mState.LeftButton == ButtonState.Pressed && !pauseButton.RollOver(mState) &&
-                    !nextWaveButton.RollOver(mState) && !towerMenuButton.RollOver(mState) && !baseTowerButton.RollOver(mState))
+                    !nextWaveButton.RollOver(mState) && !towerMenuButton.RollOver(mState) &&
+                    !baseTowerButton.RollOver(mState) && !sniperButton.RollOver(mState) && 
+                    !gatekeeperButton.RollOver(mState) && !notErinButton.RollOver(mState))
                 {
                     //let the user place a tower
                     placeTower = true;
@@ -503,13 +557,33 @@ namespace Bruh_Overtime_Defense
                         selectedTower = Towers.BaseTower;
                         openTowerMenu = false;
                     }
+                    else if(sniperButton.Clicked(mState, prevMState) &&
+                    totalMoney >= 40)
+                    {
+                        //select the baseTower and close the towerMenu
+                        selectedTower = Towers.SniperTower;
+                        openTowerMenu = false;
+                    }
+                    else if (gatekeeperButton.Clicked(mState, prevMState) &&
+                    totalMoney >= 20)
+                    {
+                        //select the baseTower and close the towerMenu
+                        selectedTower = Towers.GatekeeperTower;
+                        openTowerMenu = false;
+                    }
+                    else if (notErinButton.Clicked(mState, prevMState) &&
+                    totalMoney >= 200)
+                    {
+                        //select the baseTower and close the towerMenu
+                        selectedTower = Towers.ErinTower;
+                        openTowerMenu = false;
+                    }
                 }
 
                 //Next wave button clicked
                 if (nextWaveButton.Clicked(mState,prevMState))
                 {
-                    NextWave();
-                                       
+                    NextWave();  
                 }
             }
 
@@ -707,11 +781,31 @@ namespace Bruh_Overtime_Defense
                 _spriteBatch.DrawString(arial10, " Tower  Cost  Salary",
                     new Vector2(screenWidth - (tileWidth * 3), tileHeight),
                     Color.White);
+                //Doot Skeleton
                 _spriteBatch.DrawString(arial16, "  20  20",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 2),
                     Color.White);
                 baseTowerButton.Draw(_spriteBatch, mState);
+                //Sniper Monke
+                _spriteBatch.DrawString(arial16, "  40  20",
+                    new Vector2(screenWidth - (tileWidth * 2),
+                    tileHeight * 3),
+                    Color.White);
+                sniperButton.Draw(_spriteBatch, mState);
+                //Ryan the Gatekeeper
+                _spriteBatch.DrawString(arial16, "  20  30",
+                    new Vector2(screenWidth - (tileWidth * 2),
+                    tileHeight * 4),
+                    Color.White);
+                gatekeeperButton.Draw(_spriteBatch, mState);
+                //Not Erin
+                _spriteBatch.DrawString(arial10, "  200  100",
+                    new Vector2(screenWidth - (tileWidth * 2),
+                    tileHeight * 6),
+                    Color.White);
+                notErinButton.Draw(_spriteBatch, mState);
+                //Buff Doge
             }
         }
 
@@ -733,6 +827,12 @@ namespace Bruh_Overtime_Defense
             //tower buttons
             baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
             baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
+            sniperButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile292");
+            sniperButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile292");
+            gatekeeperButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile250");
+            gatekeeperButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile250");
+            notErinButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
+            notErinButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
             //other buttons
             erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeOFF");
             erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
