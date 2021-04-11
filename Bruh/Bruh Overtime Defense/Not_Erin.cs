@@ -15,11 +15,21 @@ namespace Bruh_Overtime_Defense
 
         }
 
+        /// <summary>
+        /// Override of Shoot() that calls Vaporize()
+        /// </summary>
+        /// <param name="enemies">List of enemies in the map</param>
+        /// <returns>Money returned by killing the enemy</returns>
         public override int Shoot(List<Enemy> enemies)
         {
            return Vaporize(enemies);
         }
 
+        /// <summary>
+        /// Instantly removes the enemies within radius of the tower.
+        /// </summary>
+        /// <param name="enemies">List of enemies in the map.</param>
+        /// <returns>Money returned by killing the enemy</returns>
         private int Vaporize(List<Enemy> enemies)
         {
             //maybe it should be an int and return money?

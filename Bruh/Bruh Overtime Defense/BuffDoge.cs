@@ -20,6 +20,13 @@ namespace Bruh_Overtime_Defense
             return Smash(enemies);
         }
 
+        /// <summary>
+        /// Smashes the enemies within it's radius,
+        /// doing 1 hitpoint of damage to them every
+        /// given number of seconds
+        /// </summary>
+        /// <param name="enemies">List of enemies in the map.</param>
+        /// <returns>Money obtained by the killing of the bruhs</returns>
         private int Smash(List<Enemy> enemies)
         {
             //maybe it should be an int and return money?
