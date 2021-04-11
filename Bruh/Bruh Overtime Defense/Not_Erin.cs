@@ -15,6 +15,30 @@ namespace Bruh_Overtime_Defense
 
         }
 
+        public override int Shoot(List<Enemy> enemies)
+        {
+           return Vaporize(enemies);
+        }
 
+        private int Vaporize(List<Enemy> enemies)
+        {
+            //maybe it should be an int and return money?
+            //how will I go about returning the money?
+            //Store in new enemy class, run through isDead and
+            //shoot
+            moneyYield.Clear();
+
+            for(int i = 0; i < enemies.Count; i++)
+            { 
+                if(Distance(Position, enemies[i].Position) <= radius)
+                {
+                    enemies[i].Health = 0;
+                    enemies[i].IsDead = true;
+                    moneyYield.Add(enemies[i]);
+                }
+            }
+
+            return moneyYield.Count;
+        }
     }
 }

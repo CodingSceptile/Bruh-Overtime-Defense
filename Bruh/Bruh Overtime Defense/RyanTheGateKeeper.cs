@@ -22,10 +22,10 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         /// <param name="enemies"></param>
         /// <returns>False. It doesn't shoot anything.</returns>
-        public override bool Shoot(List<Enemy> enemies)
+        public override int Shoot(List<Enemy> enemies)
         {
             WaitingRoom(enemies);
-            return false;
+            return 0;
         }
 
         /// <summary>

@@ -104,7 +104,7 @@ namespace Bruh_Overtime_Defense
         //misc
         private Random random;
         private int totalMoney;
-        private bool gainMoney;
+        private int gainMoney;
         private bool newWave;
         private int currWave;
         private int waveAmount;
@@ -175,7 +175,7 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             placeTower = false;
             totalMoney = 100;
-            gainMoney = false;
+            gainMoney = 0;
             health = 10;
             newWave = false;
             currWave = 0;
@@ -597,7 +597,7 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             placeTower = false;
             totalMoney = 100;
-            gainMoney = false;
+            gainMoney = 0;
             health = 20;
             waveAmount = 5;
             newWave = false;
@@ -678,14 +678,19 @@ namespace Bruh_Overtime_Defense
                 for (int i = 0; i < towers.Count; i++)
                 {
                     gainMoney = towerManager.Shoot(towers[i], enemies);
-
-                    if (gainMoney == true)
+                    totalMoney += gainMoney;
+                    if(gainMoney != 0)
                     {
                         bruhEffect.Play(0.005f, -0.05f, 0);
-                        totalMoney++;
-                        enemyCount--;
-                        gainMoney = false;
                     }
+                    enemyCount -= gainMoney; //since 1 money is gained for 1 enemy dying
+                    //if (gainMoney == true)
+                    //{
+                    //    bruhEffect.Play(0.005f, -0.05f, 0);
+                    //    totalMoney++;
+                    //    enemyCount--;
+                    //    gainMoney = false;
+                    //}
                 }
             }
         }

@@ -19,6 +19,8 @@ namespace Bruh_Overtime_Defense
         protected float salary;
         protected int activitySpeed;
         protected GameTime gameTime;
+        protected List<Enemy> moneyYield;
+        protected int moneyGiven;
 
         //Properties
         /// <summary>
@@ -174,7 +176,7 @@ namespace Bruh_Overtime_Defense
             else return false;
         }
 
-        public virtual bool Shoot(List<Enemy> enemies)
+        public virtual int Shoot(List<Enemy> enemies)
         {
             foreach (Enemy e in enemies)
             {
@@ -192,12 +194,12 @@ namespace Bruh_Overtime_Defense
                         if (e.Health <= 0)
                         {
                             e.IsDead = true;
-                            return true;
+                            return 1;
                         }
                     }
                 } 
             }
-            return false;
+            return 0;
         }
 
         /// <summary>

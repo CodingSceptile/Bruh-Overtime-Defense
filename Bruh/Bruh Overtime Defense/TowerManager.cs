@@ -58,7 +58,7 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         /// <param name="t">The tower that is trying to pop</param>
         /// <param name="enemies">The enemies on the map.</param>
-        public bool Shoot(Tower t, List<Enemy> enemies)
+        public int Shoot(Tower t, List<Enemy> enemies)
         {
             return t.Shoot(enemies);
         }
