@@ -177,6 +177,12 @@ namespace Bruh_Overtime_Defense
             else return false;
         }
 
+        /// <summary>
+        /// Shoots the bruh, doing 1 hit point of damage to it
+        /// every given number of seconds
+        /// </summary>
+        /// <param name="enemies">The list of enemies it is aiming to shoot</param>
+        /// <returns>The money yielded from killing the enemy</returns>
         public virtual int Shoot(List<Enemy> enemies)
         {
             foreach (Enemy e in enemies)
