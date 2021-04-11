@@ -111,7 +111,7 @@ namespace Bruh_Overtime_Defense
             {
                 enemies[i].Position = new Rectangle(
                         enemies[i].X, enemies[i].Y,
-                        enemies[i].Position.Width, enemies[i].Position.Height);
+                        75,75);
             }
         }
 

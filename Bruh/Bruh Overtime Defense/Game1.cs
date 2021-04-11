@@ -47,6 +47,7 @@ namespace Bruh_Overtime_Defense
         //Level information and objects
         private Level level;
         private List<string> codes;
+        private List<float> rotations;
 
         //Height and width of the tiles
         private int tileHeight;
@@ -129,11 +130,12 @@ namespace Bruh_Overtime_Defense
         {
             // TODO: Add your initialization logic here
             textures = new List<Texture2D>();
-            collisions = new CollisionManager("redoLevel.level_Appended");
+            collisions = new CollisionManager("coolerlevel.level_Appended");
 
             level = collisions.CurrentLevel;
             
             codes = collisions.Codes;
+            rotations = collisions.Rotations;
 
             random = new Random();
 
@@ -440,7 +442,7 @@ namespace Bruh_Overtime_Defense
                 {
                     if (enemies[i].IsDead == false)
                     {
-                        collisions.ChangeEnemyDirection(enemies[i]);
+                        collisions.LevelIntersects(enemies[i]);
                         enemies[i].X += (int)enemies[i].Movement.X;
                         enemies[i].Y += (int)enemies[i].Movement.Y;
                     }
@@ -574,7 +576,8 @@ namespace Bruh_Overtime_Defense
             for(int i = 0; i < enemies.Count; i++)
             {
                 //if the enemy is alive and off the map
-                if(enemies[i].IsDead == false && enemies[i].X > screenWidth)
+                if(enemies[i].IsDead == false && (enemies[i].X > screenWidth
+                    || enemies[i].X < -50))
                 {
                     //reduce the player's health by one and kill the enemy to prevent repetition
                     health--;
@@ -627,8 +630,9 @@ namespace Bruh_Overtime_Defense
                     //Background draw
                     level.Draw(_spriteBatch, textures[(i * level.Width) + j],
                     new Rectangle(
-                        new Point(tileWidth * j, tileHeight * i),
-                        new Point(tileWidth, tileHeight)));
+                        new Point((tileHeight * j) + tileWidth / 2, (tileWidth * i) + tileHeight / 2),
+                        new Point(tileWidth, tileHeight)),
+                    rotations[(i * level.Width) + j]);
                 }
             }
 
@@ -641,11 +645,28 @@ namespace Bruh_Overtime_Defense
                     //as well as locates them depending on the individual widths
                     //and heights
 
+                    //Draws Potential Collision objects on the screen
+                    level.Draw(_spriteBatch, textures[(level.Width * i) + j],
+                    new Rectangle(
+                        new Point((tileWidth * j) + tileWidth / 2, tileHeight * (i - level.Width) + tileHeight / 2),
+                        new Point(tileWidth, tileHeight)), 0);
+                }
+            }
+
+            for (int i = level.Width * 2; i < level.Width * 3; i++)
+            {
+                for (int j = 0; j < level.Height; j++)
+                {
+                    //gets the textures for each collumn,
+                    //draws each with an equal widths and heights, 
+                    //as well as locates them depending on the individual widths
+                    //and heights
+
                     //Draws Objects on the screen
                     level.Draw(_spriteBatch, textures[(level.Width * i) + j],
                     new Rectangle(
-                        new Point(tileWidth * j, (tileHeight * (i - level.Width))),
-                        new Point(tileWidth, tileHeight)));
+                        new Point((tileWidth * j) + tileWidth / 2, (tileHeight * (i - (level.Width * 2))) + tileHeight / 2),
+                        new Point(tileWidth, tileHeight)), 0);
                 }
             }
 
@@ -654,16 +675,16 @@ namespace Bruh_Overtime_Defense
             pauseButton.Draw(_spriteBatch, mState);
             nextWaveButton.Draw(_spriteBatch, mState);
             _spriteBatch.DrawString(arial16, "Money: $" + totalMoney,
-                new Vector2(screenWidth - (tileWidth * 8), 0),
+                new Vector2(screenWidth - (300), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Health: " + health,
-                new Vector2(screenWidth - (tileWidth * 11), 0),
+                new Vector2(screenWidth - (400), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Wave: " + currWave,
-                new Vector2(screenWidth - (tileWidth * 14), 0),
+                new Vector2(screenWidth - (600), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Number of Enemies: " + enemyCount,
-                new Vector2(screenWidth - (tileWidth * 14), 40),
+                new Vector2(screenWidth - (600), 40),
                 Color.White);
         }
 
