@@ -67,26 +67,17 @@ namespace Bruh_Overtime_Defense
 
                 //retrieves all the various texture references from the 
                 //external text file.
+
+                //BACKGROUND
                 for (int i = 0; i < width; i++)
                 {
                     for (int j = 0; j < height; j++)
                     {
+
                         string textureCode = reader.ReadString();
                         int rotation = reader.ReadInt32();
-
                         float radRotation = (float)(rotation * (Math.PI / 180));
-                        codes.Add(textureCode);
-                        rotations.Add(radRotation);                     
-                    }
-                }
-
-                //COLLISIONS
-
-                for (int i = 0; i < width; i++)
-                {
-                    for (int j = 0; j < height; j++)
-                    {
-                        string textureCode = reader.ReadString();
+                        rotations.Add(radRotation);
 
                         //Checks for Vector2/beginning tile indicators
                         if (textureCode.Contains('>') || textureCode == "begin_tile"
@@ -123,7 +114,7 @@ namespace Bruh_Overtime_Defense
                                 motionChange.Add(
                                     new Vector2(0, -1));
                             }
-                            else if(textureCode == "track")
+                            else if (textureCode == "track")
                             {
                                 trackLocs.Add(
                                     new Rectangle
@@ -137,7 +128,7 @@ namespace Bruh_Overtime_Defense
                             //level component to another list
                             locations.Add(
                                     new Rectangle
-                                    (new Point(((j * width) * 2),
+                                    (new Point((((j) * width) * 2),
                                     ((i * height) * 2)),
                                     new Point(width, height)));
                         }
@@ -151,12 +142,15 @@ namespace Bruh_Overtime_Defense
                 }
 
                 //OVERLAY
-
                 for (int i = 0; i < width; i++)
-              {
-                  for(int j = 0; j < height; j++)
-                  {
-                      string textureCode = reader.ReadString();
+                {
+                    for (int j = 0; j < height; j++)
+                    {
+
+                        string textureCode = reader.ReadString();
+                        int rotation = reader.ReadInt32();
+                        float radRotation = (float)(rotation * (Math.PI / 180));
+                        rotations.Add(radRotation);
 
                         //Checks for Vector2/beginning tile indicators
                         if (textureCode.Contains('>') || textureCode == "begin_tile"
@@ -164,17 +158,17 @@ namespace Bruh_Overtime_Defense
                         {
                             //add a transparent tile
                             codes.Add("default-min");
-                            
+
                             //Vector that focuses on +x
-                            if(textureCode == "<1, 0>")
+                            if (textureCode == "<1, 0>")
                             {
                                 motionChange.Add(
-                                    new Vector2(1, 0));                              
+                                    new Vector2(1, 0));
 
                             }
 
                             //Vector that focuses on +y
-                            else if(textureCode == "<0, 1>")
+                            else if (textureCode == "<0, 1>")
                             {
                                 motionChange.Add(
                                     new Vector2(0, 1));
@@ -207,18 +201,91 @@ namespace Bruh_Overtime_Defense
                             //level component to another list
                             locations.Add(
                                     new Rectangle
-                                    (new Point(((j * width) * 2) + width / 2,
-                                    ((i * height) * 2) + height / 2),
-                                    new Point(width * 3, height * 3)));
+                                    (new Point((((j) * width) * 2),
+                                    ((i * height) * 2)),
+                                    new Point(width, height)));
                         }
                         else
                         {
                             //No vector data detected, 
                             //simply add a level tile id to a list
                             codes.Add(textureCode);
-                        }                                                                
-                  }
-              }
+                        }
+                    }
+                }
+
+                //COLLISIONS
+                for (int i = 0; i < width; i++)
+                {
+                    for (int j = 0; j < height; j++)
+                    {
+
+                        string textureCode = reader.ReadString();
+                        int rotation = reader.ReadInt32();
+                        float radRotation = (float)(rotation * (Math.PI / 180));
+                        rotations.Add(radRotation);
+
+                        //Checks for Vector2/beginning tile indicators
+                        if (textureCode.Contains('>') || textureCode == "begin_tile"
+                            || textureCode == "track")
+                        {
+                            //add a transparent tile
+                            codes.Add("default-min");
+
+                            //Vector that focuses on +x
+                            if (textureCode == "<1, 0>")
+                            {
+                                motionChange.Add(
+                                    new Vector2(1, 0));
+
+                            }
+
+                            //Vector that focuses on +y
+                            else if (textureCode == "<0, 1>")
+                            {
+                                motionChange.Add(
+                                    new Vector2(0, 1));
+                            }
+
+                            //Vector that focuses on -x
+                            else if (textureCode == "<-1, 1>")
+                            {
+                                motionChange.Add(
+                                    new Vector2(-1, 0));
+                            }
+
+                            //Vector that focuses on -y
+                            else if (textureCode == "<1, -1>")
+                            {
+                                motionChange.Add(
+                                    new Vector2(0, -1));
+                            }
+                            else if (textureCode == "track")
+                            {
+                                trackLocs.Add(
+                                    new Rectangle
+                                    (new Point(((j * width) * 2) + width / 2,
+                                    ((i * height) * 2) + height / 2),
+                                    new Point(width * 3, height * 3)));
+                                continue;
+                            }
+
+                            //Adds the location of the interactible
+                            //level component to another list
+                            locations.Add(
+                                    new Rectangle
+                                    (new Point((((j) * width) * 2),
+                                    ((i * height) * 2)),
+                                    new Point(width, height)));
+                        }
+                        else
+                        {
+                            //No vector data detected, 
+                            //simply add a level tile id to a list
+                            codes.Add(textureCode);
+                        }
+                    }
+                }
                 return codes;                
             }
 

@@ -139,7 +139,7 @@ namespace Bruh_Overtime_Defense
         {
             // TODO: Add your initialization logic here
             textures = new List<Texture2D>();
-            collisions = new CollisionManager("coolerlevel.level_Appended");
+            collisions = new CollisionManager("office1.level_Appended");
 
             level = collisions.CurrentLevel;
             
@@ -723,7 +723,7 @@ namespace Bruh_Overtime_Defense
                     level.Draw(_spriteBatch, textures[(level.Width * i) + j],
                     new Rectangle(
                         new Point((tileWidth * j) + tileWidth / 2, tileHeight * (i - level.Width) + tileHeight / 2),
-                        new Point(tileWidth, tileHeight)), 0);
+                        new Point(tileWidth, tileHeight)), rotations[((i * level.Width) + j)]);
                 }
             }
 
@@ -740,7 +740,7 @@ namespace Bruh_Overtime_Defense
                     level.Draw(_spriteBatch, textures[(level.Width * i) + j],
                     new Rectangle(
                         new Point((tileWidth * j) + tileWidth / 2, (tileHeight * (i - (level.Width * 2))) + tileHeight / 2),
-                        new Point(tileWidth, tileHeight)), 0);
+                        new Point(tileWidth, tileHeight)), rotations[((i * level.Width) + j)]);
                 }
             }
 

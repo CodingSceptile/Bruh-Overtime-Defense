@@ -34,7 +34,6 @@ namespace LevelEditor
         private bool isSaved;
         private int rotationSaveX;
         private int rotationSaveY;
-        private bool rotationsSaved;
         private bool rotationsLoaded;
 
 
@@ -42,9 +41,13 @@ namespace LevelEditor
 
         private string path;
         private int[,] rotationValues;
+        private int[,] collisionRotations;
+        private int[,] overlayRotations;
 
         //ROTATION
         private float rotation;
+
+        private int numLayersSaved;
 
         //Properties
         
@@ -56,6 +59,26 @@ namespace LevelEditor
         {
             get { return rotationValues; }
             set { rotationValues = value; }
+        }
+
+        /// <summary>
+        /// Returns a list of rotation values
+        /// or alters the list of rotation values
+        /// </summary>
+        public int[,] OverlayValues
+        {
+            get { return overlayRotations; }
+            set { overlayRotations = value; }
+        }
+
+        /// <summary>
+        /// Returns a list of rotation values
+        /// or alters the list of rotation values
+        /// </summary>
+        public int[,] CollisionValues
+        {
+            get { return collisionRotations; }
+            set { collisionRotations = value; }
         }
 
         /// <summary>
@@ -88,9 +111,11 @@ namespace LevelEditor
             overlay = new PictureBox[height, width];
             collisions = new PictureBox[height, width];
             rotationValues = new int[height, width];
+            collisionRotations = new int[height, width];
+            overlayRotations = new int[height, width];
             isSaved = true;
-            rotationsSaved = false;
             rotationsLoaded = false;
+            numLayersSaved = 0;
 
             buttons = new List<Button>();
             AssignColors();
@@ -191,7 +216,15 @@ namespace LevelEditor
                     {
                         rotationValues[heightLoc, widthLoc] = (int)rotation;
                     }
-                                     
+                    else if (overlay[0, 0].Enabled == true)
+                    {
+                        overlayRotations[heightLoc, widthLoc] = (int)rotation;
+                    }
+                    else if (collisions[0, 0].Enabled == true)
+                    {
+                        collisionRotations[heightLoc, widthLoc] = (int)rotation;
+                    }
+
                     //Shows indicator that the user needs to save!
                     if (this.Text.IndexOf("*") == -1)
                     {
@@ -263,9 +296,9 @@ namespace LevelEditor
                     //Saves the ARGB colors of the pictureboxes
                     rotationSaveX = 0;
                     rotationSaveY = 0;
-                    Save(boxes, writer);
-                    Save(overlay, writer);
-                    Save(collisions, writer);
+                    Save(boxes, writer, rotationValues);
+                    Save(overlay, writer, overlayRotations);
+                    Save(collisions, writer, collisionRotations);
 
                     //prompts the user that the file was successfully saved.
                     MessageBox.Show("Successfully Saved the file!", ":)");
@@ -284,7 +317,6 @@ namespace LevelEditor
                     if(stream != null)
                     {
                         writer.Close();
-                        rotationsSaved = false;
                     }                    
                 }
             }            
@@ -333,15 +365,17 @@ namespace LevelEditor
                     //Background
 
                     rotationValues = new int[height, width];
+                    overlayRotations = new int[height, width];
+                    collisionRotations = new int[height, width];
+
                     LoadColors(colors, reader, rotationValues, rotationsLoaded);
-                    rotationsLoaded = true;
 
                     //Overlay 
 
-                    LoadColors(overlayColors, reader, rotationValues, rotationsLoaded);
+                    LoadColors(overlayColors, reader, overlayRotations, rotationsLoaded);
 
                     //Collisions
-                    LoadColors(collisionColors, reader, rotationValues, rotationsLoaded);
+                    LoadColors(collisionColors, reader, collisionRotations, rotationsLoaded);
                 }
 
                 //User cancels decision
@@ -489,10 +523,10 @@ namespace LevelEditor
             boxes = new PictureBox[height, width];
             overlay = new PictureBox[height, width];
 
-            LoadPictureBoxLists(boxes, Width, Height, colors);
+            LoadPictureBoxLists(boxes, Width, Height, colors, rotationValues);
             rotationsLoaded = false;
-            LoadPictureBoxLists(overlay, Width, Height, overlayColors);
-            LoadPictureBoxLists(collisions, Width, Height, collisionColors);
+            LoadPictureBoxLists(overlay, Width, Height, overlayColors, overlayRotations);
+            LoadPictureBoxLists(collisions, Width, Height, collisionColors, collisionRotations);
             
         }
 
@@ -645,7 +679,6 @@ namespace LevelEditor
         {
             //clears the controls
             mapBox.Controls.Clear();
-            rotateTexture.Enabled = false;
             texturePic.Image.Dispose();
             texturePic.Load(path);
             texturePic.Refresh();
@@ -681,7 +714,6 @@ namespace LevelEditor
             //clears the controls
             mapBox.Controls.Clear();
             rotation = 0;
-            rotateTexture.Enabled = true;
             texturePic.Image.Dispose();
             texturePic.Load(path);
             texturePic.Refresh();
@@ -717,7 +749,6 @@ namespace LevelEditor
         {
             mapBox.Controls.Clear();
             rotation = 0;
-            rotateTexture.Enabled = false;
             texturePic.Image.Dispose();
             texturePic.Load(path);
             texturePic.Refresh();
@@ -751,7 +782,7 @@ namespace LevelEditor
         /// <param name="height">height of the box</param>
         /// <param name="codeList">list of image paths</param>
         private void LoadPictureBoxLists(PictureBox[,] boxes,
-            int width, int height, string[,] codeList)
+            int width, int height, string[,] codeList, int[,] rotationValues)
         {
             for (int i = 0; i < height; i++)
             {
@@ -825,13 +856,9 @@ namespace LevelEditor
                         //resizes the image
                         box.SizeMode = PictureBoxSizeMode.Zoom;
 
-                        //checks if a rotation is needed
-                        if(rotationsLoaded == true)
-                        {
-                            rotation = rotationValues[i, j];
-                            Rotate(box);
-                            box.Refresh();
-                        }                       
+                        rotation = rotationValues[i, j];
+                        Rotate(box);
+                        box.Refresh();                     
                     }
 
                     //Add the pictureboxes to the controls
@@ -890,11 +917,9 @@ namespace LevelEditor
                         codeList[i, j] = currentPicture;
                     }
 
-                    if(rotationsLoaded == false)
-                    {
-                        int rotationValue = reader.ReadInt32();
-                        rotationValues[i, j] = rotationValue;
-                    }
+
+                    int rotationValue = reader.ReadInt32();
+                    rotationValues[i, j] = rotationValue;
                 }
             }
         }
@@ -930,8 +955,12 @@ namespace LevelEditor
         /// </summary>
         /// <param name="boxes">current List of pictureBoxes</param>
         /// <param name="writer">BinaryWriter</param>
-        private void Save(PictureBox[,] boxes, BinaryWriter writer)
+        private void Save(PictureBox[,] boxes, BinaryWriter writer,
+            int[,] rotationValues)
         {
+            rotationSaveX = 0;
+            rotationSaveY = 0;
+
             foreach (PictureBox b in boxes)
             {
                 //writes the location of the image
@@ -975,22 +1004,15 @@ namespace LevelEditor
                     }
                 }
 
-                //saves rotation values to the external file
-                if(rotationsSaved == false)
+                writer.Write(rotationValues[rotationSaveY, rotationSaveX]);
+                rotationSaveX++;
+                if(rotationSaveX == Width)
                 {
-                    writer.Write(rotationValues[rotationSaveY, rotationSaveX]);
-                    rotationSaveX++;
-                    if(rotationSaveX == Width)
-                    {
-                        rotationSaveY++;
-                        rotationSaveX = 0;
-                    }
+                    rotationSaveY++;
+                    rotationSaveX = 0;
                 }
-            }
 
-            //signifies that the rotations are saved, and
-            //do not have to be written again. (would cause an error)
-            rotationsSaved = true;
+            }
         }
 
         /// <summary>
@@ -1071,6 +1093,22 @@ namespace LevelEditor
                         p.SizeMode = PictureBoxSizeMode.Zoom;
                         Rotate(p);
                         p.Update();
+
+                        int widthLoc = p.Location.X / p.Width;
+                        int heightLoc = p.Location.Y / p.Height;
+
+                        if (boxes[0, 0].Enabled == true)
+                        {
+                            rotationValues[heightLoc, widthLoc] = (int)rotation;
+                        }
+                        else if (overlay[0, 0].Enabled == true)
+                        {
+                            overlayRotations[heightLoc, widthLoc] = (int)rotation;
+                        }
+                        else if (collisions[0, 0].Enabled == true)
+                        {
+                            collisionRotations[heightLoc, widthLoc] = (int)rotation;
+                        }
                     }
                 }               
             }           

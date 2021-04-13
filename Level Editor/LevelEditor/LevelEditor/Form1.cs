@@ -26,6 +26,8 @@ namespace LevelEditor
         private string[,] collisionColors;
         private bool rotationsLoaded;
         private int[,] rotationValues;
+        private int[,] overlayRotation;
+        private int[,] collisionRotation;
 
 
         //Constructor
@@ -37,6 +39,7 @@ namespace LevelEditor
         {
             InitializeComponent();
             rotationsLoaded = false;
+
 
         }
 
@@ -85,17 +88,21 @@ namespace LevelEditor
                     collisionColors = new string[width, height];
 
                     rotationValues = new int[width, height];
+                    collisionRotation = new int[width, height];
+                    overlayRotation = new int[width, height];
+
+                    editor.RotationValues = rotationValues;
+                    editor.CollisionValues = collisionRotation;
+                    editor.OverlayValues = overlayRotation;
+
 
 
                     //BACKGROUND LAYER
                     editor.LoadColors(colors, reader, rotationValues, rotationsLoaded);
-                    rotationsLoaded = true;
 
-                    editor.LoadColors(overlayColors, reader, rotationValues, rotationsLoaded);
-                    editor.LoadColors(collisionColors, reader, rotationValues, rotationsLoaded);
+                    editor.LoadColors(overlayColors, reader, overlayRotation, rotationsLoaded);
+                    editor.LoadColors(collisionColors, reader, collisionRotation, rotationsLoaded);
 
-                    editor.RotationValues = rotationValues;
-                    editor.RotationsLoaded = rotationsLoaded;
                     
                     //loads the picture boxes and matches the colors
                     editor.LoadBoxes(colors, overlayColors, collisionColors);
@@ -115,10 +122,6 @@ namespace LevelEditor
                     //Something was wrong with the file
                     MessageBox.Show("Error reading file! " + ex.Message, ":(");
                     stream.Close();
-                }
-                finally
-                {
-                    rotationsLoaded = false;
                 }
             }
 
@@ -243,7 +246,7 @@ namespace LevelEditor
                     //values
                     for (int i = 0; i < width; i++)
                     {
-                        for (int j = 0; j < height; j++)
+                        for (int j = 0; j < height * 3; j++)
                         {
                             //gets the path
                             string currentPicture = reader.ReadString();
@@ -254,12 +257,12 @@ namespace LevelEditor
                             if (currentPicture.Contains("<"))
                             {
                                 writer.Write(currentPicture);
+                                writer.Write(rotationValue);
                                 continue;
                             }
-
                             //Not a color, write the tile ID without the
                             //path
-                            if (currentPicture.Contains("../../../"))
+                            else if (currentPicture.Contains("../../../"))
                             {
                                 currentPicture = currentPicture.Substring
                                     (currentPicture.LastIndexOf('/') + 1,
@@ -271,33 +274,6 @@ namespace LevelEditor
                             writer.Write(currentPicture);
                             writer.Write(rotationValue);
                             
-                        }
-                    }
-                
-                    //Handles the collision and overlay layers
-                    for (int i = 0; i < width; i++)
-                    {
-                        for (int j = 0; j < height * 2; j++)
-                        {
-                            string currentPicture = reader.ReadString();
-                            
-
-                            //Colors obtained (Vector2 data)
-                            if (currentPicture.Contains("<"))
-                            {
-                                writer.Write(currentPicture);
-                                continue;
-                            }
-
-                            //Not a color, write the tile ID without the
-                            //path
-                            if (currentPicture.Contains("../../../"))
-                            {
-                                currentPicture = currentPicture.Substring
-                                    (currentPicture.LastIndexOf('/') + 1,
-                                    currentPicture.LastIndexOf('.') - currentPicture.LastIndexOf('/') - 1);
-                            }
-                            writer.Write(currentPicture);
                         }
                     }
                 }
