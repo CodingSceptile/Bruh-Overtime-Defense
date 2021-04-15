@@ -29,6 +29,11 @@ namespace Bruh_Overtime_Defense
 
         //Properties
 
+        public List<Rectangle> TrackLocations
+        {
+            get { return trackLocs; }
+        }
+
         /// <summary>
         /// Returns the current level data
         /// </summary>
@@ -81,8 +86,10 @@ namespace Bruh_Overtime_Defense
             this.codes = level.GenerateMap();
             this.rotations = level.Rotations;
             this.vectors = level.Vectors;
-            this.rectangles = level.Locations;         
+            this.rectangles = level.Locations;
+            this.trackLocs = level.TrackLocations;
         }
+
 
         //Methods
 

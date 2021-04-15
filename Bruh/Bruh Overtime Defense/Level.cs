@@ -38,6 +38,14 @@ namespace Bruh_Overtime_Defense
         }
 
         /// <summary>
+        /// Returns the locations of track blocks
+        /// </summary>
+        public List<Rectangle> TrackLocations
+        {
+            get { return trackLocs; }
+        }
+
+        /// <summary>
         /// Gets a list of Rectangles
         /// that indicate where a vector is.
         /// </summary>
