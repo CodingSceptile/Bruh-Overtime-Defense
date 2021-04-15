@@ -349,7 +349,7 @@ namespace Bruh_Overtime_Defense
                                 //values of tower and temp and default
                                 towers.Add(new RyanTheGateKeeper(
                                     new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
-                                    gatekeeperButton.DefaultSprite, 100, 20, 30));
+                                    gatekeeperButton.DefaultSprite, 200, 20, 30));
                                 totalMoney -= 20;
                                 break;
                             case Towers.ErinTower:
