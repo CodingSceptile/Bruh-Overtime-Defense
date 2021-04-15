@@ -207,7 +207,7 @@ namespace Bruh_Overtime_Defense
             
             //towers
             towers = new List<Tower>();
-            towerManager = new TowerManager(towers);
+            towerManager = new TowerManager(towers, collisions.TrackLocations);
             placedButtons = new List<Button>();
             
             _graphics.ApplyChanges();
@@ -299,6 +299,7 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial64, "Bruh Overtime \n    Defense", new Vector2(125, 250), Color.White);
                     _spriteBatch.DrawString(arial36, "Press Enter to start", new Vector2(175, 450), Color.White);
                     break;
+
                 //MAP SELECT SCREEN
                 case GameState.MapSelect:
                     _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
@@ -307,6 +308,7 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial36, "Press Enter to view Instructions",
                         new Vector2(70, 700), Color.White);
                     break;
+
                 //INSTRUCTIONS SCREEN
                 case GameState.InstructionsScreen:
                     _spriteBatch.DrawString(arial64, "Instructions", new Vector2(200, 0), Color.White);
@@ -315,13 +317,11 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial36, "Press Enter to return to Map Select", 
                         new Vector2(25, 720), Color.White);
                     break;
+
                 //GAMEPLAY SCREEN
                 case GameState.Gameplay:
 
                     DrawMap();
-
-                    
-
                     DrawTowerMenu();
 
                     //if the player has a tower to place and clicks

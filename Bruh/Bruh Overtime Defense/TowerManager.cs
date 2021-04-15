@@ -15,14 +15,16 @@ namespace Bruh_Overtime_Defense
     {
         //Fields
         private List<Tower> towers;
+        private List<Rectangle> trackLocs;
 
         /// <summary>
         /// Constructor that initializes the tower manager
         /// </summary>
         /// <param name="towers">List of towers</param>
-        public TowerManager(List<Tower> towers)
+        public TowerManager(List<Tower> towers, List<Rectangle> trackLocs)
         {
             this.towers = towers;
+            this.trackLocs = trackLocs;
         }
 
         //Methods
@@ -64,25 +66,26 @@ namespace Bruh_Overtime_Defense
         }
 
         /// <summary>
-        /// Draws the towers on the map.
+        /// Draws the towers on the map (unless it intersects on the path)
         /// </summary>
         /// <param name="sb">SpriteBatch</param>
         public void DrawTowers(SpriteBatch sb)
         {
             for(int i = 0; i < towers.Count; i++)
             {
-                towers[i].Draw(sb);
+                foreach(Rectangle r in trackLocs)
+                {
+                    if(!r.Intersects(towers[i].Position))
+                    {
+                        towers[i].Draw(sb);
+                    }
+
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Don't place here!");
+                    }
+                }
             }
         }
-
-        /// <summary>
-        /// Places the tower.
-        /// </summary>
-        /// <param name="t">The tower to be placed</param>
-        public void PlaceTower(Tower t)
-        {
-            
-        }
-
     }
 }
