@@ -39,13 +39,16 @@ namespace Bruh_Overtime_Defense
             moneyYield.Clear();
 
             for(int i = 0; i < enemies.Count; i++)
-            { 
-                if(Distance(Position, enemies[i].Position) <= radius)
+            {
+                if (gameTime.TotalGameTime.TotalSeconds % activitySpeed == 0)
                 {
-                    enemies[i].Health = 0;
-                    enemies[i].IsDead = true;
-                    moneyYield.Add(enemies[i]);
-                }
+                    if (Distance(Position, enemies[i].Position) <= radius)
+                    {
+                        enemies[i].Health = 0;
+                        enemies[i].IsDead = true;
+                        moneyYield.Add(enemies[i]);
+                    }
+                }  
             }
 
             return moneyYield.Count;
