@@ -25,7 +25,7 @@ namespace Bruh_Overtime_Defense
         private List<Rectangle> rectangles;
         private List<string> codes;
         private List<float> rotations;
-
+        private List<Rectangle> trackLocs;
 
         //Properties
 

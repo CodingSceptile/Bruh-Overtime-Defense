@@ -29,6 +29,57 @@ namespace Bruh_Overtime_Defense
         private List<Rectangle> trackLocs;
 
         /// <summary>
+        /// the tiles for the map in order
+        /// </summary>
+        public List<Texture2D> Tiles
+        {
+            get { return tiles; }
+
+        }
+
+        /// <summary>
+        /// Gets a list of Rectangles
+        /// that indicate where a vector is.
+        /// </summary>
+        public List<Rectangle> Locations
+        {
+            get { return locations; }
+        }
+
+        /// <summary>
+        /// Gets the list of vectors that dictates 
+        /// a change in direction
+        /// </summary>
+        public List<Vector2> Vectors
+        {
+            get { return motionChange; }
+        }
+
+        public List<float> Rotations
+        {
+            get { return rotations; }
+        }
+
+        /// <summary>
+        /// the side length in tiles
+        /// (UNUSED CURRENTLY)
+        /// </summary>
+        public int SideLength
+        {
+            get { return sideLengthInTiles; }
+        }
+
+        /// <summary>
+        /// Returns the width of a tile
+        /// </summary>
+        public int Width { get { return width; } }
+
+        /// <summary>
+        /// Returns the height of a tile
+        /// </summary>
+        public int Height { get { return height; } }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="mapFile">the name of the map file</param>
@@ -55,6 +106,7 @@ namespace Bruh_Overtime_Defense
             motionChange = new List<Vector2>();
             locations = new List<Rectangle>();
             trackLocs = new List<Rectangle>();
+            
 
             try
             {
@@ -297,59 +349,6 @@ namespace Bruh_Overtime_Defense
                 }
             }
         }
-
-        /// <summary>
-        /// the tiles for the map in order
-        /// </summary>
-        public List<Texture2D> Tiles
-        {
-            get { return tiles; }
-
-        }
-
-        /// <summary>
-        /// Gets a list of Rectangles
-        /// that indicate where a vector is.
-        /// </summary>
-        public List<Rectangle> Locations
-        {
-            get { return locations; }
-        }
-
-        /// <summary>
-        /// Gets the list of vectors that dictates 
-        /// a change in direction
-        /// </summary>
-        public List<Vector2> Vectors
-        {
-            get { return motionChange; }
-        }
-
-        public List<float> Rotations 
-        {
-            get { return rotations; }
-        }
-
-
-
-        /// <summary>
-        /// the side length in tiles
-        /// (UNUSED CURRENTLY)
-        /// </summary>
-        public int SideLength
-        {
-            get { return sideLengthInTiles; }
-        }
-
-        /// <summary>
-        /// Returns the width of a tile
-        /// </summary>
-        public int Width { get { return width; } }
-
-        /// <summary>
-        /// Returns the height of a tile
-        /// </summary>
-        public int Height { get { return height; } }
 
         /// <summary>
         /// Draws the tiles to the screen with the

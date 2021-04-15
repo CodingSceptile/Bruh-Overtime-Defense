@@ -375,13 +375,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //draw the towers
-                    for (int i = 0; i < towers.Count; i++)
-                    {
-                        //placedButtons[i].Draw(_spriteBatch, mState);
-                        //System.Diagnostics.Debug.WriteLine($"Button: {placedButtons[i].X}, {placedButtons[i].Y}");
-                        towers[i].Draw(_spriteBatch);
-                        System.Diagnostics.Debug.WriteLine($"Tower: {towers[i].Position.X}, {towers[i].Position.Y}");
-                    }
+                    towerManager.DrawTowers(_spriteBatch);
 
                     //Only spawns new enemies if a new wave is active
                     if (newWave == true)
