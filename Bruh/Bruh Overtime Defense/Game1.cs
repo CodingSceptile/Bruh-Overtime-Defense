@@ -334,40 +334,36 @@ namespace Bruh_Overtime_Defense
                             case Towers.BaseTower:
                                 //values of tower and temp and default
                                 towers.Add(new DootSkeleton(
-                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                                    tileWidth, tileHeight),
                                     baseTowerButton.DefaultSprite, 200, 20, 20));
                                 totalMoney -= 20;
                                 break;
                             case Towers.SniperTower:
                                 //values of tower and temp and default
                                 towers.Add(new SniperMonke(
-                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                                    tileWidth, tileHeight),
                                     sniperButton.DefaultSprite, int.MaxValue, 40, 20));
                                 totalMoney -= 40;
                                 break;
                             case Towers.GatekeeperTower:
                                 //values of tower and temp and default
                                 towers.Add(new RyanTheGateKeeper(
-                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                                    tileWidth, tileHeight),
                                     gatekeeperButton.DefaultSprite, 200, 20, 30));
                                 totalMoney -= 20;
                                 break;
                             case Towers.ErinTower:
                                 //values of tower and temp and default
                                 towers.Add(new Not_Erin(
-                                    new Rectangle(mState.X, mState.Y, tileWidth, tileHeight),
+                                    new Rectangle(mState.X - tileWidth/3, mState.Y - tileHeight/3, 
+                                    tileWidth, tileHeight),
                                     notErinButton.DefaultSprite, 200, 200, 100));
                                 totalMoney -= 200;
                                 break;
                         }
-                        //if(towers.Count > 0)
-                        //{
-                        //    placedButtons.Add(new Button(towers[towers.Count - 1].Position.X,
-                        //        towers[towers.Count - 1].Position.Y, tileWidth, tileHeight));
-                        //    placedButtons[placedButtons.Count - 1].DefaultSprite = placedButtonTexture;
-                        //    placedButtons[placedButtons.Count - 1].ActiveSprite = placedButtonTexture;
-                        //}
-                        
 
                         //turns off place tower and empties the selectedTower
                         placeTower = false;
@@ -545,6 +541,8 @@ namespace Bruh_Overtime_Defense
                 {
                     //open the towerMenu
                     openTowerMenu = true;
+                    //deselect the player's tower
+                    selectedTower = Towers.None;
                 }
                 //if the player hits the towerMenu button while the menu is open
                 else if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == true)
@@ -757,7 +755,7 @@ namespace Bruh_Overtime_Defense
                 new Vector2(screenWidth - (300), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Health: " + health,
-                new Vector2(screenWidth - (400), 0),
+                new Vector2(screenWidth - (450), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Wave: " + currWave,
                 new Vector2(screenWidth - (600), 0),
@@ -765,6 +763,30 @@ namespace Bruh_Overtime_Defense
             _spriteBatch.DrawString(arial16, "Number of Enemies: " + enemyCount,
                 new Vector2(screenWidth - (600), 40),
                 Color.White);
+            //prints info about the player's selected tower to the screen
+            switch (selectedTower)
+            {
+                case Towers.BaseTower:
+                    _spriteBatch.DrawString(arial16, "Held Tower: Doot Skeleton",
+                        new Vector2(screenWidth - (350), 40),
+                        Color.White);
+                    break;
+                case Towers.SniperTower:
+                    _spriteBatch.DrawString(arial16, "Held Tower: Sniper Monke",
+                        new Vector2(screenWidth - (350), 40),
+                        Color.White);
+                    break;
+                case Towers.GatekeeperTower:
+                    _spriteBatch.DrawString(arial16, "Held Tower: Ryan the Gatekeeper",
+                        new Vector2(screenWidth - (350), 40),
+                        Color.White);
+                    break;
+                case Towers.ErinTower:
+                    _spriteBatch.DrawString(arial16, "Held Tower: Not Erin",
+                        new Vector2(screenWidth - (350), 40),
+                        Color.White);
+                    break;
+            }
         }
 
         /// <summary>
@@ -937,7 +959,8 @@ namespace Bruh_Overtime_Defense
                 "path.\n\n";
             instructions += "Use the Tower Menu in the top right to click on your tower, then click " +
                 "again on the \nfield to place it. This costs money, which you get when your towers " +
-                "automatically \nshoot the bruhs.\n\n";
+                "automatically \nshoot the bruhs. Clicking this button while a tower is selected " +
+                "also deselects that \ntower.\n\n";
             instructions += "Your towers also have to be paid a salary every few waves, " +
                 "which you can do by \nclicking on each tower and pressing the pay button. " +
                 "Failing to pay this salary \ncauses the tower to leave and spawn more bruhs " +
