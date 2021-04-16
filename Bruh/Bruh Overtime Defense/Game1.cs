@@ -352,7 +352,7 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new RyanTheGateKeeper(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    gatekeeperButton.DefaultSprite, 200, 20, 30));
+                                    gatekeeperButton.DefaultSprite, 200, 30, 20));
                                 totalMoney -= 20;
                                 break;
                             case Towers.ErinTower:
@@ -360,7 +360,7 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new Not_Erin(
                                     new Rectangle(mState.X - tileWidth/3, mState.Y - tileHeight/3, 
                                     tileWidth, tileHeight),
-                                    notErinButton.DefaultSprite, 200, 200, 100));
+                                    notErinButton.DefaultSprite, 200, 200, 30));
                                 totalMoney -= 200;
                                 break;
                         }
@@ -494,6 +494,8 @@ namespace Bruh_Overtime_Defense
                 TakeDamage();
                 //checks if bruhs are hit
                 ResolveShot(gameTime);
+                //pay salaries
+                PayTowers();
 
                 //No more health left! Game over!
                 if(health <= 0)
@@ -831,25 +833,25 @@ namespace Bruh_Overtime_Defense
                     new Vector2(screenWidth - (tileWidth * 3), tileHeight),
                     Color.White);
                 //Doot Skeleton
-                _spriteBatch.DrawString(arial16, "  20  20",
+                _spriteBatch.DrawString(arial16, "  20  4",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 2),
                     Color.White);
                 baseTowerButton.Draw(_spriteBatch, mState);
                 //Sniper Monke
-                _spriteBatch.DrawString(arial16, "  40  20",
+                _spriteBatch.DrawString(arial16, "  40  8",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 3),
                     Color.White);
                 sniperButton.Draw(_spriteBatch, mState);
                 //Ryan the Gatekeeper
-                _spriteBatch.DrawString(arial16, "  20  30",
+                _spriteBatch.DrawString(arial16, "  30  6",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 4),
                     Color.White);
                 gatekeeperButton.Draw(_spriteBatch, mState);
                 //Not Erin
-                _spriteBatch.DrawString(arial10, "  200  100",
+                _spriteBatch.DrawString(arial10, "  200  40",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 6),
                     Color.White);
@@ -970,6 +972,28 @@ namespace Bruh_Overtime_Defense
                 "flow in. \n\nGood luck.";
 
             _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.White);
+        }
+
+        /// <summary>
+        /// pays a tower's salary if it's clicked on
+        /// </summary>
+        public void PayTowers()
+        {
+            //for each tower
+            for(int i = 0; i < towers.Count; i++)
+            {
+                //if the tower is clicked
+                if(towers[i].Clicked(mState, prevMState))
+                {
+                    //if your money is greater than their salary
+                    if(totalMoney >= (int)towers[i].OriginalSalary)
+                    {
+                        //pay the salary
+                        towerManager.SalaryPaid(towers[i]);
+                        totalMoney -= (int)towers[i].OriginalSalary/5;
+                    }
+                }
+            }
         }
     }
 }

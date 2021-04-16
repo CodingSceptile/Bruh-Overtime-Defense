@@ -81,7 +81,7 @@ namespace Bruh_Overtime_Defense
         {
             get
             {
-                return salary;
+                return originalSalary;
             }
  
         }
@@ -219,6 +219,31 @@ namespace Bruh_Overtime_Defense
         {
             float distance = (float)Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
             return distance;
+        }
+
+        /// <summary>
+        /// allows the tower to be clicked
+        /// </summary>
+        /// <param name="mState"></param>
+        /// <param name="prevMState"></param>
+        /// <returns></returns>
+        public bool Clicked(MouseState mState, MouseState prevMState)
+        {
+            //if the x coord is right
+            if (mState.X > Position.X && mState.X < Position.X + Position.Width)
+            {
+                //if the y coord is right
+                if (mState.Y > Position.Y && mState.Y < Position.Y + Position.Height)
+                {
+                    if(mState.LeftButton != prevMState.LeftButton && mState.LeftButton == ButtonState.Pressed)
+                    {
+                        //return true
+                        return true;
+                    }
+                }
+            }
+            //else return false
+            return false;
         }
     }
 }
