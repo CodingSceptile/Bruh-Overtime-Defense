@@ -79,11 +79,6 @@ namespace Bruh_Overtime_Defense
                     {
                         towers[i].Draw(sb);
                     }
-
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine("Don't place here!");
-                    }
                 }
             }
         }
