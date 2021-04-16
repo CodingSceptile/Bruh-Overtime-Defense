@@ -512,8 +512,19 @@ namespace Bruh_Overtime_Defense
                     !baseTowerButton.RollOver(mState) && !sniperButton.RollOver(mState) && 
                     !gatekeeperButton.RollOver(mState) && !notErinButton.RollOver(mState))
                 {
+                    bool inTrack = false;
                     //let the user place a tower
-                    placeTower = true;
+                    for(int i = 0; i < collisions.TrackLocations.Count; i++)
+                    {
+                        if(collisions.TrackLocations[i].Contains(mState.Position))
+                        {
+                            inTrack = true;
+                        }
+                    }
+                    if(!inTrack)
+                    {
+                        placeTower = true;
+                    }  
                 }
 
                 //if the player hits left or right control
