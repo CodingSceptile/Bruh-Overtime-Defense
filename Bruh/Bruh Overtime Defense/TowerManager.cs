@@ -34,7 +34,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="t">The lucky tower that's getting paid.</param>
         public void SalaryPaid(Tower t)
         {
-            t.Salary += t.OriginalSalary;
+            t.Salary += t.OriginalSalary/5;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Bruh_Overtime_Defense
         /// Draws the towers on the map (unless it intersects on the path)
         /// </summary>
         /// <param name="sb">SpriteBatch</param>
-        public void DrawTowers(SpriteBatch sb)
+        public void DrawTowers(SpriteBatch sb, SpriteFont sf)
         {
             for(int i = 0; i < towers.Count; i++)
             {
@@ -78,6 +78,9 @@ namespace Bruh_Overtime_Defense
                     if(!r.Intersects(towers[i].Position))
                     {
                         towers[i].Draw(sb);
+                        sb.DrawString(sf, "Total Pay: " + towers[i].Salary, 
+                            new Vector2(towers[i].Position.X, towers[i].Position.Y + 30), 
+                            Color.White);
                     }
                 }
             }

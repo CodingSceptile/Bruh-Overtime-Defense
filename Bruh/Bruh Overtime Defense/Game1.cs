@@ -371,7 +371,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //draw the towers
-                    towerManager.DrawTowers(_spriteBatch);
+                    towerManager.DrawTowers(_spriteBatch, arial10);
 
                     //Only spawns new enemies if a new wave is active
                     if (newWave == true)
@@ -888,7 +888,9 @@ namespace Bruh_Overtime_Defense
             erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
         }
 
-        //triggers the next wave
+        /// <summary>
+        /// triggers the next wave
+        /// </summary>
         public void NextWave()
         {
             //Checks for the current wave, and how that
@@ -985,7 +987,7 @@ namespace Bruh_Overtime_Defense
                 if(towers[i].Clicked(mState, prevMState))
                 {
                     //if your money is greater than their salary
-                    if(totalMoney >= (int)towers[i].OriginalSalary)
+                    if(totalMoney >= (int)towers[i].OriginalSalary/5)
                     {
                         //pay the salary
                         towerManager.SalaryPaid(towers[i]);
