@@ -324,9 +324,9 @@ namespace Bruh_Overtime_Defense
                             {
                                 trackLocs.Add(
                                     new Rectangle
-                                    (new Point(((j * width) * 2),
-                                    ((i * height) * 2)),
-                                    new Point(width * 2, height * 2)));
+                                    (new Point((((j * width) - width/2) * 2),
+                                    (((i * height)) - height/2) * 2),
+                                    new Point(width * 3, height * 3)));
                                 continue;
                             }
 
