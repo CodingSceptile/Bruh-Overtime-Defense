@@ -178,17 +178,17 @@ namespace Bruh_Overtime_Defense
                             {
                                 trackLocs.Add(
                                     new Rectangle
-                                    (new Point(((j * width) * 2) + width / 2,
-                                    ((i * height) * 2) + height / 2),
-                                    new Point(width * 3, height * 3)));
+                                    (new Point(((j * width) * 2),
+                                    ((i * height))),
+                                    new Point(width * 2, height * 2)));
                                 continue;
                             }
 
                             //Adds the location of the interactible
                             //level component to another list
-                            locations.Add(
+                            trackLocs.Add(
                                     new Rectangle
-                                    (new Point((((j) * width) * 2),
+                                    (new Point(((j * width) * 2),
                                     ((i * height) * 2)),
                                     new Point(width, height)));
                         }
@@ -251,9 +251,9 @@ namespace Bruh_Overtime_Defense
                             {
                                 trackLocs.Add(
                                     new Rectangle
-                                    (new Point(((j * width) * 2) + width / 2,
-                                    ((i * height) * 2) + height / 2),
-                                    new Point(width * 3, height * 3)));
+                                    (new Point(((j * width) * 2),
+                                    ((i * height) * 2)),
+                                    new Point(width * 2, height * 2)));
                                 continue;
                             }
 
@@ -324,9 +324,9 @@ namespace Bruh_Overtime_Defense
                             {
                                 trackLocs.Add(
                                     new Rectangle
-                                    (new Point(((j * width) * 2) + width / 2,
-                                    ((i * height) * 2) + height / 2),
-                                    new Point(width * 3, height * 3)));
+                                    (new Point(((j * width) * 2),
+                                    ((i * height) * 2)),
+                                    new Point(width * 2, height * 2)));
                                 continue;
                             }
 

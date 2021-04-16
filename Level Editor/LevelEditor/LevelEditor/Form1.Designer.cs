@@ -36,10 +36,7 @@
             this.heightLabel = new System.Windows.Forms.Label();
             this.widthLabel = new System.Windows.Forms.Label();
             this.exportButton = new System.Windows.Forms.Button();
-            this.gameInfo = new System.Windows.Forms.GroupBox();
-            this.tbd = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
-            this.gameInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // loadButton
@@ -128,34 +125,12 @@
             this.exportButton.UseVisualStyleBackColor = false;
             this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
-            // gameInfo
-            // 
-            this.gameInfo.Controls.Add(this.tbd);
-            this.gameInfo.Location = new System.Drawing.Point(386, 180);
-            this.gameInfo.Name = "gameInfo";
-            this.gameInfo.Size = new System.Drawing.Size(357, 252);
-            this.gameInfo.TabIndex = 3;
-            this.gameInfo.TabStop = false;
-            this.gameInfo.Text = "Game Information";
-            // 
-            // tbd
-            // 
-            this.tbd.BackColor = System.Drawing.Color.Cornsilk;
-            this.tbd.Font = new System.Drawing.Font("Stencil", 67.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbd.Location = new System.Drawing.Point(38, 58);
-            this.tbd.Multiline = true;
-            this.tbd.Name = "tbd";
-            this.tbd.Size = new System.Drawing.Size(281, 153);
-            this.tbd.TabIndex = 0;
-            this.tbd.Text = "TBD";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
             this.ClientSize = new System.Drawing.Size(755, 450);
-            this.Controls.Add(this.gameInfo);
             this.Controls.Add(this.exportButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.loadButton);
@@ -163,8 +138,6 @@
             this.Text = "Level Editor";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.gameInfo.ResumeLayout(false);
-            this.gameInfo.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -179,8 +152,6 @@
         private System.Windows.Forms.Label heightLabel;
         private System.Windows.Forms.Label widthLabel;
         private System.Windows.Forms.Button exportButton;
-        private System.Windows.Forms.GroupBox gameInfo;
-        private System.Windows.Forms.TextBox tbd;
     }
 }
 
