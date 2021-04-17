@@ -80,7 +80,13 @@ namespace LevelEditor
             GenerateBoxes();
             try
             {
-                for(int i = 0; i < 21; i++)
+                writer.WriteLine(GetNumFromBox(bruhHealth) + "|" + GetNumFromBox(bruhSpeed));
+                writer.WriteLine(GetNumFromBox(redHealth) + "|" + GetNumFromBox(redSpeed));
+                writer.WriteLine(GetNumFromBox(greenHealth) + "|" + GetNumFromBox(greenSpeed));
+                writer.WriteLine(GetNumFromBox(blueHealth) + "|" + GetNumFromBox(blueSpeed));
+                writer.WriteLine(GetNumFromBox(hurbHealth) + "|" + GetNumFromBox(hurbSpeed));
+
+                for (int i = 0; i < 21; i++)
                 {
                     WriteNumBruhs(waveNum, writer);
                     waveNum++;

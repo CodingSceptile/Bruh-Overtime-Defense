@@ -211,6 +211,31 @@
             this.label78 = new System.Windows.Forms.Label();
             this.label79 = new System.Windows.Forms.Label();
             this.enemyGenerateButton = new System.Windows.Forms.Button();
+            this.groupBox21 = new System.Windows.Forms.GroupBox();
+            this.redSpeed = new System.Windows.Forms.TextBox();
+            this.redHealth = new System.Windows.Forms.TextBox();
+            this.label87 = new System.Windows.Forms.Label();
+            this.label88 = new System.Windows.Forms.Label();
+            this.groupBox22 = new System.Windows.Forms.GroupBox();
+            this.greenSpeed = new System.Windows.Forms.TextBox();
+            this.greenHealth = new System.Windows.Forms.TextBox();
+            this.label91 = new System.Windows.Forms.Label();
+            this.label92 = new System.Windows.Forms.Label();
+            this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.blueSpeed = new System.Windows.Forms.TextBox();
+            this.blueHealth = new System.Windows.Forms.TextBox();
+            this.label95 = new System.Windows.Forms.Label();
+            this.label96 = new System.Windows.Forms.Label();
+            this.groupBox24 = new System.Windows.Forms.GroupBox();
+            this.hurbSpeed = new System.Windows.Forms.TextBox();
+            this.hurbHealth = new System.Windows.Forms.TextBox();
+            this.label99 = new System.Windows.Forms.Label();
+            this.label100 = new System.Windows.Forms.Label();
+            this.label84 = new System.Windows.Forms.Label();
+            this.label83 = new System.Windows.Forms.Label();
+            this.bruhHealth = new System.Windows.Forms.TextBox();
+            this.bruhSpeed = new System.Windows.Forms.TextBox();
+            this.groupBox20 = new System.Windows.Forms.GroupBox();
             this.wave1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -231,6 +256,11 @@
             this.groupBox17.SuspendLayout();
             this.groupBox18.SuspendLayout();
             this.groupBox19.SuspendLayout();
+            this.groupBox21.SuspendLayout();
+            this.groupBox22.SuspendLayout();
+            this.groupBox23.SuspendLayout();
+            this.groupBox24.SuspendLayout();
+            this.groupBox20.SuspendLayout();
             this.SuspendLayout();
             // 
             // wave1
@@ -243,7 +273,7 @@
             this.wave1.Controls.Add(this.label3);
             this.wave1.Controls.Add(this.label2);
             this.wave1.Controls.Add(this.bruh);
-            this.wave1.Location = new System.Drawing.Point(12, 12);
+            this.wave1.Location = new System.Drawing.Point(12, 109);
             this.wave1.Name = "wave1";
             this.wave1.Size = new System.Drawing.Size(174, 70);
             this.wave1.TabIndex = 1;
@@ -332,7 +362,7 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Location = new System.Drawing.Point(192, 12);
+            this.groupBox1.Location = new System.Drawing.Point(192, 109);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(174, 70);
             this.groupBox1.TabIndex = 8;
@@ -421,7 +451,7 @@
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Location = new System.Drawing.Point(552, 12);
+            this.groupBox2.Location = new System.Drawing.Point(552, 109);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(174, 70);
             this.groupBox2.TabIndex = 10;
@@ -510,7 +540,7 @@
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.label15);
-            this.groupBox3.Location = new System.Drawing.Point(372, 12);
+            this.groupBox3.Location = new System.Drawing.Point(372, 109);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(174, 70);
             this.groupBox3.TabIndex = 9;
@@ -599,7 +629,7 @@
             this.groupBox5.Controls.Add(this.label21);
             this.groupBox5.Controls.Add(this.label22);
             this.groupBox5.Controls.Add(this.label23);
-            this.groupBox5.Location = new System.Drawing.Point(732, 12);
+            this.groupBox5.Location = new System.Drawing.Point(732, 109);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(174, 70);
             this.groupBox5.TabIndex = 11;
@@ -688,7 +718,7 @@
             this.groupBox4.Controls.Add(this.label17);
             this.groupBox4.Controls.Add(this.label18);
             this.groupBox4.Controls.Add(this.label19);
-            this.groupBox4.Location = new System.Drawing.Point(552, 88);
+            this.groupBox4.Location = new System.Drawing.Point(552, 185);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(174, 70);
             this.groupBox4.TabIndex = 15;
@@ -777,7 +807,7 @@
             this.groupBox6.Controls.Add(this.label25);
             this.groupBox6.Controls.Add(this.label26);
             this.groupBox6.Controls.Add(this.label27);
-            this.groupBox6.Location = new System.Drawing.Point(732, 88);
+            this.groupBox6.Location = new System.Drawing.Point(732, 185);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(174, 70);
             this.groupBox6.TabIndex = 16;
@@ -866,7 +896,7 @@
             this.groupBox7.Controls.Add(this.label29);
             this.groupBox7.Controls.Add(this.label30);
             this.groupBox7.Controls.Add(this.label31);
-            this.groupBox7.Location = new System.Drawing.Point(192, 88);
+            this.groupBox7.Location = new System.Drawing.Point(192, 185);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(174, 70);
             this.groupBox7.TabIndex = 13;
@@ -955,7 +985,7 @@
             this.groupBox8.Controls.Add(this.label33);
             this.groupBox8.Controls.Add(this.label34);
             this.groupBox8.Controls.Add(this.label35);
-            this.groupBox8.Location = new System.Drawing.Point(372, 88);
+            this.groupBox8.Location = new System.Drawing.Point(372, 185);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(174, 70);
             this.groupBox8.TabIndex = 14;
@@ -1044,7 +1074,7 @@
             this.groupBox9.Controls.Add(this.label37);
             this.groupBox9.Controls.Add(this.label38);
             this.groupBox9.Controls.Add(this.label39);
-            this.groupBox9.Location = new System.Drawing.Point(12, 88);
+            this.groupBox9.Location = new System.Drawing.Point(12, 185);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(174, 70);
             this.groupBox9.TabIndex = 12;
@@ -1133,7 +1163,7 @@
             this.groupBox10.Controls.Add(this.label41);
             this.groupBox10.Controls.Add(this.label42);
             this.groupBox10.Controls.Add(this.label43);
-            this.groupBox10.Location = new System.Drawing.Point(552, 164);
+            this.groupBox10.Location = new System.Drawing.Point(552, 261);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(174, 70);
             this.groupBox10.TabIndex = 20;
@@ -1222,7 +1252,7 @@
             this.groupBox11.Controls.Add(this.label45);
             this.groupBox11.Controls.Add(this.label46);
             this.groupBox11.Controls.Add(this.label47);
-            this.groupBox11.Location = new System.Drawing.Point(732, 164);
+            this.groupBox11.Location = new System.Drawing.Point(732, 261);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(174, 70);
             this.groupBox11.TabIndex = 21;
@@ -1311,7 +1341,7 @@
             this.groupBox12.Controls.Add(this.label49);
             this.groupBox12.Controls.Add(this.label50);
             this.groupBox12.Controls.Add(this.label51);
-            this.groupBox12.Location = new System.Drawing.Point(192, 164);
+            this.groupBox12.Location = new System.Drawing.Point(192, 261);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(174, 70);
             this.groupBox12.TabIndex = 18;
@@ -1400,7 +1430,7 @@
             this.groupBox13.Controls.Add(this.label53);
             this.groupBox13.Controls.Add(this.label54);
             this.groupBox13.Controls.Add(this.label55);
-            this.groupBox13.Location = new System.Drawing.Point(372, 164);
+            this.groupBox13.Location = new System.Drawing.Point(372, 261);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(174, 70);
             this.groupBox13.TabIndex = 19;
@@ -1489,7 +1519,7 @@
             this.groupBox14.Controls.Add(this.label57);
             this.groupBox14.Controls.Add(this.label58);
             this.groupBox14.Controls.Add(this.label59);
-            this.groupBox14.Location = new System.Drawing.Point(12, 164);
+            this.groupBox14.Location = new System.Drawing.Point(12, 261);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Size = new System.Drawing.Size(174, 70);
             this.groupBox14.TabIndex = 17;
@@ -1578,7 +1608,7 @@
             this.groupBox15.Controls.Add(this.label61);
             this.groupBox15.Controls.Add(this.label62);
             this.groupBox15.Controls.Add(this.label63);
-            this.groupBox15.Location = new System.Drawing.Point(552, 240);
+            this.groupBox15.Location = new System.Drawing.Point(552, 337);
             this.groupBox15.Name = "groupBox15";
             this.groupBox15.Size = new System.Drawing.Size(174, 70);
             this.groupBox15.TabIndex = 25;
@@ -1669,7 +1699,7 @@
             this.groupBox16.Controls.Add(this.label65);
             this.groupBox16.Controls.Add(this.label66);
             this.groupBox16.Controls.Add(this.label67);
-            this.groupBox16.Location = new System.Drawing.Point(732, 240);
+            this.groupBox16.Location = new System.Drawing.Point(732, 337);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(174, 116);
             this.groupBox16.TabIndex = 26;
@@ -1776,7 +1806,7 @@
             this.groupBox17.Controls.Add(this.label69);
             this.groupBox17.Controls.Add(this.label70);
             this.groupBox17.Controls.Add(this.label71);
-            this.groupBox17.Location = new System.Drawing.Point(192, 240);
+            this.groupBox17.Location = new System.Drawing.Point(192, 337);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(174, 70);
             this.groupBox17.TabIndex = 23;
@@ -1865,7 +1895,7 @@
             this.groupBox18.Controls.Add(this.label73);
             this.groupBox18.Controls.Add(this.label74);
             this.groupBox18.Controls.Add(this.label75);
-            this.groupBox18.Location = new System.Drawing.Point(372, 240);
+            this.groupBox18.Location = new System.Drawing.Point(372, 337);
             this.groupBox18.Name = "groupBox18";
             this.groupBox18.Size = new System.Drawing.Size(174, 70);
             this.groupBox18.TabIndex = 24;
@@ -1954,7 +1984,7 @@
             this.groupBox19.Controls.Add(this.label77);
             this.groupBox19.Controls.Add(this.label78);
             this.groupBox19.Controls.Add(this.label79);
-            this.groupBox19.Location = new System.Drawing.Point(12, 240);
+            this.groupBox19.Location = new System.Drawing.Point(12, 337);
             this.groupBox19.Name = "groupBox19";
             this.groupBox19.Size = new System.Drawing.Size(174, 70);
             this.groupBox19.TabIndex = 22;
@@ -2037,7 +2067,7 @@
             // 
             this.enemyGenerateButton.BackColor = System.Drawing.Color.LavenderBlush;
             this.enemyGenerateButton.Font = new System.Drawing.Font("Comic Sans MS", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.enemyGenerateButton.Location = new System.Drawing.Point(254, 327);
+            this.enemyGenerateButton.Location = new System.Drawing.Point(254, 424);
             this.enemyGenerateButton.Name = "enemyGenerateButton";
             this.enemyGenerateButton.Size = new System.Drawing.Size(413, 80);
             this.enemyGenerateButton.TabIndex = 27;
@@ -2045,12 +2075,262 @@
             this.enemyGenerateButton.UseVisualStyleBackColor = false;
             this.enemyGenerateButton.Click += new System.EventHandler(this.enemyGenerateButton_Click);
             // 
+            // groupBox21
+            // 
+            this.groupBox21.Controls.Add(this.redSpeed);
+            this.groupBox21.Controls.Add(this.redHealth);
+            this.groupBox21.Controls.Add(this.label87);
+            this.groupBox21.Controls.Add(this.label88);
+            this.groupBox21.Location = new System.Drawing.Point(192, 26);
+            this.groupBox21.Name = "groupBox21";
+            this.groupBox21.Size = new System.Drawing.Size(109, 70);
+            this.groupBox21.TabIndex = 9;
+            this.groupBox21.TabStop = false;
+            this.groupBox21.Text = "Red Bruh";
+            // 
+            // redSpeed
+            // 
+            this.redSpeed.Location = new System.Drawing.Point(46, 21);
+            this.redSpeed.Multiline = true;
+            this.redSpeed.Name = "redSpeed";
+            this.redSpeed.Size = new System.Drawing.Size(37, 22);
+            this.redSpeed.TabIndex = 5;
+            this.redSpeed.Text = "2";
+            // 
+            // redHealth
+            // 
+            this.redHealth.Location = new System.Drawing.Point(6, 21);
+            this.redHealth.Multiline = true;
+            this.redHealth.Name = "redHealth";
+            this.redHealth.Size = new System.Drawing.Size(37, 22);
+            this.redHealth.TabIndex = 4;
+            this.redHealth.Text = "2";
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.Location = new System.Drawing.Point(49, 46);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(49, 17);
+            this.label87.TabIndex = 1;
+            this.label87.Text = "Speed";
+            // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Location = new System.Drawing.Point(5, 46);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(49, 17);
+            this.label88.TabIndex = 0;
+            this.label88.Text = "Health";
+            // 
+            // groupBox22
+            // 
+            this.groupBox22.Controls.Add(this.greenSpeed);
+            this.groupBox22.Controls.Add(this.greenHealth);
+            this.groupBox22.Controls.Add(this.label91);
+            this.groupBox22.Controls.Add(this.label92);
+            this.groupBox22.Location = new System.Drawing.Point(372, 26);
+            this.groupBox22.Name = "groupBox22";
+            this.groupBox22.Size = new System.Drawing.Size(104, 70);
+            this.groupBox22.TabIndex = 10;
+            this.groupBox22.TabStop = false;
+            this.groupBox22.Text = "Green Bruh";
+            // 
+            // greenSpeed
+            // 
+            this.greenSpeed.Location = new System.Drawing.Point(46, 21);
+            this.greenSpeed.Multiline = true;
+            this.greenSpeed.Name = "greenSpeed";
+            this.greenSpeed.Size = new System.Drawing.Size(37, 22);
+            this.greenSpeed.TabIndex = 5;
+            this.greenSpeed.Text = "3";
+            // 
+            // greenHealth
+            // 
+            this.greenHealth.Location = new System.Drawing.Point(6, 21);
+            this.greenHealth.Multiline = true;
+            this.greenHealth.Name = "greenHealth";
+            this.greenHealth.Size = new System.Drawing.Size(37, 22);
+            this.greenHealth.TabIndex = 4;
+            this.greenHealth.Text = "3";
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(49, 46);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(49, 17);
+            this.label91.TabIndex = 1;
+            this.label91.Text = "Speed";
+            // 
+            // label92
+            // 
+            this.label92.AutoSize = true;
+            this.label92.Location = new System.Drawing.Point(5, 46);
+            this.label92.Name = "label92";
+            this.label92.Size = new System.Drawing.Size(49, 17);
+            this.label92.TabIndex = 0;
+            this.label92.Text = "Health";
+            // 
+            // groupBox23
+            // 
+            this.groupBox23.Controls.Add(this.blueSpeed);
+            this.groupBox23.Controls.Add(this.blueHealth);
+            this.groupBox23.Controls.Add(this.label95);
+            this.groupBox23.Controls.Add(this.label96);
+            this.groupBox23.Location = new System.Drawing.Point(552, 26);
+            this.groupBox23.Name = "groupBox23";
+            this.groupBox23.Size = new System.Drawing.Size(103, 70);
+            this.groupBox23.TabIndex = 11;
+            this.groupBox23.TabStop = false;
+            this.groupBox23.Text = "Blue Bruh";
+            // 
+            // blueSpeed
+            // 
+            this.blueSpeed.Location = new System.Drawing.Point(46, 21);
+            this.blueSpeed.Multiline = true;
+            this.blueSpeed.Name = "blueSpeed";
+            this.blueSpeed.Size = new System.Drawing.Size(37, 22);
+            this.blueSpeed.TabIndex = 5;
+            this.blueSpeed.Text = "5";
+            // 
+            // blueHealth
+            // 
+            this.blueHealth.Location = new System.Drawing.Point(6, 21);
+            this.blueHealth.Multiline = true;
+            this.blueHealth.Name = "blueHealth";
+            this.blueHealth.Size = new System.Drawing.Size(37, 22);
+            this.blueHealth.TabIndex = 4;
+            this.blueHealth.Text = "5";
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(49, 46);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(49, 17);
+            this.label95.TabIndex = 1;
+            this.label95.Text = "Speed";
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(5, 46);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(49, 17);
+            this.label96.TabIndex = 0;
+            this.label96.Text = "Health";
+            // 
+            // groupBox24
+            // 
+            this.groupBox24.Controls.Add(this.hurbSpeed);
+            this.groupBox24.Controls.Add(this.hurbHealth);
+            this.groupBox24.Controls.Add(this.label99);
+            this.groupBox24.Controls.Add(this.label100);
+            this.groupBox24.Location = new System.Drawing.Point(732, 26);
+            this.groupBox24.Name = "groupBox24";
+            this.groupBox24.Size = new System.Drawing.Size(104, 70);
+            this.groupBox24.TabIndex = 12;
+            this.groupBox24.TabStop = false;
+            this.groupBox24.Text = "Hurb";
+            // 
+            // hurbSpeed
+            // 
+            this.hurbSpeed.Location = new System.Drawing.Point(46, 21);
+            this.hurbSpeed.Multiline = true;
+            this.hurbSpeed.Name = "hurbSpeed";
+            this.hurbSpeed.Size = new System.Drawing.Size(37, 22);
+            this.hurbSpeed.TabIndex = 5;
+            this.hurbSpeed.Text = "10";
+            // 
+            // hurbHealth
+            // 
+            this.hurbHealth.Location = new System.Drawing.Point(6, 21);
+            this.hurbHealth.Multiline = true;
+            this.hurbHealth.Name = "hurbHealth";
+            this.hurbHealth.Size = new System.Drawing.Size(37, 22);
+            this.hurbHealth.TabIndex = 4;
+            this.hurbHealth.Text = "100";
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(49, 46);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(49, 17);
+            this.label99.TabIndex = 1;
+            this.label99.Text = "Speed";
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Location = new System.Drawing.Point(5, 46);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(49, 17);
+            this.label100.TabIndex = 0;
+            this.label100.Text = "Health";
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(5, 46);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(49, 17);
+            this.label84.TabIndex = 0;
+            this.label84.Text = "Health";
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(49, 46);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(49, 17);
+            this.label83.TabIndex = 1;
+            this.label83.Text = "Speed";
+            // 
+            // bruhHealth
+            // 
+            this.bruhHealth.Location = new System.Drawing.Point(6, 21);
+            this.bruhHealth.Multiline = true;
+            this.bruhHealth.Name = "bruhHealth";
+            this.bruhHealth.Size = new System.Drawing.Size(37, 22);
+            this.bruhHealth.TabIndex = 4;
+            this.bruhHealth.Text = "1";
+            // 
+            // bruhSpeed
+            // 
+            this.bruhSpeed.Location = new System.Drawing.Point(46, 21);
+            this.bruhSpeed.Multiline = true;
+            this.bruhSpeed.Name = "bruhSpeed";
+            this.bruhSpeed.Size = new System.Drawing.Size(37, 22);
+            this.bruhSpeed.TabIndex = 5;
+            this.bruhSpeed.Text = "1";
+            // 
+            // groupBox20
+            // 
+            this.groupBox20.Controls.Add(this.bruhSpeed);
+            this.groupBox20.Controls.Add(this.bruhHealth);
+            this.groupBox20.Controls.Add(this.label83);
+            this.groupBox20.Controls.Add(this.label84);
+            this.groupBox20.Location = new System.Drawing.Point(12, 26);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Size = new System.Drawing.Size(107, 70);
+            this.groupBox20.TabIndex = 8;
+            this.groupBox20.TabStop = false;
+            this.groupBox20.Text = "Bruh";
+            // 
             // EnemyFormation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
-            this.ClientSize = new System.Drawing.Size(917, 435);
+            this.ClientSize = new System.Drawing.Size(917, 519);
+            this.Controls.Add(this.groupBox24);
+            this.Controls.Add(this.groupBox23);
+            this.Controls.Add(this.groupBox22);
+            this.Controls.Add(this.groupBox21);
+            this.Controls.Add(this.groupBox20);
             this.Controls.Add(this.enemyGenerateButton);
             this.Controls.Add(this.groupBox15);
             this.Controls.Add(this.groupBox16);
@@ -2114,6 +2394,16 @@
             this.groupBox18.PerformLayout();
             this.groupBox19.ResumeLayout(false);
             this.groupBox19.PerformLayout();
+            this.groupBox21.ResumeLayout(false);
+            this.groupBox21.PerformLayout();
+            this.groupBox22.ResumeLayout(false);
+            this.groupBox22.PerformLayout();
+            this.groupBox23.ResumeLayout(false);
+            this.groupBox23.PerformLayout();
+            this.groupBox24.ResumeLayout(false);
+            this.groupBox24.PerformLayout();
+            this.groupBox20.ResumeLayout(false);
+            this.groupBox20.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2303,5 +2593,30 @@
         private System.Windows.Forms.Label label80;
         private System.Windows.Forms.TextBox t5;
         private System.Windows.Forms.Button enemyGenerateButton;
+        private System.Windows.Forms.GroupBox groupBox21;
+        private System.Windows.Forms.TextBox redSpeed;
+        private System.Windows.Forms.TextBox redHealth;
+        private System.Windows.Forms.Label label87;
+        private System.Windows.Forms.Label label88;
+        private System.Windows.Forms.GroupBox groupBox22;
+        private System.Windows.Forms.TextBox greenSpeed;
+        private System.Windows.Forms.TextBox greenHealth;
+        private System.Windows.Forms.Label label91;
+        private System.Windows.Forms.Label label92;
+        private System.Windows.Forms.GroupBox groupBox23;
+        private System.Windows.Forms.TextBox blueSpeed;
+        private System.Windows.Forms.TextBox blueHealth;
+        private System.Windows.Forms.Label label95;
+        private System.Windows.Forms.Label label96;
+        private System.Windows.Forms.GroupBox groupBox24;
+        private System.Windows.Forms.TextBox hurbSpeed;
+        private System.Windows.Forms.TextBox hurbHealth;
+        private System.Windows.Forms.Label label99;
+        private System.Windows.Forms.Label label100;
+        private System.Windows.Forms.Label label84;
+        private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.TextBox bruhHealth;
+        private System.Windows.Forms.TextBox bruhSpeed;
+        private System.Windows.Forms.GroupBox groupBox20;
     }
 }
