@@ -36,6 +36,7 @@
             this.heightLabel = new System.Windows.Forms.Label();
             this.widthLabel = new System.Windows.Forms.Label();
             this.exportButton = new System.Windows.Forms.Button();
+            this.enemyWaveButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,12 +126,26 @@
             this.exportButton.UseVisualStyleBackColor = false;
             this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
+            // enemyWaveButton
+            // 
+            this.enemyWaveButton.BackColor = System.Drawing.Color.Beige;
+            this.enemyWaveButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.enemyWaveButton.Font = new System.Drawing.Font("Sitka Small", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enemyWaveButton.Location = new System.Drawing.Point(386, 241);
+            this.enemyWaveButton.Name = "enemyWaveButton";
+            this.enemyWaveButton.Size = new System.Drawing.Size(357, 100);
+            this.enemyWaveButton.TabIndex = 3;
+            this.enemyWaveButton.Text = "Create Enemy Wave\r\nFormations\r\n";
+            this.enemyWaveButton.UseVisualStyleBackColor = false;
+            this.enemyWaveButton.Click += new System.EventHandler(this.enemyWaveButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
             this.ClientSize = new System.Drawing.Size(755, 450);
+            this.Controls.Add(this.enemyWaveButton);
             this.Controls.Add(this.exportButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.loadButton);
@@ -152,6 +167,7 @@
         private System.Windows.Forms.Label heightLabel;
         private System.Windows.Forms.Label widthLabel;
         private System.Windows.Forms.Button exportButton;
+        private System.Windows.Forms.Button enemyWaveButton;
     }
 }
 
