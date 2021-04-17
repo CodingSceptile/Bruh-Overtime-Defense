@@ -40,9 +40,10 @@ namespace Bruh_Overtime_Defense
 
             for(int i = 0; i < enemies.Count; i++)
             {
-                if (gameTime.TotalGameTime.TotalSeconds % activitySpeed == 0)
+                if (gameTime.TotalGameTime.TotalMilliseconds % 1500 == 0)
                 {
-                    if (Distance(Position, enemies[i].Position) <= radius)
+                    if (Distance(Position, enemies[i].Position) <= radius
+                        && enemies[i].IsDead == false)
                     {
                         enemies[i].Health = 0;
                         enemies[i].IsDead = true;
