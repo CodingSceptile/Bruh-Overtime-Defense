@@ -9,8 +9,8 @@ namespace Bruh_Overtime_Defense
 {
     class RyanTheGateKeeper : Tower
     {
-        public RyanTheGateKeeper(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed)
-            : base(pos, spr, radius, initialCost, activitySpeed)
+        public RyanTheGateKeeper(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime)
+            : base(pos, spr, radius, initialCost, activitySpeed, gameTime)
         {
 
         }
@@ -35,11 +35,14 @@ namespace Bruh_Overtime_Defense
         /// <param name="enemies"></param>
         private void WaitingRoom(List<Enemy> enemies)
         {
+                //Assigning it a correct value otherwise compiler cries
+                float originalSpeed = 3;
+
                 if(WaitingRoomSwitch())
                 {
                     for(int i = 0; i < enemies.Count; i++)
                     {
-                         float originalSpeed = enemies[i].Speed;
+                         originalSpeed = enemies[i].Speed;
                          if (Distance(enemies[i].Position, Position) <= radius)
                          {
                                enemies[i].Speed = 0;
@@ -52,6 +55,14 @@ namespace Bruh_Overtime_Defense
                     }
                      
                 }
+
+            else
+            {
+                for(int i = 0; i < enemies.Count; i++)
+                {
+                    enemies[i].Speed = originalSpeed;
+                }
+            }
         }
 
         /// <summary>
@@ -62,11 +73,12 @@ namespace Bruh_Overtime_Defense
         {
             double time = (gameTime.TotalGameTime.TotalSeconds % 10);
 
-            //if time between 0-2, 4-6, 8-9 then tower activates.
-            if (((time > 0) && (time < 2)) ||
-               ((time > 4) && (time < 6)) ||
-               (time > 8 && time < 9))
+            //if time between 1-3, 5-7, 9-10 then tower activates.
+            if ((time > 1 && time < 3) ||
+                (time > 5 && time < 7) ||
+                (time >9))
             {
+                System.Diagnostics.Debug.WriteLine(time);
                 return true;
             }
 

@@ -117,7 +117,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="radius">Hit radius of the tower.</param>
         /// <param name="initialCost">Initial cost to place the tower.</param>
         /// <param name="activitySpeed">Rate at which the tower functions.</param>
-        public Tower(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed):
+        public Tower(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime):
             base(pos, spr)
         {
             this.radius = radius;
@@ -126,7 +126,7 @@ namespace Bruh_Overtime_Defense
             salary = originalSalary;
             this.activitySpeed = activitySpeed;
             moneyYield = new List<Enemy>();
-            gameTime = new GameTime();
+            this.gameTime = gameTime;
         }
 
         //Methods
@@ -188,7 +188,7 @@ namespace Bruh_Overtime_Defense
             foreach (Enemy e in enemies)
             {
                 //Shoots every activitySpeed amount of seconds.
-                if(gameTime.TotalGameTime.TotalSeconds % activitySpeed == 0)
+                if((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 1000) == 0)
                 {
                     if (Distance(Position, e.Position) <= Radius)
                     {
@@ -203,7 +203,9 @@ namespace Bruh_Overtime_Defense
                             e.IsDead = true;
                             return 1;
                         }
+
                     }
+
                 } 
             }
             return 0;

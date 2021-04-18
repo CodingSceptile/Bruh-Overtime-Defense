@@ -9,8 +9,8 @@ namespace Bruh_Overtime_Defense
 {
     class SniperMonke : Tower
     {
-        public SniperMonke(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed)
-            : base(pos, spr, radius, initialCost, activitySpeed)
+        public SniperMonke(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime)
+            : base(pos, spr, radius, initialCost, activitySpeed, gameTime)
         {
             radius = int.MaxValue;
             activitySpeed = 3; //arbitrary, can balance later

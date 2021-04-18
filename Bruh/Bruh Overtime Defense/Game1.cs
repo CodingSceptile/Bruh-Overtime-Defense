@@ -336,7 +336,7 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new DootSkeleton(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, 200, 20, 20));
+                                    baseTowerButton.DefaultSprite, 200, 20, 1, gameTime));
                                 totalMoney -= 20;
                                 break;
                             case Towers.SniperTower:
@@ -344,7 +344,7 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new SniperMonke(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    sniperButton.DefaultSprite, int.MaxValue, 40, 20));
+                                    sniperButton.DefaultSprite, int.MaxValue, 40, 3, gameTime));
                                 totalMoney -= 40;
                                 break;
                             case Towers.GatekeeperTower:
@@ -352,7 +352,7 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new RyanTheGateKeeper(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    gatekeeperButton.DefaultSprite, 200, 30, 20));
+                                    gatekeeperButton.DefaultSprite, 200, 30, 1, gameTime));
                                 totalMoney -= 20;
                                 break;
                             case Towers.ErinTower:
@@ -360,7 +360,7 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new Not_Erin(
                                     new Rectangle(mState.X - tileWidth/3, mState.Y - tileHeight/3, 
                                     tileWidth, tileHeight),
-                                    notErinButton.DefaultSprite, 200, 200, 30));
+                                    notErinButton.DefaultSprite, 200, 200, 3, gameTime));
                                 totalMoney -= 200;
                                 break;
                         }
@@ -798,7 +798,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="gameTime"></param>
         public void ResolveShot(GameTime gameTime)
         {
-            if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 1500 < 1)
+            if (towers.Count > 0 /*&& gameTime.TotalGameTime.Milliseconds % 1500 < 1*/)
             {
                 for (int i = 0; i < towers.Count; i++)
                 {

@@ -9,8 +9,8 @@ namespace Bruh_Overtime_Defense
 {
     class BuffDoge : Tower
     {
-        public BuffDoge(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed)
-           : base(pos, spr, radius, initialCost, activitySpeed)
+        public BuffDoge(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime)
+           : base(pos, spr, radius, initialCost, activitySpeed, gameTime)
         {
 
         }
@@ -35,7 +35,7 @@ namespace Bruh_Overtime_Defense
             //shoot
             moneyYield.Clear();
 
-            if (gameTime.TotalGameTime.TotalSeconds % activitySpeed == 0)
+            if ((int)gameTime.TotalGameTime.TotalSeconds % activitySpeed == 0)
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
