@@ -35,14 +35,11 @@ namespace Bruh_Overtime_Defense
         /// <param name="enemies"></param>
         private void WaitingRoom(List<Enemy> enemies)
         {
-                //Assigning it a correct value otherwise compiler cries
-                float originalSpeed = 3;
 
                 if(WaitingRoomSwitch())
                 {
                     for(int i = 0; i < enemies.Count; i++)
                     {
-                         originalSpeed = enemies[i].Speed;
                          if (Distance(enemies[i].Position, Position) <= radius)
                          {
                               //apply texture here
@@ -52,7 +49,7 @@ namespace Bruh_Overtime_Defense
                          else
                          {
                                //change textures back
-                               enemies[i].Speed = originalSpeed;
+                               enemies[i].Speed = enemies[i].OriginalSpeed;
                          }
                     }
                      

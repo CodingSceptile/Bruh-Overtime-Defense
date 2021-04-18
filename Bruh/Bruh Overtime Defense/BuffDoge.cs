@@ -35,7 +35,7 @@ namespace Bruh_Overtime_Defense
             //shoot
             moneyYield.Clear();
 
-            if ((int)gameTime.TotalGameTime.TotalSeconds % activitySpeed == 0)
+            if ((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 1000) == 0)
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
