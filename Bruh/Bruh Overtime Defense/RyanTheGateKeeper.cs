@@ -45,11 +45,13 @@ namespace Bruh_Overtime_Defense
                          originalSpeed = enemies[i].Speed;
                          if (Distance(enemies[i].Position, Position) <= radius)
                          {
+                              //apply texture here
                                enemies[i].Speed = 0;
                          }
 
                          else
                          {
+                               //change textures back
                                enemies[i].Speed = originalSpeed;
                          }
                     }
