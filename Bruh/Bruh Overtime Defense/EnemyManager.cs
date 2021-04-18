@@ -23,6 +23,14 @@ namespace Bruh_Overtime_Defense
         private int startY;
         private int numEnemiesSpawned;
 
+
+        //Properties
+        public List<Enemy> Enemies
+        {
+            get { return enemies; }
+            set { enemies = value; }
+        }
+
         /// <summary>
         /// Creates a new EnemyManager object
         /// </summary>
