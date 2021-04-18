@@ -219,7 +219,7 @@ namespace Bruh_Overtime_Defense
             //3: Ryan the Gatekeeper, 4: Not Erin
             towerRadii = new int[] { 200, int.MaxValue, 100, 200, 200 };
             towerCost = new int[]{ 20, 40, 40, 30, 200};
-            towerSpeed = new int[] { 20, 20, 20, 20, 30 };
+            towerSpeed = new int[] { 2, 2, 2, 2, 3 };
             salaryDivider = 5;
             
             _graphics.ApplyChanges();
@@ -347,7 +347,8 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new DootSkeleton(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, towerRadii[0], towerCost[0], towerSpeed[0]));
+                                    baseTowerButton.DefaultSprite, 
+                                    towerRadii[0], towerCost[0], towerSpeed[0], gameTime));
                                 totalMoney -= towerCost[0];
                                 break;
                             case Towers.SniperTower:
@@ -356,7 +357,7 @@ namespace Bruh_Overtime_Defense
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
                                     sniperButton.DefaultSprite, 
-                                    towerRadii[1], towerCost[1], towerSpeed[1]));
+                                    towerRadii[1], towerCost[1], towerSpeed[1], gameTime));
                                 totalMoney -= towerCost[1];
                                 break;
                             case Towers.BuffTower:
@@ -365,7 +366,7 @@ namespace Bruh_Overtime_Defense
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
                                     buffButton.DefaultSprite, 
-                                    towerRadii[2], towerCost[2], towerSpeed[2]));
+                                    towerRadii[2], towerCost[2], towerSpeed[2], gameTime));
                                 totalMoney -= towerCost[2];
                                 break;
                             case Towers.GatekeeperTower:
@@ -374,7 +375,7 @@ namespace Bruh_Overtime_Defense
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
                                     gatekeeperButton.DefaultSprite, 
-                                    towerRadii[3], towerCost[3], towerSpeed[3]));
+                                    towerRadii[3], towerCost[3], towerSpeed[3], gameTime));
                                 totalMoney -= towerCost[3];
                                 break;
                             case Towers.ErinTower:
@@ -383,7 +384,7 @@ namespace Bruh_Overtime_Defense
                                     new Rectangle(mState.X - tileWidth/3, mState.Y - tileHeight/3, 
                                     tileWidth, tileHeight),
                                     notErinButton.DefaultSprite, 
-                                    towerRadii[4], towerCost[4], towerSpeed[4]));
+                                    towerRadii[4], towerCost[4], towerSpeed[4], gameTime));
                                 totalMoney -= towerCost[4];
                                 break;
                         }
@@ -394,7 +395,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //draw the towers
-                    towerManager.DrawTowers(_spriteBatch, arial10);
+                    towerManager.DrawTowers(_spriteBatch, arial10, enemies);
 
                     //Only spawns new enemies if a new wave is active
                     if (newWave == true)
@@ -843,6 +844,11 @@ namespace Bruh_Overtime_Defense
                     if(gainMoney != 0)
                     {
                         bruhEffect.Play(0.005f, -0.05f, 0);
+                        towers[i].MadeShot = true;
+                    }
+                    else
+                    {
+                        towers[i].MadeShot = false;
                     }
                     enemyCount -= gainMoney; //since 1 money is gained for 1 enemy dying
                 }

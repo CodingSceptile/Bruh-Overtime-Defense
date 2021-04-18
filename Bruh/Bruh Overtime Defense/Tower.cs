@@ -21,6 +21,7 @@ namespace Bruh_Overtime_Defense
         protected GameTime gameTime;
         protected List<Enemy> moneyYield;
         protected int moneyGiven;
+        protected bool madeShot;
 
         //Properties
         /// <summary>
@@ -102,6 +103,12 @@ namespace Bruh_Overtime_Defense
                     activitySpeed = value;
             }
         }
+
+        public bool MadeShot
+        {
+            get { return madeShot; }
+            set { madeShot = value; }
+        }
             
         /// <summary>
         /// Property to get gametime. 
@@ -127,6 +134,7 @@ namespace Bruh_Overtime_Defense
             this.activitySpeed = activitySpeed;
             moneyYield = new List<Enemy>();
             this.gameTime = gameTime;
+            madeShot = false;
         }
 
         //Methods
@@ -137,8 +145,15 @@ namespace Bruh_Overtime_Defense
         /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb)
         {
-
-            sb.Draw(Sprite, Position, Color.White);
+            if(madeShot == false)
+            {
+                sb.Draw(Sprite, Position, Color.White);
+            }
+            else if(madeShot == true)
+            {
+                sb.Draw(Sprite, Position, Color.Red);
+            }
+            
         }
 
         /// <summary>
