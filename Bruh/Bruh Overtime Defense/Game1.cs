@@ -96,6 +96,10 @@ namespace Bruh_Overtime_Defense
 
         //Enemies
         private Texture2D enemyTex;
+        private Texture2D red;
+        private Texture2D blue;
+        private Texture2D green;
+        private Texture2D hurb;
         private EnemyManager enMan;
         private List<Enemy> enemies;
         private float enemySpeed;
@@ -127,6 +131,9 @@ namespace Bruh_Overtime_Defense
         private int screenWidth;
         private int screenHeight;
         private Texture2D uiInstructions;
+
+        //Wave manager
+        private WaveManager waveMan;
 
         public Game1()
         {
@@ -264,6 +271,13 @@ namespace Bruh_Overtime_Defense
 
             //Bruh enemy texture
             enemyTex = Content.Load<Texture2D>("bruh");
+            red = Content.Load<Texture2D>("bruhRed");
+            blue = Content.Load<Texture2D>("bruhBlue");
+            green = Content.Load<Texture2D>("bruhGreen");
+            hurb = Content.Load<Texture2D>("hurb");
+
+            waveMan = new WaveManager("enemyWave.wave",
+                enemyTex, red, blue, green, hurb, collisions.StartPosition);
         }
 
         /// <summary>
@@ -347,7 +361,7 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new DootSkeleton(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, towerRadii[0], towerCost[0], towerSpeed[0]));
+                                    baseTowerButton.DefaultSprite, towerRadii[0], towerCost[0], towerSpeed[0], gameTime));
                                 totalMoney -= towerCost[0];
                                 break;
                             case Towers.SniperTower:
@@ -356,7 +370,7 @@ namespace Bruh_Overtime_Defense
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
                                     sniperButton.DefaultSprite, 
-                                    towerRadii[1], towerCost[1], towerSpeed[1]));
+                                    towerRadii[1], towerCost[1], towerSpeed[1], gameTime));
                                 totalMoney -= towerCost[1];
                                 break;
                             case Towers.BuffTower:
@@ -365,7 +379,7 @@ namespace Bruh_Overtime_Defense
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
                                     buffButton.DefaultSprite, 
-                                    towerRadii[2], towerCost[2], towerSpeed[2]));
+                                    towerRadii[2], towerCost[2], towerSpeed[2], gameTime));
                                 totalMoney -= towerCost[2];
                                 break;
                             case Towers.GatekeeperTower:
@@ -374,7 +388,7 @@ namespace Bruh_Overtime_Defense
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
                                     gatekeeperButton.DefaultSprite, 
-                                    towerRadii[3], towerCost[3], towerSpeed[3]));
+                                    towerRadii[3], towerCost[3], towerSpeed[3], gameTime));
                                 totalMoney -= towerCost[3];
                                 break;
                             case Towers.ErinTower:
@@ -383,7 +397,7 @@ namespace Bruh_Overtime_Defense
                                     new Rectangle(mState.X - tileWidth/3, mState.Y - tileHeight/3, 
                                     tileWidth, tileHeight),
                                     notErinButton.DefaultSprite, 
-                                    towerRadii[4], towerCost[4], towerSpeed[4]));
+                                    towerRadii[4], towerCost[4], towerSpeed[4], gameTime));
                                 totalMoney -= towerCost[4];
                                 break;
                         }
@@ -422,9 +436,7 @@ namespace Bruh_Overtime_Defense
                         new Vector2(40, 450), Color.Red);
                     break;
             }
-
-            
-           
+                     
             //end the SpriteBatch
             _spriteBatch.End();
 
@@ -930,31 +942,6 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void NextWave()
         {
-            //Checks for the current wave, and how that
-            //affects the enemies
-            //easy enemies, only require one hit
-            //to kill. normal speed
-            if (currWave < 10 && currWave != 10)
-            {
-                enemySpeed = 3;
-                enemyHealth = 1;
-            }
-
-            //normal enemies, require 3 hits to kill
-            //and have a slightly elevated speed
-            else if (currWave <= 20)
-            {
-                enemySpeed = 4;
-                enemyHealth = 3;
-            }
-
-            //hard enemies, require 4 hits to kill,
-            //have a very fast speed
-            else
-            {
-                enemySpeed = 5;
-                enemyHealth = 4;
-            }
 
             //checks if all the enemies in the enemies
             //list are dead
@@ -971,15 +958,9 @@ namespace Bruh_Overtime_Defense
                 towerManager.Resignations(towers,
                     enemies, enemyTex, collisions.StartPosition);
 
-                //adds new enemies to the list
-                for (int i = 0; i < waveAmount; i++)
-                {
-                    enemies.Add(new Enemy(
-                    enemyTex,
-                    enemyHealth,
-                    enemySpeed,
-                    collisions.StartPosition));
-                }
+                enemies = waveMan.Waves[currWave];
+
+                enMan.Enemies = enemies;
 
                 //changes the display to the current
                 //amount of enemies in the list
