@@ -24,6 +24,7 @@ namespace Bruh_Overtime_Defense
         InstructionsScreen,
         Gameplay,
         PauseScreen,
+        VictoryScreen,
         GameOver
     }
 
@@ -226,7 +227,7 @@ namespace Bruh_Overtime_Defense
             //3: Ryan the Gatekeeper, 4: Not Erin
             towerRadii = new int[] { 200, int.MaxValue, 100, 200, 200 };
             towerCost = new int[]{ 20, 40, 40, 30, 200};
-            towerSpeed = new int[] { 20, 20, 20, 20, 30 };
+            towerSpeed = new int[] { 2, 2, 2, 2, 3 };
             salaryDivider = 5;
             
             _graphics.ApplyChanges();
@@ -361,7 +362,8 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new DootSkeleton(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, towerRadii[0], towerCost[0], towerSpeed[0], gameTime));
+                                    baseTowerButton.DefaultSprite, 
+                                    towerRadii[0], towerCost[0], towerSpeed[0], gameTime));
                                 totalMoney -= towerCost[0];
                                 break;
                             case Towers.SniperTower:
@@ -408,7 +410,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //draw the towers
-                    towerManager.DrawTowers(_spriteBatch, arial10);
+                    towerManager.DrawTowers(_spriteBatch, arial10, enemies);
 
                     //Only spawns new enemies if a new wave is active
                     if (newWave == true)
@@ -427,6 +429,13 @@ namespace Bruh_Overtime_Defense
                         new Vector2(80, 490), Color.White);
                     _spriteBatch.DrawString(arial36, "Press Ctrl to return to map select",
                         new Vector2(50, 600), Color.White);
+                    break;
+                //VICTORY SCREEN
+                case GameState.VictoryScreen:
+                    _spriteBatch.DrawString(arial64, "VICTORY!!!",
+                        new Vector2(200, 300), Color.Green);
+                    _spriteBatch.DrawString(arial36, "Press Enter to return to map select",
+                        new Vector2(40, 450), Color.Green);
                     break;
                 //GAME OVER SCREEN
                 case GameState.GameOver:
@@ -636,8 +645,12 @@ namespace Bruh_Overtime_Defense
                 {
                     NextWave();  
                 }
-            }
 
+                if(currWave == 20 && enemyCount == 0)
+                {
+                    gState = GameState.VictoryScreen;
+                }
+            }
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
             {
@@ -654,6 +667,17 @@ namespace Bruh_Overtime_Defense
                     //back to game play
                     gameTime.TotalGameTime = timeSpanSincePause;
                     gState = GameState.Gameplay;
+                }
+            }
+            //if the player is on the victory screen
+            else if(gState == GameState.VictoryScreen)
+            {
+                //if they hit enter or space
+                if (SingleKeyPress(Keys.Enter) || SingleKeyPress(Keys.Space))
+                {
+
+                    //return to the map select screen
+                    gState = GameState.MapSelect;
                 }
             }
             //if the player is on the game over screen
@@ -702,8 +726,9 @@ namespace Bruh_Overtime_Defense
                 if(enemies[i].IsDead == false && (enemies[i].X > screenWidth
                     || enemies[i].X < -50))
                 {
-                    //reduce the player's health by one and kill the enemy to prevent repetition
-                    health--;
+                    //reduce the player's health by the enemy's health 
+                    //kill the enemy to prevent repetition
+                    health -= enemies[i].Health;
                     enemyCount--;
                     enemies[i].IsDead = true;
 
@@ -855,6 +880,11 @@ namespace Bruh_Overtime_Defense
                     if(gainMoney != 0)
                     {
                         bruhEffect.Play(0.005f, -0.05f, 0);
+                        towers[i].MadeShot = true;
+                    }
+                    else
+                    {
+                        towers[i].MadeShot = false;
                     }
                     enemyCount -= gainMoney; //since 1 money is gained for 1 enemy dying
                 }
