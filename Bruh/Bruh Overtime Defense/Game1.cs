@@ -226,7 +226,7 @@ namespace Bruh_Overtime_Defense
             //3: Ryan the Gatekeeper, 4: Not Erin
             towerRadii = new int[] { 200, int.MaxValue, 100, 200, 200 };
             towerCost = new int[]{ 20, 40, 40, 30, 200};
-            towerSpeed = new int[] { 20, 20, 20, 20, 30 };
+            towerSpeed = new int[] { 1, 3, 3, 1, 2 };
             salaryDivider = 5;
             
             _graphics.ApplyChanges();
