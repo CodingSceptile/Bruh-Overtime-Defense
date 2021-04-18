@@ -35,9 +35,9 @@ namespace Bruh_Overtime_Defense
         None,
         BaseTower,
         SniperTower,
+        BuffTower,
         GatekeeperTower,
         ErinTower,
-        BuffTower
     }
 
     /// <summary>
@@ -76,6 +76,7 @@ namespace Bruh_Overtime_Defense
         private Button nextWaveButton;
         private Button baseTowerButton;
         private Button sniperButton;
+        private Button buffButton;
         private Button gatekeeperButton;
         private Button notErinButton;
         private Button erinModeButton;
@@ -108,8 +109,10 @@ namespace Bruh_Overtime_Defense
         private Rectangle towerMenuPos;
         private bool openTowerMenu;
         private bool placeTower;
-        private List<Button> placedButtons;
-        private Texture2D placedButtonTexture;
+        private int[] towerRadii;
+        private int[] towerCost;
+        private int[] towerSpeed;
+        private int salaryDivider;
 
         //misc
         private Random random;
@@ -177,8 +180,10 @@ namespace Bruh_Overtime_Defense
                 (tileHeight * 2) - 5, tileWidth, tileHeight);
             sniperButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 3) - 5, tileWidth, tileHeight);
-            gatekeeperButton = new Button(screenWidth - (tileWidth * 3),
+            buffButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 4) - 5, tileWidth, tileHeight);
+            gatekeeperButton = new Button(screenWidth - (tileWidth * 3),
+                (tileHeight * 5) - 5, tileWidth, tileHeight);
             notErinButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 6) - 5, tileWidth, tileHeight);
             erinModeButton = new Button(screenWidth - (tileWidth * 2),
@@ -208,7 +213,14 @@ namespace Bruh_Overtime_Defense
             //towers
             towers = new List<Tower>();
             towerManager = new TowerManager(towers, collisions.TrackLocations);
-            placedButtons = new List<Button>();
+            //arrays store values for towers
+            //indices correspond to towers as follows:
+            //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
+            //3: Ryan the Gatekeeper, 4: Not Erin
+            towerRadii = new int[] { 200, int.MaxValue, 100, 200, 200 };
+            towerCost = new int[]{ 20, 40, 40, 30, 200};
+            towerSpeed = new int[] { 20, 20, 20, 20, 30 };
+            salaryDivider = 5;
             
             _graphics.ApplyChanges();
 
@@ -237,7 +249,6 @@ namespace Bruh_Overtime_Defense
 
             //buttons
             LoadButtons();
-            placedButtonTexture = Content.Load<Texture2D>("Textures/towerDefense_tile084");
 
             //load other things
             bruhEffect = Content.Load<SoundEffect>("bruhEffect");
@@ -336,32 +347,44 @@ namespace Bruh_Overtime_Defense
                                 towers.Add(new DootSkeleton(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, 200, 20, 20));
-                                totalMoney -= 20;
+                                    baseTowerButton.DefaultSprite, towerRadii[0], towerCost[0], towerSpeed[0]));
+                                totalMoney -= towerCost[0];
                                 break;
                             case Towers.SniperTower:
                                 //values of tower and temp and default
                                 towers.Add(new SniperMonke(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    sniperButton.DefaultSprite, int.MaxValue, 40, 20));
-                                totalMoney -= 40;
+                                    sniperButton.DefaultSprite, 
+                                    towerRadii[1], towerCost[1], towerSpeed[1]));
+                                totalMoney -= towerCost[1];
+                                break;
+                            case Towers.BuffTower:
+                                //values of tower and temp and default
+                                towers.Add(new BuffDoge(
+                                    new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                                    tileWidth, tileHeight),
+                                    buffButton.DefaultSprite, 
+                                    towerRadii[2], towerCost[2], towerSpeed[2]));
+                                totalMoney -= towerCost[2];
                                 break;
                             case Towers.GatekeeperTower:
                                 //values of tower and temp and default
                                 towers.Add(new RyanTheGateKeeper(
                                     new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                                     tileWidth, tileHeight),
-                                    gatekeeperButton.DefaultSprite, 200, 30, 20));
-                                totalMoney -= 20;
+                                    gatekeeperButton.DefaultSprite, 
+                                    towerRadii[3], towerCost[3], towerSpeed[3]));
+                                totalMoney -= towerCost[3];
                                 break;
                             case Towers.ErinTower:
                                 //values of tower and temp and default
                                 towers.Add(new Not_Erin(
                                     new Rectangle(mState.X - tileWidth/3, mState.Y - tileHeight/3, 
                                     tileWidth, tileHeight),
-                                    notErinButton.DefaultSprite, 200, 200, 30));
-                                totalMoney -= 200;
+                                    notErinButton.DefaultSprite, 
+                                    towerRadii[4], towerCost[4], towerSpeed[4]));
+                                totalMoney -= towerCost[4];
                                 break;
                         }
 
@@ -508,7 +531,8 @@ namespace Bruh_Overtime_Defense
                 if (mState.LeftButton == ButtonState.Pressed && !pauseButton.RollOver(mState) &&
                     !nextWaveButton.RollOver(mState) && !towerMenuButton.RollOver(mState) &&
                     !baseTowerButton.RollOver(mState) && !sniperButton.RollOver(mState) && 
-                    !gatekeeperButton.RollOver(mState) && !notErinButton.RollOver(mState))
+                    !buffButton.RollOver(mState) && !gatekeeperButton.RollOver(mState) && 
+                    !notErinButton.RollOver(mState))
                 {
 
                     bool inTrack = false;
@@ -559,30 +583,37 @@ namespace Bruh_Overtime_Defense
                 {
                     //if the baseTower button is clicked and the player can afford it
                     if(baseTowerButton.Clicked(mState, prevMState) &&
-                    totalMoney >= 20)
+                    totalMoney >= towerCost[0])
                     {
                         //select the baseTower and close the towerMenu
                         selectedTower = Towers.BaseTower;
                         openTowerMenu = false;
                     }
                     else if(sniperButton.Clicked(mState, prevMState) &&
-                    totalMoney >= 40)
+                    totalMoney >= towerCost[1])
                     {
-                        //select the baseTower and close the towerMenu
+                        //select the sniperTower and close the towerMenu
                         selectedTower = Towers.SniperTower;
                         openTowerMenu = false;
                     }
-                    else if (gatekeeperButton.Clicked(mState, prevMState) &&
-                    totalMoney >= 20)
+                    else if (buffButton.Clicked(mState, prevMState) &&
+                    totalMoney >= towerCost[2])
                     {
-                        //select the baseTower and close the towerMenu
+                        //select the buffTower and close the towerMenu
+                        selectedTower = Towers.BuffTower;
+                        openTowerMenu = false;
+                    }
+                    else if (gatekeeperButton.Clicked(mState, prevMState) &&
+                    totalMoney >= towerCost[3])
+                    {
+                        //select the gatekeeperTower and close the towerMenu
                         selectedTower = Towers.GatekeeperTower;
                         openTowerMenu = false;
                     }
                     else if (notErinButton.Clicked(mState, prevMState) &&
-                    totalMoney >= 200)
+                    totalMoney >= towerCost[4])
                     {
-                        //select the baseTower and close the towerMenu
+                        //select the erinTower and close the towerMenu
                         selectedTower = Towers.ErinTower;
                         openTowerMenu = false;
                     }
@@ -779,6 +810,11 @@ namespace Bruh_Overtime_Defense
                         new Vector2(screenWidth - (350), 40),
                         Color.White);
                     break;
+                case Towers.BuffTower:
+                    _spriteBatch.DrawString(arial16, "Held Tower: Buff Doge",
+                        new Vector2(screenWidth - (350), 40),
+                        Color.White);
+                    break;
                 case Towers.GatekeeperTower:
                     _spriteBatch.DrawString(arial16, "Held Tower: Ryan the Gatekeeper",
                         new Vector2(screenWidth - (350), 40),
@@ -809,13 +845,6 @@ namespace Bruh_Overtime_Defense
                         bruhEffect.Play(0.005f, -0.05f, 0);
                     }
                     enemyCount -= gainMoney; //since 1 money is gained for 1 enemy dying
-                    //if (gainMoney == true)
-                    //{
-                    //    bruhEffect.Play(0.005f, -0.05f, 0);
-                    //    totalMoney++;
-                    //    enemyCount--;
-                    //    gainMoney = false;
-                    //}
                 }
             }
         }
@@ -833,30 +862,35 @@ namespace Bruh_Overtime_Defense
                     new Vector2(screenWidth - (tileWidth * 3), tileHeight),
                     Color.White);
                 //Doot Skeleton
-                _spriteBatch.DrawString(arial16, "  20  4",
+                _spriteBatch.DrawString(arial16, $"  {towerCost[0]}  {towerCost[0]/salaryDivider}",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 2),
                     Color.White);
                 baseTowerButton.Draw(_spriteBatch, mState);
                 //Sniper Monke
-                _spriteBatch.DrawString(arial16, "  40  8",
+                _spriteBatch.DrawString(arial16, $"  {towerCost[1]}  {towerCost[1] / salaryDivider}",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 3),
                     Color.White);
                 sniperButton.Draw(_spriteBatch, mState);
-                //Ryan the Gatekeeper
-                _spriteBatch.DrawString(arial16, "  30  6",
+                //Buff Doge
+                _spriteBatch.DrawString(arial16, $"  {towerCost[2]}  {towerCost[2] / salaryDivider}",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 4),
                     Color.White);
+                buffButton.Draw(_spriteBatch, mState);
+                //Ryan the Gatekeeper
+                _spriteBatch.DrawString(arial16, $"  {towerCost[3]}  {towerCost[3] / salaryDivider}",
+                    new Vector2(screenWidth - (tileWidth * 2),
+                    tileHeight * 5),
+                    Color.White);
                 gatekeeperButton.Draw(_spriteBatch, mState);
                 //Not Erin
-                _spriteBatch.DrawString(arial10, "  200  40",
+                _spriteBatch.DrawString(arial10, $"  {towerCost[4]}  {towerCost[4] / salaryDivider}",
                     new Vector2(screenWidth - (tileWidth * 2),
                     tileHeight * 6),
                     Color.White);
                 notErinButton.Draw(_spriteBatch, mState);
-                //Buff Doge
             }
         }
 
@@ -880,6 +914,8 @@ namespace Bruh_Overtime_Defense
             baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
             sniperButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile292");
             sniperButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile292");
+            buffButton.DefaultSprite = Content.Load<Texture2D>("towerDefense_tile204");
+            buffButton.ActiveSprite = Content.Load<Texture2D>("towerDefense_tile204");
             gatekeeperButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile250");
             gatekeeperButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile250");
             notErinButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
@@ -988,11 +1024,11 @@ namespace Bruh_Overtime_Defense
                 if(towers[i].Clicked(mState, prevMState))
                 {
                     //if your money is greater than their salary
-                    if(totalMoney >= (int)towers[i].OriginalSalary/5)
+                    if(totalMoney >= (int)towers[i].OriginalSalary/salaryDivider)
                     {
                         //pay the salary
                         towerManager.SalaryPaid(towers[i]);
-                        totalMoney -= (int)towers[i].OriginalSalary/5;
+                        totalMoney -= (int)towers[i].OriginalSalary/salaryDivider;
                     }
                 }
             }
