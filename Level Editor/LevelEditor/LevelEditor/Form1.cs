@@ -296,6 +296,18 @@ namespace LevelEditor
             }
 
         }
+
+        /// <summary>
+        /// Transitions to the enemy builder form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void enemyWaveButton_Click(object sender, EventArgs e)
+        {
+            EnemyFormation enemyMan = new EnemyFormation();
+
+            enemyMan.ShowDialog();
+        }
     }
 
 }

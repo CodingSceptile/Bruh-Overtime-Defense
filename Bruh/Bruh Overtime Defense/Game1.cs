@@ -834,7 +834,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="gameTime"></param>
         public void ResolveShot(GameTime gameTime)
         {
-            if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 1500 < 1)
+            if (towers.Count > 0 /*&& gameTime.TotalGameTime.Milliseconds % 1500 < 1*/)
             {
                 for (int i = 0; i < towers.Count; i++)
                 {
