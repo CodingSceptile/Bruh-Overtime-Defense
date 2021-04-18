@@ -726,8 +726,9 @@ namespace Bruh_Overtime_Defense
                 if(enemies[i].IsDead == false && (enemies[i].X > screenWidth
                     || enemies[i].X < -50))
                 {
-                    //reduce the player's health by one and kill the enemy to prevent repetition
-                    health--;
+                    //reduce the player's health by the enemy's health 
+                    //kill the enemy to prevent repetition
+                    health -= enemies[i].Health;
                     enemyCount--;
                     enemies[i].IsDead = true;
 
