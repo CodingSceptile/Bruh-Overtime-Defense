@@ -95,6 +95,10 @@ namespace Bruh_Overtime_Defense
 
         //Enemies
         private Texture2D enemyTex;
+        private Texture2D redEnemy;
+        private Texture2D greenEnemy;
+        private Texture2D blueEnemy;
+        private Texture2D hurb;
         private EnemyManager enMan;
         private List<Enemy> enemies;
         private float enemySpeed;
@@ -124,6 +128,9 @@ namespace Bruh_Overtime_Defense
         private int screenWidth;
         private int screenHeight;
         private Texture2D uiInstructions;
+
+        //WaveManager
+        private WaveManager waveMan;
 
         public Game1()
         {
@@ -253,6 +260,13 @@ namespace Bruh_Overtime_Defense
 
             //Bruh enemy texture
             enemyTex = Content.Load<Texture2D>("bruh");
+            blueEnemy = Content.Load<Texture2D>("bruhBlue");
+            greenEnemy = Content.Load<Texture2D>("bruhGreen");
+            redEnemy = Content.Load<Texture2D>("bruhRed");
+            hurb = Content.Load<Texture2D>("hurb");
+
+            waveMan = new WaveManager("enemyWave.wave", enemyTex, redEnemy, 
+                blueEnemy, greenEnemy, hurb, collisions.StartPosition);
         }
 
         /// <summary>
@@ -798,17 +812,45 @@ namespace Bruh_Overtime_Defense
         /// <param name="gameTime"></param>
         public void ResolveShot(GameTime gameTime)
         {
-            if (towers.Count > 0 && gameTime.TotalGameTime.Milliseconds % 1500 < 1)
+         
+        if(towers.Count > 0)
             {
+                int time = 0;
+
                 for (int i = 0; i < towers.Count; i++)
                 {
-                    gainMoney = towerManager.Shoot(towers[i], enemies);
-                    totalMoney += gainMoney;
-                    if(gainMoney != 0)
+                    if (towers[i] is RyanTheGateKeeper)
                     {
-                        bruhEffect.Play(0.005f, -0.05f, 0);
+                        time = 0;
                     }
-                    enemyCount -= gainMoney; //since 1 money is gained for 1 enemy dying
+                    else if (towers[i] is SniperMonke)
+                    {
+                        time = 2500;
+                    }
+                    else if (towers[i] is DootSkeleton)
+                    {
+                        time = 1000;
+                    }
+                    else if(towers[i] is Not_Erin)
+                    {
+                        time = 500;
+                    }
+
+                    if (gameTime.TotalGameTime.TotalMilliseconds % time < 1)
+                    {
+                        gainMoney = towerManager.Shoot(towers[i], enemies);
+                        totalMoney += gainMoney;
+
+                        if (gainMoney != 0)
+                        {
+                            bruhEffect.Play(0.005f, -0.05f, 0);
+                        }
+                        enemyCount -= gainMoney; //since 1 money is gained for 1 enemy dying
+                    }
+
+                    
+
+
                     //if (gainMoney == true)
                     //{
                     //    bruhEffect.Play(0.005f, -0.05f, 0);
@@ -817,7 +859,10 @@ namespace Bruh_Overtime_Defense
                     //    gainMoney = false;
                     //}
                 }
+
             }
+        
+            
         }
 
         /// <summary>
@@ -894,31 +939,6 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void NextWave()
         {
-            //Checks for the current wave, and how that
-            //affects the enemies
-            //easy enemies, only require one hit
-            //to kill. normal speed
-            if (currWave < 10 && currWave != 10)
-            {
-                enemySpeed = 3;
-                enemyHealth = 1;
-            }
-
-            //normal enemies, require 3 hits to kill
-            //and have a slightly elevated speed
-            else if (currWave <= 20)
-            {
-                enemySpeed = 4;
-                enemyHealth = 3;
-            }
-
-            //hard enemies, require 4 hits to kill,
-            //have a very fast speed
-            else
-            {
-                enemySpeed = 5;
-                enemyHealth = 4;
-            }
 
             //checks if all the enemies in the enemies
             //list are dead
@@ -935,15 +955,9 @@ namespace Bruh_Overtime_Defense
                 towerManager.Resignations(towers,
                     enemies, enemyTex, collisions.StartPosition);
 
-                //adds new enemies to the list
-                for (int i = 0; i < waveAmount; i++)
-                {
-                    enemies.Add(new Enemy(
-                    enemyTex,
-                    enemyHealth,
-                    enemySpeed,
-                    collisions.StartPosition));
-                }
+                enemies = waveMan.Waves[currWave];
+
+                enMan.Enemies = enemies;
 
                 //changes the display to the current
                 //amount of enemies in the list
