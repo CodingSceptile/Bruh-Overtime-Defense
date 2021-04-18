@@ -24,6 +24,7 @@ namespace Bruh_Overtime_Defense
         InstructionsScreen,
         Gameplay,
         PauseScreen,
+        VictoryScreen,
         GameOver
     }
 
@@ -415,6 +416,13 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(arial36, "Press Ctrl to return to map select",
                         new Vector2(50, 600), Color.White);
                     break;
+                //VICTORY SCREEN
+                case GameState.VictoryScreen:
+                    _spriteBatch.DrawString(arial64, "VICTORY!!!",
+                        new Vector2(200, 300), Color.Green);
+                    _spriteBatch.DrawString(arial36, "Press Enter to return to map select",
+                        new Vector2(40, 450), Color.Green);
+                    break;
                 //GAME OVER SCREEN
                 case GameState.GameOver:
                     _spriteBatch.DrawString(arial64, "Game Over",
@@ -625,8 +633,12 @@ namespace Bruh_Overtime_Defense
                 {
                     NextWave();  
                 }
-            }
 
+                if(currWave == 20 && enemyCount == 0)
+                {
+                    gState = GameState.VictoryScreen;
+                }
+            }
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
             {
@@ -643,6 +655,17 @@ namespace Bruh_Overtime_Defense
                     //back to game play
                     gameTime.TotalGameTime = timeSpanSincePause;
                     gState = GameState.Gameplay;
+                }
+            }
+            //if the player is on the victory screen
+            else if(gState == GameState.VictoryScreen)
+            {
+                //if they hit enter or space
+                if (SingleKeyPress(Keys.Enter) || SingleKeyPress(Keys.Space))
+                {
+
+                    //return to the map select screen
+                    gState = GameState.MapSelect;
                 }
             }
             //if the player is on the game over screen

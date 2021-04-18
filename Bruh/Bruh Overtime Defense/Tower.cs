@@ -145,6 +145,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb)
         {
+            //if the tower landed a shot, make it flash red as an indicator
             if(madeShot == false)
             {
                 sb.Draw(Sprite, Position, Color.White);
