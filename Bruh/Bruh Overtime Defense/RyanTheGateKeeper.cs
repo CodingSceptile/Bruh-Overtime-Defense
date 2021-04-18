@@ -62,7 +62,7 @@ namespace Bruh_Overtime_Defense
             {
                 for(int i = 0; i < enemies.Count; i++)
                 {
-                    enemies[i].Speed = originalSpeed;
+                    enemies[i].Speed = enemies[i].OriginalSpeed;
                 }
             }
         }
