@@ -34,7 +34,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="t">The lucky tower that's getting paid.</param>
         public void SalaryPaid(Tower t)
         {
-            t.Salary += t.OriginalSalary/5;
+            t.Salary += t.OriginalSalary/4;
         }
 
         /// <summary>

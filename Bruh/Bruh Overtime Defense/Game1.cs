@@ -225,10 +225,10 @@ namespace Bruh_Overtime_Defense
             //indices correspond to towers as follows:
             //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
             //3: Ryan the Gatekeeper, 4: Not Erin
-            towerRadii = new int[] { 200, int.MaxValue, 100, 200, 200 };
-            towerCost = new int[]{ 20, 40, 40, 30, 200};
-            towerSpeed = new int[] { 2, 2, 2, 2, 3 };
-            salaryDivider = 5;
+            towerRadii = new int[] { 200, int.MaxValue, 100, 100, 200 };
+            towerCost = new int[]{ 20, 40, 60, 75, 200};
+            towerSpeed = new int[] { 1, 3, 4, 2, 3 };
+            salaryDivider = 4;
             
             _graphics.ApplyChanges();
 
@@ -277,7 +277,7 @@ namespace Bruh_Overtime_Defense
             green = Content.Load<Texture2D>("bruhGreen");
             hurb = Content.Load<Texture2D>("hurb");
 
-            waveMan = new WaveManager("enemyWave.wave",
+            waveMan = new WaveManager("enemyWave2.wave",
                 enemyTex, red, blue, green, hurb, collisions.StartPosition);
         }
 
@@ -646,7 +646,7 @@ namespace Bruh_Overtime_Defense
                     NextWave();  
                 }
 
-                if(currWave == 20 && enemyCount == 0)
+                if(currWave == 21)
                 {
                     gState = GameState.VictoryScreen;
                 }
@@ -753,9 +753,12 @@ namespace Bruh_Overtime_Defense
             waveAmount = 5;
             newWave = false;
             currWave = 0;
+            enemyCount = 0;
+            waveMan.GenerateBruhStats();
 
             //enemies and towers
             towers.Clear();
+            enemies.Clear();
             enMan.ResetEnemies();
         }
 
@@ -995,9 +998,6 @@ namespace Bruh_Overtime_Defense
                 //changes the display to the current
                 //amount of enemies in the list
                 enemyCount = enemies.Count;
-                //increments the # of enemies
-                //for next time
-                waveAmount += 5;
             }
         }
 

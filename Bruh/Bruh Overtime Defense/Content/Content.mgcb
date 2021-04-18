@@ -107,8 +107,8 @@
 /processorParam:TextureFormat=Color
 /build:bruhRed.png
 
-#begin enemyWave.wave
-/copy:enemyWave.wave
+#begin enemyWave2.wave
+/copy:enemyWave2.wave
 
 #begin ErinModeOFF.png
 /importer:TextureImporter

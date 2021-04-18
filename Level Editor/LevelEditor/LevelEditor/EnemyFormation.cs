@@ -163,9 +163,9 @@ namespace LevelEditor
                     break;
                 case 2:
                     writer.WriteLine
-                        (wave2Total + "|" + GetNumFromBox(a1) + "|"
-                        + GetNumFromBox(a2) + "|" + GetNumFromBox(a3) + "|"
-                        + GetNumFromBox(a4));
+                        (wave2Total + "|" + GetNumFromBox(b1) + "|"
+                        + GetNumFromBox(b2) + "|" + GetNumFromBox(b3) + "|"
+                        + GetNumFromBox(b4));
                     break;
                 case 3:
                     writer.WriteLine

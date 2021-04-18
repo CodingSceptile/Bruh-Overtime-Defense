@@ -182,7 +182,7 @@ namespace Bruh_Overtime_Defense
             //I could make it subtract raw, but in this model, all towers 
             //have to be paid at equal times. Could make it so that the expensive
             //ones could be paid less often but we'll see
-            salary -= (int)(originalSalary / 5); //5 is arbitrary
+            salary -= (int)(originalSalary / 4); //5 is arbitrary
 
             if (salary <= 0)
             {

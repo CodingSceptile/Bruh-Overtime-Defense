@@ -62,12 +62,28 @@ namespace Bruh_Overtime_Defense
         private Rectangle startingRect;
 
         //Properties
+        
+        /// <summary>
+        /// Returns a dictionary that
+        /// holds information about each wave
+        /// </summary>
         public Dictionary<int, List<Enemy>> Waves
         {
             get { return waves; }
         }
  
         //Constructor
+
+        /// <summary>
+        /// Creates a new WaveManager object
+        /// </summary>
+        /// <param name="fileName">name of enemy waves file</param>
+        /// <param name="bruh">bruh default texture</param>
+        /// <param name="red">red bruh texture</param>
+        /// <param name="blue">blue bruh texture</param>
+        /// <param name="green">green bruh texture</param>
+        /// <param name="hurb">hurb texture</param>
+        /// <param name="startingRect">starting position of the bruhs</param>
         public WaveManager(string fileName, Texture2D bruh, Texture2D red,
             Texture2D blue, Texture2D green, Texture2D hurb, Rectangle startingRect)
         {
@@ -78,9 +94,7 @@ namespace Bruh_Overtime_Defense
             this.blue = blue;
             this.green = green;
             this.hurb = hurb;
-            this.startingRect = startingRect;
-
-            GenerateBruhStats();         
+            this.startingRect = startingRect;   
         }
 
         //Methods
@@ -90,10 +104,13 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void GenerateBruhStats()
         {
+            waves.Clear();
             try
             {
                 reader = new StreamReader("Content/" + fileName);
 
+                //reads information about the stats
+                //of each bruh
                 string nextBruhStats = reader.ReadLine();
                 string[] stats = nextBruhStats.Split('|');
 
@@ -125,6 +142,7 @@ namespace Bruh_Overtime_Defense
                 hurbSpeed = int.Parse(stats[1]);
 
                 
+                //formats the waves
                 for (int i = 0; i < 20; i++)
                 {
                     nextBruhStats = reader.ReadLine();
@@ -132,23 +150,28 @@ namespace Bruh_Overtime_Defense
 
                     waves.Add(i + 1, new List<Enemy>());
 
+                    //regular bruhs added
                     for(int j = 0; j < int.Parse(stats[1]); j++)
                     {
                         waves[i + 1].Add(new Enemy(bruh, bruhHealth, bruhSpeed, startingRect));
                     }
+                    //red bruhs added
                     for (int j = 0; j < int.Parse(stats[2]); j++)
                     {
                         waves[i + 1].Add(new Enemy(red, redHealth, redSpeed, startingRect));
                     }
+                    //green bruhs added
                     for (int j = 0; j < int.Parse(stats[3]); j++)
                     {
                         waves[i + 1].Add(new Enemy(green, greenHealth, greenSpeed, startingRect));
                     }
+                    //blue bruhs added
                     for (int j = 0; j < int.Parse(stats[4]); j++)
                     {
                         waves[i + 1].Add(new Enemy(blue, blueHealth, blueSpeed, startingRect));
                     }
 
+                    //checks if hurb needs to be added
                     if(i == 19)
                     {
                         for (int j = 0; j < int.Parse(stats[5]); j++)
