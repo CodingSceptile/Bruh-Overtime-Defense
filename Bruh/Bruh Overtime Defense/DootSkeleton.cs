@@ -18,8 +18,8 @@ namespace Bruh_Overtime_Defense
         /// <param name="radius">Radius of doot skeleton</param>
         /// <param name="initialCost">Initial cost to purchase doot skeleton</param>
         /// <param name="activitySpeed">Rate of fire of doot skeleton</param>
-        public DootSkeleton(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed)
-            :base(pos, spr, radius, initialCost, activitySpeed)
+        public DootSkeleton(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime)
+            :base(pos, spr, radius, initialCost, activitySpeed, gameTime)
         {
 
         }
