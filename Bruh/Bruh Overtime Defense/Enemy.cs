@@ -23,6 +23,7 @@ namespace Bruh_Overtime_Defense
         private Texture2D texture;
         private Vector2 movement;
         private int vectorInteractions;
+        private float originalSpeed;
 
         //Properties
         public int Health { get { return health; } set { health = value; } }
@@ -70,6 +71,11 @@ namespace Bruh_Overtime_Defense
             set { vectorInteractions = value; }      
         }
 
+        public float OriginalSpeed
+        {
+            get { return originalSpeed; }
+        }
+
         /// <summary>
         /// Constructor that initializes the enemy object.
         /// </summary>
@@ -96,6 +102,7 @@ namespace Bruh_Overtime_Defense
             }
             
             this.vectorInteractions = 0;
+            this.originalSpeed = speed;
         }
     } 
 }
