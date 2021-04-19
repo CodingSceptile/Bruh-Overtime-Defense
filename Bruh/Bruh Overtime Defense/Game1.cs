@@ -942,8 +942,8 @@ namespace Bruh_Overtime_Defense
         public void LoadButtons()
         {
             //map select buttons
-            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("testMap1");
-            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("testMap1");
+            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
+            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
             //gameplay UI buttons
             towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile087");
             towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile091");
