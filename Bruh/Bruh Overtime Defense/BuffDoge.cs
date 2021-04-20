@@ -4,7 +4,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+//HEADER=======================================
+//Author: Mukund Suresh
+//Purpose: To create a tower sub=class that slams bruhs in a radius all at once at set intervals.
+//=============================================
 namespace Bruh_Overtime_Defense
 {
     class BuffDoge : Tower

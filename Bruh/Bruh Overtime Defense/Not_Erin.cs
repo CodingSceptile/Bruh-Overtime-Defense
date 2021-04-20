@@ -4,7 +4,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+//HEADER=======================================
+//Author: Mukund Suresh
+//Purpose: To create a tower class that vaporizes all bruhs in the radius at set intervals.
+//=============================================
 namespace Bruh_Overtime_Defense
 {
     class Not_Erin : Tower
