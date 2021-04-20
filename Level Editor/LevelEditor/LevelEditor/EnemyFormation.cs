@@ -11,6 +11,10 @@ using System.IO;
 
 namespace LevelEditor
 {
+    //Name: Sami Chamberlain
+    //Date: 4/15/2021
+    //Purpose: Allows enemy information to be written to an
+    //external file.
     public partial class EnemyFormation : Form
     {
         //Fields
@@ -41,6 +45,9 @@ namespace LevelEditor
         private int wave19Total;
         private int wave20Total;
 
+        /// <summary>
+        /// Initializes a new EnemyFormation Form
+        /// </summary>
         public EnemyFormation()
         {
             InitializeComponent();
@@ -150,6 +157,11 @@ namespace LevelEditor
                 GetNumFromBox(t5);
         }
 
+        /// <summary>
+        /// Writes bruh data to an external file
+        /// </summary>
+        /// <param name="wave">num wave</param>
+        /// <param name="writer">streamWriter</param>
         private void WriteNumBruhs(int wave, StreamWriter writer)
         {
             switch (wave)
