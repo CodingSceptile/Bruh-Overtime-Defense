@@ -143,7 +143,7 @@ namespace Bruh_Overtime_Defense
         /// Draws a tower to the sreen
         /// </summary>
         /// <param name="sb">_spriteBatch</param>
-        public void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb, Texture2D radiusSprite)
         {
             //if the tower landed a shot, make it flash red as an indicator
             if(madeShot == false)
@@ -155,7 +155,16 @@ namespace Bruh_Overtime_Defense
                 sb.Draw(Sprite, Position, Color.Red);
             }
 
-            sb.Draw()
+            Rectangle radiusRectangle = new Rectangle(Position.X - radius,
+                                                      Position.Y - radius,
+                                                      radius * 2,
+                                                      radius * 2);
+            if(!(this is SniperMonke))
+            {
+                sb.Draw(radiusSprite,
+                        radiusRectangle,
+                        new Color(255, 255, 255, 255));
+            }
             
         }
 
