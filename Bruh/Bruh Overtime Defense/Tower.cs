@@ -219,6 +219,7 @@ namespace Bruh_Overtime_Defense
         /// <returns>The money yielded from killing the enemy</returns>
         public virtual int Shoot(List<Enemy> enemies)
         {
+            madeShot = false;
             foreach (Enemy e in enemies)
             {
                 //Shoots every activitySpeed amount of seconds.
@@ -232,6 +233,7 @@ namespace Bruh_Overtime_Defense
                         }
 
                         e.Health -= 1;
+                        madeShot = true;
                         if (e.Health <= 0)
                         {
                             e.IsDead = true;
