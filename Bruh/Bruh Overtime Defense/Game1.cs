@@ -226,7 +226,7 @@ namespace Bruh_Overtime_Defense
             //indices correspond to towers as follows:
             //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
             //3: Ryan the Gatekeeper, 4: Not Erin
-            towerRadii = new int[] { 200, int.MaxValue, 100, 100, 200 };
+            towerRadii = new int[] { 100, int.MaxValue, 50, 50, 100 };
             towerCost = new int[]{ 20, 40, 60, 75, 200};
             towerSpeed = new int[] { 1, 3, 4, 2, 3 };
             salaryDivider = 4;
@@ -412,7 +412,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //draw the towers
-                    towerManager.DrawTowers(_spriteBatch, arial10, enemies, radiusSprite);
+                    towerManager.DrawTowers(_spriteBatch, arial10, enemies, radiusSprite, _graphics);
 
                     //Only spawns new enemies if a new wave is active
                     if (newWave == true)
