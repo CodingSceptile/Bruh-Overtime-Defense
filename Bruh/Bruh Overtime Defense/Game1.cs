@@ -150,12 +150,7 @@ namespace Bruh_Overtime_Defense
         {
             // TODO: Add your initialization logic here
             textures = new List<Texture2D>();
-            collisions = new CollisionManager("office1.level_Appended");
-
-            level = collisions.CurrentLevel;
             
-            codes = collisions.Codes;
-            rotations = collisions.Rotations;
 
             random = new Random();
 
@@ -164,8 +159,8 @@ namespace Bruh_Overtime_Defense
             screenWidth = _graphics.PreferredBackBufferWidth;
             screenHeight = _graphics.PreferredBackBufferHeight;
 
-            tileWidth = screenWidth / level.Width;
-            tileHeight = screenHeight / level.Height;
+            tileWidth = screenWidth / 20;
+            tileHeight = screenHeight / 20;
 
             //initialize the mouse and keyboard states
             mState = Mouse.GetState();
@@ -215,12 +210,10 @@ namespace Bruh_Overtime_Defense
 
             //Enemies, and enemy manager
             enemies = new List<Enemy>();
-            enMan = new EnemyManager(enemies, collisions.StartPosition);
             enemyCount = 0;
             
             //towers
             towers = new List<Tower>();
-            towerManager = new TowerManager(towers, collisions.TrackLocations);
             //arrays store values for towers
             //indices correspond to towers as follows:
             //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
@@ -242,18 +235,7 @@ namespace Bruh_Overtime_Defense
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //Loops through the list of code values garnered from the
-            //level editor
-
-            //Main level
-            foreach(string code in codes)
-            {
-                //Loads a texture given the code(Located in the textures folder, basically
-                //just the file name)
-                Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
-
-                textures.Add(texture);
-            }
+            
 
             //buttons
             LoadButtons();
@@ -277,8 +259,6 @@ namespace Bruh_Overtime_Defense
             green = Content.Load<Texture2D>("bruhGreen");
             hurb = Content.Load<Texture2D>("hurb");
 
-            waveMan = new WaveManager("enemyWave2.wave",
-                enemyTex, red, blue, green, hurb, collisions.StartPosition);
         }
 
         /// <summary>
@@ -474,6 +454,7 @@ namespace Bruh_Overtime_Defense
                 //check to see which map button they pressed
                 if (mapSelectButton1.Clicked(mState, prevMState))
                 {
+                    InitializeLevel("office1.level_Appended");
                     //reset the game
                     Reset();
                     //if Erin Mode is on
@@ -942,10 +923,10 @@ namespace Bruh_Overtime_Defense
             mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
             mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
             //gameplay UI buttons
-            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile087");
-            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile091");
-            pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile085");
-            pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile089");
+            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("TowerButton");
+            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("TowerButtonActive");
+            pauseButton.DefaultSprite = Content.Load<Texture2D>("OptionsButton");
+            pauseButton.ActiveSprite = Content.Load<Texture2D>("OptionsButtonActive");
             nextWaveButton.DefaultSprite = Content.Load<Texture2D>("NextWaveButton");
             nextWaveButton.ActiveSprite = Content.Load<Texture2D>("NextWaveButtonActive");
             //tower buttons
@@ -1037,6 +1018,39 @@ namespace Bruh_Overtime_Defense
                     }
                 }
             }
+        }
+
+        public void InitializeLevel(string levelName)
+        {
+            //from Initialize
+            collisions = new CollisionManager(levelName);
+
+            level = collisions.CurrentLevel;
+
+            codes = collisions.Codes;
+            rotations = collisions.Rotations;
+
+
+
+            towerManager = new TowerManager(towers, collisions.TrackLocations); 
+            enMan = new EnemyManager(enemies, collisions.StartPosition);
+
+            //from LoadContent
+            //Loops through the list of code values garnered from the
+            //level editor
+
+            //Main level
+            foreach (string code in codes)
+            {
+                //Loads a texture given the code(Located in the textures folder, basically
+                //just the file name)
+                Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
+
+                textures.Add(texture);
+            }
+
+            waveMan = new WaveManager("enemyWave2.wave",
+                enemyTex, red, blue, green, hurb, collisions.StartPosition);
         }
     }
 }
