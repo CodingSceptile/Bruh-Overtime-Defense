@@ -546,6 +546,10 @@ namespace Bruh_Overtime_Defense
                 {
                     gState = GameState.GameOver;
                 }
+                else if(currWave == 20 && enemyCount == 0)
+                {
+                    gState = GameState.VictoryScreen;
+                }
 
 
                 //if the mouse button is clicked and none of the buttons are pressed
@@ -644,11 +648,6 @@ namespace Bruh_Overtime_Defense
                 if (nextWaveButton.Clicked(mState,prevMState))
                 {
                     NextWave();  
-                }
-
-                if(currWave == 21)
-                {
-                    gState = GameState.VictoryScreen;
                 }
             }
             //if the player is on the pause screen
@@ -883,11 +882,6 @@ namespace Bruh_Overtime_Defense
                     if(gainMoney != 0)
                     {
                         bruhEffect.Play(0.005f, -0.05f, 0);
-                        towers[i].MadeShot = true;
-                    }
-                    else
-                    {
-                        towers[i].MadeShot = false;
                     }
                     enemyCount -= gainMoney; //since 1 money is gained for 1 enemy dying
                 }
