@@ -155,18 +155,14 @@ namespace Bruh_Overtime_Defense
                 sb.Draw(Sprite, Position, Color.Red);
             }
 
-            Rectangle radiusRectangle = new Rectangle(Position.X - radius,
-                                                      Position.Y - radius,
-                                                      radius * 2,
-                                                      radius * 2);
             //Maneuvring to get shapebatch to work
             sb.End();
             ShapeBatch.Begin(_graphics.GraphicsDevice);
 
             if(!(this is SniperMonke))
             {
-                ShapeBatch.CircleOutline(new Vector2(Position.X,
-                                                     Position.Y),
+                ShapeBatch.CircleOutline(new Vector2(Position.X + Position.Width/2,
+                                                     Position.Y + Position.Height/2),
                                          radius,
                                          Color.Black);
             }

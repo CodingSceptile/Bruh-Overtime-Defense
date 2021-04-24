@@ -29,6 +29,8 @@ namespace Bruh_Overtime_Defense
         public GameObject(Rectangle pos, Texture2D spr)
         {
             position = pos;
+            //position.X += position.Width / 2;
+            //position.Y += position.Height / 2;
             sprite = spr;
         }
 
