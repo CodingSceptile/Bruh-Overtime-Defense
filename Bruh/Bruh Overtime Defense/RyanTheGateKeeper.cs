@@ -4,7 +4,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+//HEADER=======================================
+//Author: Mukund Suresh
+//Purpose: To create a tower class that holds all the bruhs in a waiting room
+//for set intervals.
+//=============================================
 namespace Bruh_Overtime_Defense
 {
     class RyanTheGateKeeper : Tower

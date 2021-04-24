@@ -143,18 +143,36 @@ namespace Bruh_Overtime_Defense
         /// Draws a tower to the sreen
         /// </summary>
         /// <param name="sb">_spriteBatch</param>
-        public void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb, Texture2D radiusSprite, GraphicsDeviceManager _graphics)
         {
             //if the tower landed a shot, make it flash red as an indicator
-            if(madeShot == false)
+            if (madeShot == false)
             {
                 sb.Draw(Sprite, Position, Color.White);
             }
-            else if(madeShot == true)
+            else if (madeShot == true)
             {
                 sb.Draw(Sprite, Position, Color.Red);
             }
-            
+
+            Rectangle radiusRectangle = new Rectangle(Position.X - radius,
+                                                      Position.Y - radius,
+                                                      radius * 2,
+                                                      radius * 2);
+            //Maneuvring to get shapebatch to work
+            sb.End();
+            ShapeBatch.Begin(_graphics.GraphicsDevice);
+
+            if(!(this is SniperMonke))
+            {
+                ShapeBatch.CircleOutline(new Vector2(Position.X,
+                                                     Position.Y),
+                                         radius,
+                                         Color.Black);
+            }
+
+            ShapeBatch.End();
+            sb.Begin();
         }
 
         /// <summary>
@@ -201,6 +219,7 @@ namespace Bruh_Overtime_Defense
         /// <returns>The money yielded from killing the enemy</returns>
         public virtual int Shoot(List<Enemy> enemies)
         {
+            madeShot = false;
             foreach (Enemy e in enemies)
             {
                 //Shoots every activitySpeed amount of seconds.
@@ -214,6 +233,7 @@ namespace Bruh_Overtime_Defense
                         }
 
                         e.Health -= 1;
+                        madeShot = true;
                         if (e.Health <= 0)
                         {
                             e.IsDead = true;

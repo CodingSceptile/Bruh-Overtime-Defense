@@ -4,7 +4,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+//HEADER=======================================
+//Author: Mukund Suresh
+//Purpose: To create a tower class that shoots bruhs. Base tower.
+//=============================================
 namespace Bruh_Overtime_Defense
 {
     class DootSkeleton : Tower
