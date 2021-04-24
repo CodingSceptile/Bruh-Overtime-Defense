@@ -107,6 +107,18 @@
 /processorParam:TextureFormat=Color
 /build:bruhRed.png
 
+#begin buildings-layer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:buildings-layer.png
+
 #begin enemyWave2.wave
 /copy:enemyWave2.wave
 
@@ -158,6 +170,20 @@
 /processorParam:TextureFormat=Color
 /build:ErinModeONActive.png
 
+#begin gameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:gameFont.spritefont
+
+#begin gameText20.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:gameText20.spritefont
+
 #begin hurb.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -208,6 +234,18 @@
 
 #begin office1.level_Appended
 /copy:office1.level_Appended
+
+#begin Sky-layer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sky-layer.png
 
 #begin testMap1.png
 /importer:TextureImporter

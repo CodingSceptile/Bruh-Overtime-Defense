@@ -90,6 +90,10 @@ namespace Bruh_Overtime_Defense
         private SpriteFont arial36;
         private SpriteFont arial64;
 
+        //Game Font
+        private SpriteFont gameText36;
+        private SpriteFont gameText20;
+
         private SoundEffect bruhEffect;
 
         //Collision Manager
@@ -135,6 +139,13 @@ namespace Bruh_Overtime_Defense
 
         //Wave manager
         private WaveManager waveMan;
+
+        //Animation manager
+        private AnimationManager aniMan;
+        private Texture2D sky;
+        private Texture2D buildings;
+
+        
 
         public Game1()
         {
@@ -269,6 +280,9 @@ namespace Bruh_Overtime_Defense
             arial16 = Content.Load<SpriteFont>("arial16");
             arial36 = Content.Load<SpriteFont>("arial36");
             arial64 = Content.Load<SpriteFont>("arial64");
+            gameText36 = Content.Load<SpriteFont>("gameFont");
+            gameText20 = Content.Load<SpriteFont>("gameText20");
+            
 
             //Bruh enemy texture
             enemyTex = Content.Load<Texture2D>("bruh");
@@ -277,8 +291,17 @@ namespace Bruh_Overtime_Defense
             green = Content.Load<Texture2D>("bruhGreen");
             hurb = Content.Load<Texture2D>("hurb");
 
+            //title textures
+            sky = Content.Load<Texture2D>("Sky-layer");
+            buildings = Content.Load<Texture2D>("buildings-layer");
+            
+
             waveMan = new WaveManager("enemyWave2.wave",
                 enemyTex, red, blue, green, hurb, collisions.StartPosition);
+
+            aniMan = new AnimationManager(sky, buildings,
+                _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+
         }
 
         /// <summary>
@@ -322,8 +345,10 @@ namespace Bruh_Overtime_Defense
             {
                 //TITLE SCREEN
                 case GameState.TitleScreen:
-                    _spriteBatch.DrawString(arial64, "Bruh Overtime \n    Defense", new Vector2(125, 250), Color.White);
-                    _spriteBatch.DrawString(arial36, "Press Enter to start", new Vector2(175, 450), Color.White);
+                    aniMan.Draw(_spriteBatch);
+                    _spriteBatch.DrawString(gameText36, "Bruh Overtime \n   Defense", new Vector2(75, 250), Color.Gray);
+                    _spriteBatch.DrawString(gameText36, "Bruh Overtime \n   Defense", new Vector2(78, 253), Color.Black);
+                    _spriteBatch.DrawString(gameText20, "Press Enter to start", new Vector2(135, 450), Color.Black);
                     break;
 
                 //MAP SELECT SCREEN
