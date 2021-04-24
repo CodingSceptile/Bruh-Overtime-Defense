@@ -49,7 +49,7 @@ namespace Bruh_Overtime_Defense
                 if(towers[i].Resignation())
                 {
                     towers.Remove(towers[i]);
-                    Enemy newEnemy = new Enemy(enemyTexture, 1, 3, startPos);
+                    Enemy newEnemy = new Enemy(enemyTexture, 10, 6, startPos);
                     enemies.Add(newEnemy);
                 }
             }

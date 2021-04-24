@@ -357,6 +357,7 @@ namespace Bruh_Overtime_Defense
 
                 //MAP SELECT SCREEN
                 case GameState.MapSelect:
+                    aniMan.Draw(_spriteBatch);
                     _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
                     mapSelectButton1.Draw(_spriteBatch, mState);
                     erinModeButton.Draw(_spriteBatch, mState);
@@ -1015,14 +1016,14 @@ namespace Bruh_Overtime_Defense
                 //reset the enemy list
                 enMan.ResetEnemies();
 
-                //check for resignations (which
-                //adds an enemy to the list)
-                towerManager.Resignations(towers,
-                    enemies, enemyTex, collisions.StartPosition);
-
                 enemies = waveMan.Waves[currWave];
 
                 enMan.Enemies = enemies;
+
+                //check for resignations (which
+                //adds an enemy to the list)
+                towerManager.Resignations(towers,
+                    enemies, blue, collisions.StartPosition);
 
                 //changes the display to the current
                 //amount of enemies in the list
