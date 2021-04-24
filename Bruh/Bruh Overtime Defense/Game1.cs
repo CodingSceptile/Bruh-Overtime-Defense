@@ -114,6 +114,7 @@ namespace Bruh_Overtime_Defense
         private List<Tower> towers;
         private TowerManager towerManager;
         private Towers selectedTower;
+        private Texture2D radius;
         private Texture2D towerMenuSprite;
         private Rectangle towerMenuPos;
         private bool openTowerMenu;
@@ -294,6 +295,9 @@ namespace Bruh_Overtime_Defense
             //title textures
             sky = Content.Load<Texture2D>("Sky-layer");
             buildings = Content.Load<Texture2D>("buildings-layer");
+
+            //Tower radius
+            radius = Content.Load<Texture2D>("Textures/radius");
             
 
             waveMan = new WaveManager("enemyWave2.wave",
@@ -435,7 +439,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //draw the towers
-                    towerManager.DrawTowers(_spriteBatch, arial10, enemies);
+                    towerManager.DrawTowers(_spriteBatch, arial10, enemies, radius, _graphics);
 
                     //Only spawns new enemies if a new wave is active
                     if (newWave == true)
