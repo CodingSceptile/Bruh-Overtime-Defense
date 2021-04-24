@@ -69,7 +69,7 @@ namespace Bruh_Overtime_Defense
         /// Draws the towers on the map (unless it intersects on the path)
         /// </summary>
         /// <param name="sb">SpriteBatch</param>
-        public void DrawTowers(SpriteBatch sb, SpriteFont sf, List<Enemy> enemies, Texture2D radiusSprite, GraphicsDeviceManager _graphics)
+        public void DrawTowers(SpriteBatch sb, SpriteFont sf, List<Enemy> enemies, GraphicsDeviceManager _graphics)
         {
             for(int i = 0; i < towers.Count; i++)
             {
@@ -77,7 +77,7 @@ namespace Bruh_Overtime_Defense
                 {
                     if(!r.Intersects(towers[i].Position))
                     {
-                        towers[i].Draw(sb, radiusSprite, _graphics);
+                        towers[i].Draw(sb,  _graphics);
                         sb.DrawString(sf, "Total Pay: " + towers[i].Salary,
                             new Vector2(towers[i].Position.X, towers[i].Position.Y + 30),
                             Color.White);
