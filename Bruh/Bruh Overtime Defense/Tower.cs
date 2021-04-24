@@ -143,7 +143,7 @@ namespace Bruh_Overtime_Defense
         /// Draws a tower to the sreen
         /// </summary>
         /// <param name="sb">_spriteBatch</param>
-        public void Draw(SpriteBatch sb, Texture2D radiusSprite, GraphicsDeviceManager _graphics)
+        public void Draw(SpriteBatch sb,  GraphicsDeviceManager _graphics)
         {
             //if the tower landed a shot, make it flash red as an indicator
             if (madeShot == false)
