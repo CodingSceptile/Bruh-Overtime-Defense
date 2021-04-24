@@ -77,7 +77,7 @@ namespace Bruh_Overtime_Defense
                 {
                     if(!r.Intersects(towers[i].Position))
                     {
-                        towers[i].Draw(sb,  _graphics);
+                        towers[i].Draw(sb, _graphics);
                         sb.DrawString(sf, "Total Pay: " + towers[i].Salary,
                             new Vector2(towers[i].Position.X, towers[i].Position.Y + 30),
                             Color.White);

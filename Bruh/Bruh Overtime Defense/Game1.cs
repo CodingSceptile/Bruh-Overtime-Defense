@@ -439,7 +439,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //draw the towers
-                    towerManager.DrawTowers(_spriteBatch, arial10, enemies, radius, _graphics);
+                    towerManager.DrawTowers(_spriteBatch, arial10, enemies, _graphics);
 
                     //Only spawns new enemies if a new wave is active
                     if (newWave == true)
