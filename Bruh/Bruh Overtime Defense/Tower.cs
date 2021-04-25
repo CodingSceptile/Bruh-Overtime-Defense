@@ -147,20 +147,26 @@ namespace Bruh_Overtime_Defense
         /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb,  GraphicsDeviceManager _graphics)
         {
-            //Vector2 origin = new Vector2(Position.X + (Position.Width / 2),
-            //                                 Position.Y + (Position.Height / 2));
-            Vector2 origin = new Vector2(Sprite.Width / 2f, Sprite.Height / 2f);
+            Vector2 origin = new Vector2((float)(Position.Width / 2f), (float)(Position.Height / 2f));
             //if the tower landed a shot, make it flash red as an indicator
+            //Using this if else because it only seems to be aiming in the positive directions
             if (madeShot == false)
             {
                 //sb.Draw(Sprite, Position, Color.White);
-                sb.Draw(Sprite, Position, null, Color.White, (float)rotation, origin, SpriteEffects.None, 0f);
+                if (rotation > Math.PI / 2 && rotation < 3 * Math.PI / 2)
+                    sb.Draw(Sprite, Position, null, Color.White, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
+
+                else
+                    sb.Draw(Sprite, Position, null, Color.White, (float)rotation, origin, SpriteEffects.None, 0f);
             }
             else if (madeShot == true)
             {
                 //sb.Draw(Sprite, Position, Color.Red);
-                
-                sb.Draw(Sprite, Position, null, Color.Red,(float)rotation, origin, SpriteEffects.None, 0f);
+                if (rotation > (Math.PI / 2) && rotation < (3 * Math.PI / 2))
+                    sb.Draw(Sprite, Position, null, Color.Red, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
+
+                else
+                    sb.Draw(Sprite, Position, null, Color.Red, (float)rotation, origin, SpriteEffects.None, 0f);
             }
 
             //Maneuvring to get shapebatch to work
@@ -236,6 +242,7 @@ namespace Bruh_Overtime_Defense
                             continue;
                         }
 
+                        //Code so it aims towards what it's shooting.
                         Vector2 towerPosition = new Vector2(Position.X, Position.Y);
                         Vector2 enemyPosition = new Vector2(e.X, e.Y);
 
