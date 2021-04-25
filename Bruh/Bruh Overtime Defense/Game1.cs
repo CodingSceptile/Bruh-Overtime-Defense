@@ -145,6 +145,7 @@ namespace Bruh_Overtime_Defense
         private AnimationManager aniMan;
         private Texture2D sky;
         private Texture2D buildings;
+        private Texture2D nightSky;
 
         
 
@@ -295,6 +296,7 @@ namespace Bruh_Overtime_Defense
             //title textures
             sky = Content.Load<Texture2D>("Sky-layer");
             buildings = Content.Load<Texture2D>("buildings-layer");
+            nightSky = Content.Load<Texture2D>("Ruined City Background Preview");
 
             //Tower radius
             radius = Content.Load<Texture2D>("Textures/radius");
@@ -303,7 +305,7 @@ namespace Bruh_Overtime_Defense
             waveMan = new WaveManager("enemyWave2.wave",
                 enemyTex, red, blue, green, hurb, collisions.StartPosition);
 
-            aniMan = new AnimationManager(sky, buildings,
+            aniMan = new AnimationManager(sky, buildings, nightSky,
                 _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
         }
@@ -367,6 +369,7 @@ namespace Bruh_Overtime_Defense
 
                 //INSTRUCTIONS SCREEN
                 case GameState.InstructionsScreen:
+                    aniMan.Draw(_spriteBatch);
                     _spriteBatch.DrawString(arial64, "Instructions", new Vector2(200, 0), Color.White);
                     DrawInstructions();
                     _spriteBatch.Draw(uiInstructions, new Rectangle(250, 450, 250, 250), Color.White);
@@ -452,13 +455,14 @@ namespace Bruh_Overtime_Defense
                     break;
                 //PAUSE SCREEN
                 case GameState.PauseScreen:
+                    aniMan.Draw(_spriteBatch);
                     _spriteBatch.DrawString(arial64, "Paused",
-                        new Vector2(240, 0), Color.White);
+                        new Vector2(240, 0), Color.Black);
                     DrawInstructions();
                     _spriteBatch.DrawString(arial36, "Press Enter to return to game",
-                        new Vector2(80, 490), Color.White);
+                        new Vector2(80, 490), Color.Black);
                     _spriteBatch.DrawString(arial36, "Press Ctrl to return to map select",
-                        new Vector2(50, 600), Color.White);
+                        new Vector2(50, 600), Color.Black);
                     break;
                 //VICTORY SCREEN
                 case GameState.VictoryScreen:
@@ -469,6 +473,7 @@ namespace Bruh_Overtime_Defense
                     break;
                 //GAME OVER SCREEN
                 case GameState.GameOver:
+                    aniMan.DrawGameOver(_spriteBatch);
                     _spriteBatch.DrawString(arial64, "Game Over",
                         new Vector2(200, 300), Color.Red);
                     _spriteBatch.DrawString(arial36, "Press Enter to return to map select",
@@ -1050,7 +1055,7 @@ namespace Bruh_Overtime_Defense
             instructions += "When your defenses are set up, hit the Next Wave button to let the bruhs " +
                 "flow in. \n\nGood luck.";
 
-            _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.White);
+            _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.Black);
         }
 
         /// <summary>

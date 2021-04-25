@@ -19,6 +19,7 @@ namespace Bruh_Overtime_Defense
         //Fields
         private Texture2D clouds;
         private Texture2D buildings;
+        private Texture2D night;
         private float screenWidth;
         private float screenHeight;
 
@@ -34,21 +35,20 @@ namespace Bruh_Overtime_Defense
 
         //Constructor
         public AnimationManager(Texture2D clouds, Texture2D buildings,
-            float screenWidth, float screenHeight)
+            Texture2D night, float screenWidth, float screenHeight)
         {
             this.clouds = clouds;
             this.buildings = buildings;
             this.screenHeight = screenHeight;
             this.screenWidth = screenWidth;
+            this.night = night;
 
             cloudRect = new Rectangle(
                 new Point(0, 0),
                 new Point((int)screenWidth, (int)screenHeight));
-
             parallaxRectClouds = new Rectangle(
                 new Point(-1 * (int)screenWidth, 0),
                 new Point((int)screenWidth, (int)screenHeight));
-
             parallaxRectClouds2 = new Rectangle(
                 new Point(-2 * (int)screenWidth, 0),
                 new Point((int)screenWidth, (int)screenHeight));
@@ -89,6 +89,27 @@ namespace Bruh_Overtime_Defense
 
 
             
+        }
+
+        public void DrawGameOver(SpriteBatch sb)
+        {
+            sb.Draw(night, cloudRect, Color.White);
+            sb.Draw(night, parallaxRectClouds, Color.White);
+            sb.Draw(night, parallaxRectClouds2, Color.White);
+
+            sb.Draw(buildings, building1Rect, Color.Gray);
+            sb.Draw(buildings, building2Rect, Color.Gray);
+            sb.Draw(buildings, building3Rect, Color.Gray);
+            sb.Draw(buildings, building4Rect, Color.Gray);
+
+            ChangePositioning();
+            cloudRect.X = Wrap(cloudRect);
+            parallaxRectClouds.X = Wrap(parallaxRectClouds);
+            parallaxRectClouds2.X = Wrap(parallaxRectClouds2);
+            building1Rect.X = Wrap(building1Rect);
+            building2Rect.X = Wrap(building2Rect);
+            building3Rect.X = Wrap(building3Rect);
+            building4Rect.X = Wrap(building4Rect);
         }
 
         private void ChangePositioning()
