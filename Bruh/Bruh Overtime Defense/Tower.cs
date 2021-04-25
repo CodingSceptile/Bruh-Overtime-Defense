@@ -147,7 +147,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb,  GraphicsDeviceManager _graphics)
         {
-            Vector2 origin = new Vector2((float)(Position.Width / 2f), (float)(Position.Height / 2f));
+            Vector2 origin = new Vector2((float)(Position.Width / 3f), (float)(Position.Height / 3f));
             //if the tower landed a shot, make it flash red as an indicator
             //Using this if else because it only seems to be aiming in the positive directions
             if (madeShot == false)
@@ -232,8 +232,18 @@ namespace Bruh_Overtime_Defense
             madeShot = false;
             foreach (Enemy e in enemies)
             {
+                //Code so it aims towards what it's shooting.
+                if (Distance(Position, e.Position) <= Radius && !e.IsDead)
+                {
+                    Vector2 towerPosition = new Vector2(Position.X, Position.Y);
+                    Vector2 enemyPosition = new Vector2(e.X, e.Y);
+
+                    direction = enemyPosition - towerPosition;
+                    rotation = Math.Atan(direction.Y / direction.X);
+                }
+                   
                 //Shoots every activitySpeed amount of seconds.
-                if((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 1000) == 0)
+                if ((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 1000) == 0)
                 {
                     if (Distance(Position, e.Position) <= Radius)
                     {
@@ -241,13 +251,6 @@ namespace Bruh_Overtime_Defense
                         {
                             continue;
                         }
-
-                        //Code so it aims towards what it's shooting.
-                        Vector2 towerPosition = new Vector2(Position.X, Position.Y);
-                        Vector2 enemyPosition = new Vector2(e.X, e.Y);
-
-                        direction = enemyPosition - towerPosition;
-                        rotation = Math.Atan(direction.Y / direction.X);
 
                         e.Health -= 1;
                         madeShot = true;
