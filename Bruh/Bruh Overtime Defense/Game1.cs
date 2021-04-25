@@ -151,6 +151,15 @@ namespace Bruh_Overtime_Defense
         private TimeSpan timeSpanSincePause;
         private Texture2D uiInstructions;
 
+        //Music
+        private Song victory;
+        private Song lose;
+        private Song gameSong;
+        private Song titleSong;
+        private SoundManager soundMan;
+
+        private bool soundPlaying;
+
         //MONOGAME GAME LOOP METHODS////////////////////////////////////////
         
         /// <summary>
@@ -293,9 +302,19 @@ namespace Bruh_Overtime_Defense
             buildings = Content.Load<Texture2D>("buildings-layer");
             nightSky = Content.Load<Texture2D>("Ruined City Background Preview");
 
+            //Songs
+            victory = Content.Load<Song>("Victory!");
+            lose = Content.Load<Song>("Icy Game Over");
+            titleSong = Content.Load<Song>("8_bit_iced_village_lofi");
+            gameSong = Content.Load<Song>("ChillLofiR");
+
             //animation manager
             aniMan = new AnimationManager(sky, buildings, nightSky,
                 _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+
+            //Sound Manager
+            soundMan = new SoundManager(bruhEffect, titleSong, gameSong, victory, lose);
+
 
             //Tower radius
             radius = Content.Load<Texture2D>("Textures/radius");
@@ -311,6 +330,17 @@ namespace Bruh_Overtime_Defense
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if (Keyboard.GetState().IsKeyDown(Keys.G))
+            {
+                soundPlaying = false;
+                gState = GameState.GameOver;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.V))
+            {
+                gState = GameState.VictoryScreen;
+                soundPlaying = false;
+            }
 
             //get the current MouseState and KeyboardState (first thing to be done)
             mState = Mouse.GetState();
@@ -419,6 +449,7 @@ namespace Bruh_Overtime_Defense
 
                 //VICTORY SCREEN
                 case GameState.VictoryScreen:
+                    aniMan.Draw(_spriteBatch);
                     //draw the header and base instructions
                     _spriteBatch.DrawString(arial64, "VICTORY!!!",
                         new Vector2(200, 300), Color.Green);
@@ -454,6 +485,12 @@ namespace Bruh_Overtime_Defense
             //if the player is on the title screen
             if (gState == GameState.TitleScreen)
             {
+                if(soundPlaying == false)
+                {
+                    soundMan.PlayTitle();
+                    soundPlaying = true;
+                }
+
                 //if the player hits enter or space
                 if(SingleKeyPress(Keys.Enter) || SingleKeyPress(Keys.Space))
                 {
@@ -464,6 +501,12 @@ namespace Bruh_Overtime_Defense
             //if the player is on the map select screen
             else if(gState == GameState.MapSelect)
             {
+                if(soundPlaying == false)
+                {
+                    soundMan.PlayTitle();
+                    soundPlaying = true;
+                }
+
                 //check to see which map button they pressed
                 if (mapSelectButton1.Clicked(mState, prevMState))
                 {
@@ -479,7 +522,8 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //go to the gameplay state
-                    gState = GameState.Gameplay;                  
+                    gState = GameState.Gameplay;
+                    soundPlaying = false;
                 }
 
                 //if the ErinModeButton is clicked when ErinMode is off
@@ -517,6 +561,11 @@ namespace Bruh_Overtime_Defense
             //if the player is in gameplay
             else if(gState == GameState.Gameplay)
             {
+                if(soundPlaying == false)
+                {
+                    soundMan.PlayGameTheme();
+                    soundPlaying = true;
+                }
                 //Check for changes in movement
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -538,6 +587,7 @@ namespace Bruh_Overtime_Defense
                 //No more health left! Game over!
                 if(health <= 0)
                 {
+                    soundPlaying = false;
                     gState = GameState.GameOver;
                 }
 
@@ -570,6 +620,7 @@ namespace Bruh_Overtime_Defense
                 {
                     //pause the game
                     gState = GameState.PauseScreen;
+                    
                 }
                 //if the player hits the pause button
                 if (pauseButton.Clicked(mState, prevMState))
@@ -643,6 +694,7 @@ namespace Bruh_Overtime_Defense
                 if(currWave == 21)
                 {
                     gState = GameState.VictoryScreen;
+                    soundPlaying = false;
                 }
             }
             //if the player is on the pause screen
@@ -654,6 +706,7 @@ namespace Bruh_Overtime_Defense
                 {
                     //return to gameplay
                     gState = GameState.MapSelect;
+                    soundPlaying = false;
                 }
                 //if the player hits escape
                 else if (SingleKeyPress(Keys.Enter))
@@ -666,10 +719,16 @@ namespace Bruh_Overtime_Defense
             //if the player is on the victory screen
             else if(gState == GameState.VictoryScreen)
             {
+                if (soundPlaying == false)
+                {
+                    soundMan.PlayVictoryTheme();
+                    soundPlaying = true;
+                }
+
                 //if they hit enter or space
                 if (SingleKeyPress(Keys.Enter) || SingleKeyPress(Keys.Space))
                 {
-
+                    soundPlaying = false;
                     //return to the map select screen
                     gState = GameState.MapSelect;
                 }
@@ -677,10 +736,15 @@ namespace Bruh_Overtime_Defense
             //if the player is on the game over screen
             else if(gState == GameState.GameOver)
             {
+                if (soundPlaying == false)
+                {
+                    soundMan.PlayLoseTheme();
+                    soundPlaying = true;
+                }                
                 //if they hit enter or space
                 if (SingleKeyPress(Keys.Enter) || SingleKeyPress(Keys.Space))
                 {
-                  
+                    soundPlaying = false;
                     //return to the map select screen
                     gState = GameState.MapSelect;
                 }
@@ -876,7 +940,7 @@ namespace Bruh_Overtime_Defense
                     totalMoney += gainMoney;
                     if(gainMoney != 0)
                     {
-                        bruhEffect.Play(0.005f, -0.05f, 0);
+                        soundMan.PlayBruhSFX();
                         towers[i].MadeShot = true;
                     }
                     else

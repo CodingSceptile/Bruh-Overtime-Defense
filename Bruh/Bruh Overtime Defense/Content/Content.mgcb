@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin 8_bit_iced_village_lofi.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:8_bit_iced_village_lofi.mp3
+
 #begin arial10.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -119,6 +125,12 @@
 /processorParam:TextureFormat=Color
 /build:buildings-layer.png
 
+#begin ChillLofiR.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:ChillLofiR.mp3
+
 #begin enemyWave2.wave
 /copy:enemyWave2.wave
 
@@ -195,6 +207,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:hurb.png
+
+#begin Icy Game Over.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Icy Game Over.mp3
 
 #begin mapSelect1.png
 /importer:TextureImporter
@@ -654,4 +672,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:towerSelector.png
+
+#begin Victory!.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Victory!.mp3
 
