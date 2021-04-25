@@ -219,34 +219,36 @@ namespace Bruh_Overtime_Defense
 
             //initialize enemies and related
             enemies = new List<Enemy>();
-            
             enemyCount = 0;
 
-            //towers
+            //initialize towers and related
             towers = new List<Tower>();
+            placeTower = false;
+            selectedTower = Towers.None;
+
             //arrays store values for towers
             //indices correspond to towers as follows:
             //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
             //3: Ryan the Gatekeeper, 4: Not Erin
             towerRadii = new int[] { 100, int.MaxValue, 50, 50, 100 };
-            towerCost = new int[] { 20, 40, 60, 75, 200 };
+            towerCost = new int[] { 20, 40, 60, 80, 200 };
             towerSpeed = new int[] { 1, 3, 4, 2, 3 };
             salaryDivider = 4;
 
-            //misc
-            random = new Random();
-            selectedTower = Towers.None;
-            openTowerMenu = false;
-            placeTower = false;
-            totalMoney = 100;
-            gainMoney = 0;
-            health = 10;
+            //initialize waves and related
             newWave = false;
             currWave = 0;
             waveAmount = 0;
-            isErinMode = false;
 
-            
+            //initialize player stats
+            totalMoney = 100;
+            gainMoney = 0;
+            health = 10;
+
+            //misc
+            random = new Random();
+            openTowerMenu = false;
+            isErinMode = false;
             
             //MonoGame stuff
             _graphics.ApplyChanges();
@@ -259,19 +261,14 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         protected override void LoadContent()
         {
+            //MonoGame SpriteBatch
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            //Loops through the list of code values garnered from the
-            //level editor
-
-            
 
             //buttons
             LoadButtons();
 
             //load other things
             bruhEffect = Content.Load<SoundEffect>("bruhEffect");
-
             towerMenuSprite = Content.Load<Texture2D>("towerSelector");
             uiInstructions = Content.Load<Texture2D>("BOD UI instructions");
 
@@ -282,7 +279,6 @@ namespace Bruh_Overtime_Defense
             arial64 = Content.Load<SpriteFont>("arial64");
             gameText36 = Content.Load<SpriteFont>("gameFont");
             gameText20 = Content.Load<SpriteFont>("gameText20");
-            
 
             //Bruh enemy texture
             enemyTex = Content.Load<Texture2D>("bruh");
@@ -295,15 +291,12 @@ namespace Bruh_Overtime_Defense
             sky = Content.Load<Texture2D>("Sky-layer");
             buildings = Content.Load<Texture2D>("buildings-layer");
 
-            //Tower radius
-            radius = Content.Load<Texture2D>("Textures/radius");
-            
-
-            
-
+            //animation manager
             aniMan = new AnimationManager(sky, buildings,
                 _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
+            //Tower radius
+            radius = Content.Load<Texture2D>("Textures/radius");
         }
 
         /// <summary>
@@ -312,9 +305,10 @@ namespace Bruh_Overtime_Defense
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //MonoGame: escape exits the game
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
+                || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-          
 
             //get the current MouseState and KeyboardState (first thing to be done)
             mState = Mouse.GetState();
@@ -327,7 +321,7 @@ namespace Bruh_Overtime_Defense
             prevMState = mState;
             prevKState = kState;
 
-
+            //MonoGame: update the game with gameTime
             base.Update(gameTime);
         }
 
@@ -337,6 +331,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="gameTime"></param>
         protected override void Draw(GameTime gameTime)
         {
+            //MonoGame: sets the default background to blue
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //begin the SpriteBatch
@@ -347,95 +342,52 @@ namespace Bruh_Overtime_Defense
             {
                 //TITLE SCREEN
                 case GameState.TitleScreen:
+                    //animate the parallax background
                     aniMan.Draw(_spriteBatch);
+
+                    //draw the title and starting instructions
                     _spriteBatch.DrawString(gameText36, "Bruh Overtime \n   Defense", new Vector2(75, 250), Color.Gray);
                     _spriteBatch.DrawString(gameText36, "Bruh Overtime \n   Defense", new Vector2(78, 253), Color.Black);
                     _spriteBatch.DrawString(gameText20, "Press Enter to start", new Vector2(135, 450), Color.Black);
+
                     break;
 
                 //MAP SELECT SCREEN
                 case GameState.MapSelect:
+                    //animate the parallax background
                     aniMan.Draw(_spriteBatch);
+
+                    //draw the header and base instructions
                     _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
-                    mapSelectButton1.Draw(_spriteBatch, mState);
-                    erinModeButton.Draw(_spriteBatch, mState);
                     _spriteBatch.DrawString(arial36, "Press Enter to view Instructions",
                         new Vector2(70, 700), Color.White);
+
+                    //draw the map select buttons
+                    mapSelectButton1.Draw(_spriteBatch, mState);
+
+                    //draw the ErinMode button
+                    erinModeButton.Draw(_spriteBatch, mState);
+                    
                     break;
 
                 //INSTRUCTIONS SCREEN
                 case GameState.InstructionsScreen:
+                    //draw the instructions
                     _spriteBatch.DrawString(arial64, "Instructions", new Vector2(200, 0), Color.White);
                     DrawInstructions();
                     _spriteBatch.Draw(uiInstructions, new Rectangle(250, 450, 250, 250), Color.White);
                     _spriteBatch.DrawString(arial36, "Press Enter to return to Map Select", 
                         new Vector2(25, 720), Color.White);
+
                     break;
 
                 //GAMEPLAY SCREEN
                 case GameState.Gameplay:
-
+                    //draw the map and tower menu
                     DrawMap();
                     DrawTowerMenu();
 
-                    //if the player has a tower to place and clicks
-                    if(placeTower == true)
-                    {
-                        
-                        //draw the selected tower
-                        switch (selectedTower)
-                        {
-                            case Towers.BaseTower:
-                                //values of tower and temp and default
-                                towers.Add(new DootSkeleton(
-                                    new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
-                                    tileWidth, tileHeight),
-                                    baseTowerButton.DefaultSprite, 
-                                    towerRadii[0], towerCost[0], towerSpeed[0], gameTime));
-                                totalMoney -= towerCost[0];
-                                break;
-                            case Towers.SniperTower:
-                                //values of tower and temp and default
-                                towers.Add(new SniperMonke(
-                                    new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
-                                    tileWidth, tileHeight),
-                                    sniperButton.DefaultSprite, 
-                                    towerRadii[1], towerCost[1], towerSpeed[1], gameTime));
-                                totalMoney -= towerCost[1];
-                                break;
-                            case Towers.BuffTower:
-                                //values of tower and temp and default
-                                towers.Add(new BuffDoge(
-                                    new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
-                                    tileWidth, tileHeight),
-                                    buffButton.DefaultSprite, 
-                                    towerRadii[2], towerCost[2], towerSpeed[2], gameTime));
-                                totalMoney -= towerCost[2];
-                                break;
-                            case Towers.GatekeeperTower:
-                                //values of tower and temp and default
-                                towers.Add(new RyanTheGateKeeper(
-                                    new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
-                                    tileWidth, tileHeight),
-                                    gatekeeperButton.DefaultSprite, 
-                                    towerRadii[3], towerCost[3], towerSpeed[3], gameTime));
-                                totalMoney -= towerCost[3];
-                                break;
-                            case Towers.ErinTower:
-                                //values of tower and temp and default
-                                towers.Add(new Not_Erin(
-                                    new Rectangle(mState.X - tileWidth/3, mState.Y - tileHeight/3, 
-                                    tileWidth, tileHeight),
-                                    notErinButton.DefaultSprite, 
-                                    towerRadii[4], towerCost[4], towerSpeed[4], gameTime));
-                                totalMoney -= towerCost[4];
-                                break;
-                        }
-
-                        //turns off place tower and empties the selectedTower
-                        placeTower = false;
-                        selectedTower = Towers.None;
-                    }
+                    PlaceTower(gameTime);
 
                     //draw the towers
                     towerManager.DrawTowers(_spriteBatch, arial10, enemies, _graphics);
@@ -448,8 +400,10 @@ namespace Bruh_Overtime_Defense
                     }
 
                     break;
+
                 //PAUSE SCREEN
                 case GameState.PauseScreen:
+                    //draw the header and instructions
                     _spriteBatch.DrawString(arial64, "Paused",
                         new Vector2(240, 0), Color.White);
                     DrawInstructions();
@@ -457,20 +411,27 @@ namespace Bruh_Overtime_Defense
                         new Vector2(80, 490), Color.White);
                     _spriteBatch.DrawString(arial36, "Press Ctrl to return to map select",
                         new Vector2(50, 600), Color.White);
+
                     break;
+
                 //VICTORY SCREEN
                 case GameState.VictoryScreen:
+                    //draw the header and base instructions
                     _spriteBatch.DrawString(arial64, "VICTORY!!!",
                         new Vector2(200, 300), Color.Green);
                     _spriteBatch.DrawString(arial36, "Press Enter to return to map select",
                         new Vector2(40, 450), Color.Green);
+
                     break;
+
                 //GAME OVER SCREEN
                 case GameState.GameOver:
+                    //draw the header and base instructions
                     _spriteBatch.DrawString(arial64, "Game Over",
                         new Vector2(200, 300), Color.Red);
                     _spriteBatch.DrawString(arial36, "Press Enter to return to map select",
                         new Vector2(40, 450), Color.Red);
+
                     break;
             }
                      
@@ -1105,6 +1066,75 @@ namespace Bruh_Overtime_Defense
                 Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
 
                 textures.Add(texture);
+            }
+        }
+
+        /// <summary>
+        /// determines whether a tower will be placed and what tower it will be
+        /// </summary>
+        public void PlaceTower(GameTime gameTime)
+        {
+            //if the player has a tower to place and clicks
+            if (placeTower == true)
+            {
+                //draw the selected tower
+                switch (selectedTower)
+                {
+                    //BASE TOWER
+                    case Towers.BaseTower:
+                        //add the tower to the list, position centered on the mouse, and pay the cost
+                        towers.Add(new DootSkeleton(
+                            new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                            tileWidth, tileHeight),
+                            baseTowerButton.DefaultSprite,
+                            towerRadii[0], towerCost[0], towerSpeed[0], gameTime));
+                        totalMoney -= towerCost[0];
+                        break;
+                    //SNIPER TOWER
+                    case Towers.SniperTower:
+                        //add the tower to the list, position centered on the mouse, and pay the cost
+                        towers.Add(new SniperMonke(
+                            new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                            tileWidth, tileHeight),
+                            sniperButton.DefaultSprite,
+                            towerRadii[1], towerCost[1], towerSpeed[1], gameTime));
+                        totalMoney -= towerCost[1];
+                        break;
+                    //BUFF TOWER
+                    case Towers.BuffTower:
+                        //add the tower to the list, position centered on the mouse, and pay the cost
+                        towers.Add(new BuffDoge(
+                            new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                            tileWidth, tileHeight),
+                            buffButton.DefaultSprite,
+                            towerRadii[2], towerCost[2], towerSpeed[2], gameTime));
+                        totalMoney -= towerCost[2];
+                        break;
+                    //GATEKEEPER TOWER
+                    case Towers.GatekeeperTower:
+                        //add the tower to the list, position centered on the mouse, and pay the cost
+                        towers.Add(new RyanTheGateKeeper(
+                            new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                            tileWidth, tileHeight),
+                            gatekeeperButton.DefaultSprite,
+                            towerRadii[3], towerCost[3], towerSpeed[3], gameTime));
+                        totalMoney -= towerCost[3];
+                        break;
+                    //NOT_ERIN Tower
+                    case Towers.ErinTower:
+                        //add the tower to the list, position centered on the mouse, and pay the cost
+                        towers.Add(new Not_Erin(
+                            new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
+                            tileWidth, tileHeight),
+                            notErinButton.DefaultSprite,
+                            towerRadii[4], towerCost[4], towerSpeed[4], gameTime));
+                        totalMoney -= towerCost[4];
+                        break;
+                }
+
+                //turns off place tower and empties the selectedTower
+                placeTower = false;
+                selectedTower = Towers.None;
             }
         }
     }
