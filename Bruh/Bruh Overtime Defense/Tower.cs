@@ -22,6 +22,8 @@ namespace Bruh_Overtime_Defense
         protected List<Enemy> moneyYield;
         protected int moneyGiven;
         protected bool madeShot;
+        protected Vector2 direction;
+        protected double rotation;
 
         //Properties
         /// <summary>
@@ -145,14 +147,20 @@ namespace Bruh_Overtime_Defense
         /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb,  GraphicsDeviceManager _graphics)
         {
+            //Vector2 origin = new Vector2(Position.X + (Position.Width / 2),
+            //                                 Position.Y + (Position.Height / 2));
+            Vector2 origin = new Vector2(Sprite.Width / 2f, Sprite.Height / 2f);
             //if the tower landed a shot, make it flash red as an indicator
             if (madeShot == false)
             {
-                sb.Draw(Sprite, Position, Color.White);
+                //sb.Draw(Sprite, Position, Color.White);
+                sb.Draw(Sprite, Position, null, Color.White, (float)rotation, origin, SpriteEffects.None, 0f);
             }
             else if (madeShot == true)
             {
-                sb.Draw(Sprite, Position, Color.Red);
+                //sb.Draw(Sprite, Position, Color.Red);
+                
+                sb.Draw(Sprite, Position, null, Color.Red,(float)rotation, origin, SpriteEffects.None, 0f);
             }
 
             //Maneuvring to get shapebatch to work
@@ -227,6 +235,12 @@ namespace Bruh_Overtime_Defense
                         {
                             continue;
                         }
+
+                        Vector2 towerPosition = new Vector2(Position.X, Position.Y);
+                        Vector2 enemyPosition = new Vector2(e.X, e.Y);
+
+                        direction = enemyPosition - towerPosition;
+                        rotation = Math.Atan(direction.Y / direction.X);
 
                         e.Health -= 1;
                         madeShot = true;
