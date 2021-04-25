@@ -46,6 +46,8 @@ namespace Bruh_Overtime_Defense
     /// </summary>
     public class Game1 : Game
     {
+        //FIELDS///////////////////////////////////////////////////////////////////////
+        //base MonoGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -58,17 +60,21 @@ namespace Bruh_Overtime_Defense
         private int tileHeight;
         private int tileWidth;
 
+        //screen size
+        private int screenWidth;
+        private int screenHeight;
+
         //mouse and keyboard states
         private MouseState mState;
         private MouseState prevMState;
         private KeyboardState kState;
         private KeyboardState prevKState;
 
-        //Textures
-        private List<Texture2D> textures;
-
         //game state
         private GameState gState;
+
+        //Textures
+        private List<Texture2D> textures;
 
         //buttons
         private Button mapSelectButton1;
@@ -81,7 +87,6 @@ namespace Bruh_Overtime_Defense
         private Button gatekeeperButton;
         private Button notErinButton;
         private Button erinModeButton;
-        private bool isActive;
         private bool isErinMode;
 
         //SpriteFonts
@@ -89,26 +94,26 @@ namespace Bruh_Overtime_Defense
         private SpriteFont arial16;
         private SpriteFont arial36;
         private SpriteFont arial64;
-
-        //Game Font
         private SpriteFont gameText36;
         private SpriteFont gameText20;
 
+        //sound effects
         private SoundEffect bruhEffect;
 
-        //Collision Manager
+        //Collisions
         private CollisionManager collisions;
 
         //Enemies
+        private EnemyManager enMan;
         private Texture2D enemyTex;
         private Texture2D red;
         private Texture2D blue;
         private Texture2D green;
         private Texture2D hurb;
-        private EnemyManager enMan;
         private List<Enemy> enemies;
         private float enemySpeed;
         private int enemyHealth;
+        private int enemyCount;
 
         //Towers
         private List<Tower> towers;
@@ -124,30 +129,32 @@ namespace Bruh_Overtime_Defense
         private int[] towerSpeed;
         private int salaryDivider;
 
-        //misc
-        private Random random;
-        private int totalMoney;
-        private int gainMoney;
+        //Waves
+        private WaveManager waveMan;
         private bool newWave;
         private int currWave;
         private int waveAmount;
-        private int enemyCount;
-        private int health;
-        private TimeSpan timeSpanSincePause;
-        private int screenWidth;
-        private int screenHeight;
-        private Texture2D uiInstructions;
-
-        //Wave manager
-        private WaveManager waveMan;
 
         //Animation manager
         private AnimationManager aniMan;
         private Texture2D sky;
         private Texture2D buildings;
 
-        
+        //player stats
+        private int totalMoney;
+        private int gainMoney;
+        private int health;
 
+        //misc
+        private Random random;
+        private TimeSpan timeSpanSincePause;
+        private Texture2D uiInstructions;
+
+        //MONOGAME GAME LOOP METHODS////////////////////////////////////////
+        
+        /// <summary>
+        /// creates the game; not modified by The Other Group
+        /// </summary>
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -160,24 +167,15 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            textures = new List<Texture2D>();
-            collisions = new CollisionManager("office1.level_Appended");
-
-            level = collisions.CurrentLevel;
-            
-            codes = collisions.Codes;
-            rotations = collisions.Rotations;
-
-            random = new Random();
-
+            //initialize screen sizes
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 800;
             screenWidth = _graphics.PreferredBackBufferWidth;
             screenHeight = _graphics.PreferredBackBufferHeight;
 
-            tileWidth = screenWidth / level.Width;
-            tileHeight = screenHeight / level.Height;
+            //initialize tile sizes
+            tileWidth = screenWidth / 20;
+            tileHeight = screenHeight / 20;
 
             //initialize the mouse and keyboard states
             mState = Mouse.GetState();
@@ -188,14 +186,19 @@ namespace Bruh_Overtime_Defense
             //set game state to title screen
             gState = GameState.TitleScreen;
 
-            //buttons
+            //initialize the buttons to where they'll be during gameplay
+            //map select buttons
             mapSelectButton1 = new Button(200, 200, 200, 200);
+            //menu buttons
+            erinModeButton = new Button(screenWidth - (tileWidth * 2),
+                0, tileWidth * 2, tileHeight);
             towerMenuButton = new Button(screenWidth - (tileWidth * 2), 
                 0, tileWidth, tileHeight);
             pauseButton = new Button(screenWidth - tileWidth,
                 0, tileWidth, tileHeight);
             nextWaveButton = new Button(screenWidth - (tileWidth * 4),
                 0, tileWidth * 2, tileHeight);
+            //tower buttons
             baseTowerButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 2) - 5, tileWidth, tileHeight);
             sniperButton = new Button(screenWidth - (tileWidth * 3),
@@ -206,13 +209,32 @@ namespace Bruh_Overtime_Defense
                 (tileHeight * 5) - 5, tileWidth, tileHeight);
             notErinButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 6) - 5, tileWidth, tileHeight);
-            erinModeButton = new Button(screenWidth - (tileWidth * 2),
-                0, tileWidth * 2, tileHeight);
-
+            
+            //the position of the Tower Menu
             towerMenuPos = new Rectangle(screenWidth - (tileWidth * 3),
                 tileHeight, tileWidth * 3, tileHeight * 6);
 
+            //initialize textures as an empty list
+            textures = new List<Texture2D>();
+
+            //initialize enemies and related
+            enemies = new List<Enemy>();
+            
+            enemyCount = 0;
+
+            //towers
+            towers = new List<Tower>();
+            //arrays store values for towers
+            //indices correspond to towers as follows:
+            //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
+            //3: Ryan the Gatekeeper, 4: Not Erin
+            towerRadii = new int[] { 100, int.MaxValue, 50, 50, 100 };
+            towerCost = new int[] { 20, 40, 60, 75, 200 };
+            towerSpeed = new int[] { 1, 3, 4, 2, 3 };
+            salaryDivider = 4;
+
             //misc
+            random = new Random();
             selectedTower = Towers.None;
             openTowerMenu = false;
             placeTower = false;
@@ -221,27 +243,12 @@ namespace Bruh_Overtime_Defense
             health = 10;
             newWave = false;
             currWave = 0;
-            isActive = true;
             waveAmount = 0;
             isErinMode = false;
 
-            //Enemies, and enemy manager
-            enemies = new List<Enemy>();
-            enMan = new EnemyManager(enemies, collisions.StartPosition);
-            enemyCount = 0;
             
-            //towers
-            towers = new List<Tower>();
-            towerManager = new TowerManager(towers, collisions.TrackLocations);
-            //arrays store values for towers
-            //indices correspond to towers as follows:
-            //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
-            //3: Ryan the Gatekeeper, 4: Not Erin
-            towerRadii = new int[] { 100, int.MaxValue, 50, 50, 100 };
-            towerCost = new int[]{ 20, 40, 60, 75, 200};
-            towerSpeed = new int[] { 1, 3, 4, 2, 3 };
-            salaryDivider = 4;
             
+            //MonoGame stuff
             _graphics.ApplyChanges();
 
             base.Initialize();
@@ -257,15 +264,7 @@ namespace Bruh_Overtime_Defense
             //Loops through the list of code values garnered from the
             //level editor
 
-            //Main level
-            foreach(string code in codes)
-            {
-                //Loads a texture given the code(Located in the textures folder, basically
-                //just the file name)
-                Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
-
-                textures.Add(texture);
-            }
+            
 
             //buttons
             LoadButtons();
@@ -300,8 +299,7 @@ namespace Bruh_Overtime_Defense
             radius = Content.Load<Texture2D>("Textures/radius");
             
 
-            waveMan = new WaveManager("enemyWave2.wave",
-                enemyTex, red, blue, green, hurb, collisions.StartPosition);
+            
 
             aniMan = new AnimationManager(sky, buildings,
                 _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
@@ -504,6 +502,7 @@ namespace Bruh_Overtime_Defense
                 //check to see which map button they pressed
                 if (mapSelectButton1.Clicked(mState, prevMState))
                 {
+                    InitializeCollisions("office1.level_Appended");
                     //reset the game
                     Reset();
                     //if Erin Mode is on
@@ -1072,6 +1071,40 @@ namespace Bruh_Overtime_Defense
                         totalMoney -= (int)towers[i].OriginalSalary/salaryDivider;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// initializes collisions whenever a new level is selected
+        /// </summary>
+        /// <param name="levelName">the name of the level</param>
+        public void InitializeCollisions(string levelName)
+        {
+            //FROM INITIALIZE
+            //creates the collisionManager
+            collisions = new CollisionManager(levelName);
+
+            //initializes the level, codes, and rotations from the collisions
+            level = collisions.CurrentLevel;
+            codes = collisions.Codes;
+            rotations = collisions.Rotations;
+
+            //initialize managers
+            enMan = new EnemyManager(enemies, collisions.StartPosition);
+            waveMan = new WaveManager("enemyWave2.wave",
+                enemyTex, red, blue, green, hurb, collisions.StartPosition);
+
+            towerManager = new TowerManager(towers, collisions.TrackLocations);
+
+            //FROM LOAD_CONTENT
+            //Main level
+            foreach (string code in codes)
+            {
+                //Loads a texture given the code(Located in the textures folder, basically
+                //just the file name)
+                Texture2D texture = Content.Load<Texture2D>("Textures/" + code);
+
+                textures.Add(texture);
             }
         }
     }
