@@ -153,7 +153,7 @@ namespace Bruh_Overtime_Defense
             if (madeShot == false)
             {
                 //sb.Draw(Sprite, Position, Color.White);
-                if (rotation > Math.PI / 2 && rotation < 3 * Math.PI / 2)
+                if (direction.X < 0)
                     sb.Draw(Sprite, Position, null, Color.White, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
 
                 else
@@ -162,7 +162,7 @@ namespace Bruh_Overtime_Defense
             else if (madeShot == true)
             {
                 //sb.Draw(Sprite, Position, Color.Red);
-                if (rotation > (Math.PI / 2) && rotation < (3 * Math.PI / 2))
+                if (direction.X < 0)
                     sb.Draw(Sprite, Position, null, Color.Red, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
 
                 else
