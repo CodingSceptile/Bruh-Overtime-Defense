@@ -294,7 +294,7 @@ namespace Bruh_Overtime_Defense
             nightSky = Content.Load<Texture2D>("Ruined City Background Preview");
 
             //animation manager
-            aniMan = new AnimationManager(sky, buildings,
+            aniMan = new AnimationManager(sky, buildings, nightSky,
                 _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             //Tower radius
