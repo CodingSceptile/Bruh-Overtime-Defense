@@ -146,19 +146,20 @@ namespace Bruh_Overtime_Defense
         private int gainMoney;
         private int health;
 
-        //misc
-        private Random random;
-        private TimeSpan timeSpanSincePause;
-        private Texture2D uiInstructions;
-
         //Music
         private Song victory;
         private Song lose;
         private Song gameSong;
         private Song titleSong;
         private SoundManager soundMan;
-
         private bool soundPlaying;
+
+        //misc
+        private Random random;
+        private TimeSpan timeSpanSincePause;
+        private Texture2D uiInstructions;
+        private int instructionsPage;
+        
 
         //MONOGAME GAME LOOP METHODS////////////////////////////////////////
         
@@ -259,6 +260,7 @@ namespace Bruh_Overtime_Defense
             random = new Random();
             openTowerMenu = false;
             isErinMode = false;
+            instructionsPage = 0;
             
             //MonoGame stuff
             _graphics.ApplyChanges();
@@ -331,6 +333,11 @@ namespace Bruh_Overtime_Defense
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //get the current MouseState and KeyboardState (first thing to be done)
+            mState = Mouse.GetState();
+            kState = Keyboard.GetState();
+
+            //shortcuts to view game over and victory screens
             if (Keyboard.GetState().IsKeyDown(Keys.G))
             {
                 soundPlaying = false;
@@ -341,10 +348,6 @@ namespace Bruh_Overtime_Defense
                 gState = GameState.VictoryScreen;
                 soundPlaying = false;
             }
-
-            //get the current MouseState and KeyboardState (first thing to be done)
-            mState = Mouse.GetState();
-            kState = Keyboard.GetState();
 
             //check the game state and see if it needs to be moved
             FiniteStateMachine(gameTime);
@@ -408,8 +411,13 @@ namespace Bruh_Overtime_Defense
                     //draw the instructions
                     _spriteBatch.DrawString(arial64, "Instructions", new Vector2(200, 0), Color.White);
                     DrawInstructions();
-                    _spriteBatch.Draw(uiInstructions, new Rectangle(250, 450, 250, 250), Color.White);
-                    _spriteBatch.DrawString(arial36, "Press Enter to return to Map Select", 
+                    if(instructionsPage == 0)
+                    {
+                        _spriteBatch.Draw(uiInstructions, new Rectangle(250, 420, 220, 220), Color.White);
+                    }
+                    _spriteBatch.DrawString(arial36, "Press Enter to change page",
+                        new Vector2(75, 660), Color.White);
+                    _spriteBatch.DrawString(arial36, "Press Ctrl to return to Map Select", 
                         new Vector2(25, 720), Color.White);
 
                     break;
@@ -552,8 +560,18 @@ namespace Bruh_Overtime_Defense
             //if the player is viewing the instructions
             else if(gState == GameState.InstructionsScreen)
             {
-                //if enter is pressed, return to map select
-                if (SingleKeyPress(Keys.Enter))
+                //change the instructions page by pressing enter
+                if (SingleKeyPress(Keys.Enter) && instructionsPage == 0)
+                {
+                    instructionsPage = 1;
+                }
+                else if(SingleKeyPress(Keys.Enter) && instructionsPage == 1)
+                {
+                    instructionsPage = 0;
+                }
+
+                //if control is pressed, return to map select
+                if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
                 {
                     gState = GameState.MapSelect;
                 }
@@ -1064,19 +1082,42 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void DrawInstructions()
         {
-            string instructions = "Welcome to Bruh Overtime Defense! Protect your workforce by paying " +
-                "towers to \nstop the intrusive bruhs from reaching your office at the end of the " +
-                "path.\n\n";
-            instructions += "Use the Tower Menu in the top right to click on your tower, then click " +
-                "again on the \nfield to place it. This costs money, which you get when your towers " +
-                "automatically \nshoot the bruhs. Clicking this button while a tower is selected " +
-                "also deselects that \ntower.\n\n";
-            instructions += "Your towers also have to be paid a salary every few waves, " +
-                "which you can do by \nclicking on each tower and pressing the pay button. " +
-                "Failing to pay this salary \ncauses the tower to leave and spawn more bruhs " +
-                "in retaliation.\n\n";
-            instructions += "When your defenses are set up, hit the Next Wave button to let the bruhs " +
-                "flow in. \n\nGood luck.";
+            string instructions = "";
+            if(instructionsPage == 0)
+            {
+                instructions = "Welcome to Bruh Overtime Defense! Protect your workforce by paying " +
+                    "towers to \nstop the intrusive bruhs from reaching your office at the end of the " +
+                    "path.\n\n";
+                instructions += "Use the Tower Menu in the top right to click on your tower, then click " +
+                    "again on the \nfield to place it. This costs money, which you get when your towers " +
+                    "automatically \nshoot the bruhs. Clicking this button while a tower is selected " +
+                    "also deselects that \ntower.\n\n";
+                instructions += "Your towers also have to be paid a salary every few waves, " +
+                    "which you can do by \nclicking on each tower and pressing the pay button. " +
+                    "Failing to pay this salary \ncauses the tower to leave and spawn more bruhs " +
+                    "in retaliation.\n\n";
+                instructions += "When your defenses are set up, hit the Next Wave button to let the bruhs " +
+                    "flow in. \n\nGood luck.";
+            }
+            else if(instructionsPage == 1)
+            {
+                instructions = "There are five towers that you can use to defend yourself. Here's " +
+                    "what they are \nand what they do.\n\n";
+                instructions += "DOOT SKELETON: Fires bullets at a moderate speed in a moderate radius, " +
+                    "dealing \none damage per shot. It can only hit a single bruh at once, but is the " +
+                    "cheapest \ntower and has a low salary to boot.\n\n";
+                instructions += "SNIPER MONKE: This tower has unlimited range and can shoot bruhs from " +
+                    "\nanywhere on the map, although it's fire speed is somewhat slow.\n\n";
+                instructions += "BUFF DOGE: Despite having a small radius, this tower can hit all " +
+                    "bruhs in it's range \nat once, dealing damage across the board. It's attack speed " +
+                    "is also fair, although it \nis a bit pricey.\n\n";
+                instructions += "RYAN THE GATEKEEPER: Despite not dealing damage, this tower temporarily " +
+                    "\nhalts enemies in place by placing them in the waiting room. It's speed is fair, but " +
+                    "it's \nrange is very small, only stopping bruhs close by.\n\n";
+                instructions += "NOT ERIN: This tower has moderate range, and is very expensive, but it " +
+                    "vaporizes \nall bruhs in range at a decent speed, being just as quick as the " +
+                    "DOOT SKELETON.\n\n";
+            }
 
             _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.Black);
         }
