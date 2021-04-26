@@ -147,7 +147,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb,  GraphicsDeviceManager _graphics)
         {
-            Vector2 origin = new Vector2((float)(Position.Width / 3f), (float)(Position.Height / 3f));
+            Vector2 origin = new Vector2((float)(Sprite.Width / 3f), (float)(Sprite.Height / 3f));
             //if the tower landed a shot, make it flash red as an indicator
             //Using this if else because it only seems to be aiming in the positive directions
             if (madeShot == false)
