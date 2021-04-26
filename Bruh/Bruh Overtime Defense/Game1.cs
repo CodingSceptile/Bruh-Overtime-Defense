@@ -193,12 +193,12 @@ namespace Bruh_Overtime_Defense
             //menu buttons
             erinModeButton = new Button(screenWidth - (tileWidth * 2),
                 0, tileWidth * 2, tileHeight);
-            towerMenuButton = new Button(screenWidth - (tileWidth * 2), 
+            nextWaveButton = new Button(screenWidth - (tileWidth * 4) - 10,
+                0, tileWidth * 2, tileHeight);
+            towerMenuButton = new Button(screenWidth - (tileWidth * 2) - 5, 
                 0, tileWidth, tileHeight);
             pauseButton = new Button(screenWidth - tileWidth,
                 0, tileWidth, tileHeight);
-            nextWaveButton = new Button(screenWidth - (tileWidth * 4),
-                0, tileWidth * 2, tileHeight);
             //tower buttons
             baseTowerButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 2) - 5, tileWidth, tileHeight);
@@ -820,7 +820,7 @@ namespace Bruh_Overtime_Defense
             pauseButton.Draw(_spriteBatch, mState);
             nextWaveButton.Draw(_spriteBatch, mState);
             _spriteBatch.DrawString(arial16, "Money: $" + totalMoney,
-                new Vector2(screenWidth - (300), 0),
+                new Vector2(screenWidth - (310), 0),
                 Color.White);
             _spriteBatch.DrawString(arial16, "Health: " + health,
                 new Vector2(screenWidth - (450), 0),
@@ -942,10 +942,10 @@ namespace Bruh_Overtime_Defense
             mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
             mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
             //gameplay UI buttons
-            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile087");
-            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile091");
-            pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile085");
-            pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile089");
+            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("towerButton");
+            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("towerButtonActive");
+            pauseButton.DefaultSprite = Content.Load<Texture2D>("optionsButton");
+            pauseButton.ActiveSprite = Content.Load<Texture2D>("optionsButtonActive");
             nextWaveButton.DefaultSprite = Content.Load<Texture2D>("NextWaveButton");
             nextWaveButton.ActiveSprite = Content.Load<Texture2D>("NextWaveButtonActive");
             //tower buttons
