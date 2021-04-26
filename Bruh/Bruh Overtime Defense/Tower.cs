@@ -24,6 +24,7 @@ namespace Bruh_Overtime_Defense
         protected bool madeShot;
         protected Vector2 direction;
         protected double rotation;
+        protected Enemy targetEnemy;
 
         //Properties
         /// <summary>
@@ -137,6 +138,7 @@ namespace Bruh_Overtime_Defense
             moneyYield = new List<Enemy>();
             this.gameTime = gameTime;
             madeShot = false;
+            targetEnemy = null;
         }
 
         //Methods
@@ -230,39 +232,64 @@ namespace Bruh_Overtime_Defense
         public virtual int Shoot(List<Enemy> enemies)
         {
             madeShot = false;
-            foreach (Enemy e in enemies)
+
+            //sets target enemy to first one so null reference is not
+            //thrown.
+            if(targetEnemy == null && enemies.Count > 0)
             {
-                //Code so it aims towards what it's shooting.
-                if (Distance(Position, e.Position) <= Radius && !e.IsDead)
-                {
-                    Vector2 towerPosition = new Vector2(Position.X, Position.Y);
-                    Vector2 enemyPosition = new Vector2(e.X, e.Y);
+                targetEnemy = enemies[0];
+            }
 
-                    direction = enemyPosition - towerPosition;
-                    rotation = Math.Atan(direction.Y / direction.X);
-                }
-                   
-                //Shoots every activitySpeed amount of seconds.
-                if ((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 1000) == 0)
+            foreach (Enemy e in enemies)
+            {          
+                //resets target enemy.
+                if(targetEnemy.IsDead)
                 {
-                    if (Distance(Position, e.Position) <= Radius)
+                    for (int i = 0; i < enemies.Count; i++)
                     {
-                        if (e.IsDead == true)
+                        if (!e.IsDead)
                         {
-                            continue;
+                            targetEnemy = e;
+                            break;
                         }
+                    }
+                }
+                
+                if(targetEnemy != null)
+                {
+                    //code for aiming at target enemy
+                    if (Distance(Position, targetEnemy.Position) <= Radius && !targetEnemy.IsDead)
+                    {
+                        Vector2 towerPosition = new Vector2(Position.X, Position.Y);
+                        Vector2 enemyPosition = new Vector2(targetEnemy.X, targetEnemy.Y);
 
-                        e.Health -= 1;
-                        madeShot = true;
-                        if (e.Health <= 0)
+                        direction = enemyPosition - towerPosition;
+                        rotation = Math.Atan(direction.Y / direction.X);
+                    }
+
+                    //Shoots every activitySpeed amount of seconds.
+                    if ((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 1000) == 0)
+                    {
+                        if (Distance(Position, e.Position) <= Radius)
                         {
-                            e.IsDead = true;
-                            return 1;
+                            if (e.IsDead == true)
+                            {
+                                continue;
+                            }
+
+                            e.Health -= 1;
+                            madeShot = true;
+                            if (e.Health <= 0)
+                            {
+                                e.IsDead = true;
+                                return 1;
+                            }
+
                         }
 
                     }
-
-                } 
+                }
+                                  
             }
             return 0;
         }
