@@ -240,7 +240,7 @@ namespace Bruh_Overtime_Defense
             //indices correspond to towers as follows:
             //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
             //3: Ryan the Gatekeeper, 4: Not Erin
-            towerRadii = new int[] { 100, int.MaxValue, 50, 50, 100 };
+            towerRadii = new int[] { 100, int.MaxValue, 50, 100, 100 };
             towerCost = new int[] { 20, 40, 60, 80, 200 };
             towerSpeed = new int[] { 1, 3, 4, 2, 3 };
             salaryDivider = 4;
