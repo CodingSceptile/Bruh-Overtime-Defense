@@ -1051,7 +1051,7 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void NextWave()
         {
-
+            currWave = 19;
             //checks if all the enemies in the enemies
             //list are dead
             if (enMan.AllEnemiesDead())
@@ -1059,8 +1059,15 @@ namespace Bruh_Overtime_Defense
                 newWave = true;
                 //increment the wave
                 currWave += 1;
+
+
                 //reset the enemy list
                 enMan.ResetEnemies();
+
+                if (currWave == 21)
+                {
+                    return;
+                }
 
                 enemies = waveMan.Waves[currWave];
 

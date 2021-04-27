@@ -149,26 +149,38 @@ namespace Bruh_Overtime_Defense
         /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb,  GraphicsDeviceManager _graphics)
         {
-            Vector2 origin = new Vector2((float)(Sprite.Width / 3f), (float)(Sprite.Height / 3f));
+            Vector2 origin = new Vector2((float)(Sprite.Width / 2f), (float)(Sprite.Height / 2f));
             //if the tower landed a shot, make it flash red as an indicator
             //Using this if else because it only seems to be aiming in the positive directions
             if (madeShot == false)
             {
                 //sb.Draw(Sprite, Position, Color.White);
                 if (direction.X < 0)
-                    sb.Draw(Sprite, Position, null, Color.White, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
+                    sb.Draw(Sprite,
+                        new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
+                        new Point(Position.Width, Position.Height)),
+                        null, Color.White, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
 
                 else
-                    sb.Draw(Sprite, Position, null, Color.White, (float)rotation, origin, SpriteEffects.None, 0f);
+                    sb.Draw(Sprite,
+                        new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
+                        new Point(Position.Width, Position.Height)),
+                        null, Color.White, (float)rotation, origin, SpriteEffects.None, 0f);
             }
             else if (madeShot == true)
             {
                 //sb.Draw(Sprite, Position, Color.Red);
                 if (direction.X < 0)
-                    sb.Draw(Sprite, Position, null, Color.Red, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
+                    sb.Draw(Sprite,
+                        new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
+                        new Point(Position.Width, Position.Height)),
+                        null, Color.Red, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
 
                 else
-                    sb.Draw(Sprite, Position, null, Color.Red, (float)rotation, origin, SpriteEffects.None, 0f);
+                    sb.Draw(Sprite,
+                        new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
+                        new Point(Position.Width, Position.Height)),
+                        null, Color.Red, (float)rotation, origin, SpriteEffects.None, 0f);
             }
 
             //Maneuvring to get shapebatch to work
@@ -245,13 +257,10 @@ namespace Bruh_Overtime_Defense
                 //resets target enemy.
                 if(targetEnemy.IsDead)
                 {
-                    for (int i = 0; i < enemies.Count; i++)
+                    if (!e.IsDead)
                     {
-                        if (!e.IsDead)
-                        {
-                            targetEnemy = e;
-                            break;
-                        }
+                        targetEnemy = e;
+                        break;
                     }
                 }
                 
