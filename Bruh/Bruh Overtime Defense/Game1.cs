@@ -1051,7 +1051,6 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void NextWave()
         {
-            currWave = 19;
             //checks if all the enemies in the enemies
             //list are dead
             if (enMan.AllEnemiesDead())
