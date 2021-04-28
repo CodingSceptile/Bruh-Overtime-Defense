@@ -24,6 +24,7 @@ namespace Bruh_Overtime_Defense
         private Vector2 movement;
         private int vectorInteractions;
         private float originalSpeed;
+        private Rectangle internalHitbox;
 
         //Properties
         public int Health { get { return health; } set { health = value; } }
@@ -71,6 +72,33 @@ namespace Bruh_Overtime_Defense
             set { vectorInteractions = value; }      
         }
 
+        /// <summary>
+        /// returns the internal hitbox of the enemy
+        /// </summary>
+        public Rectangle Hitbox { get { return internalHitbox; } }
+
+        /// <summary>
+        /// Gets or sets the internal
+        /// hitboxes' x value
+        /// </summary>
+        public int HitX
+        {
+            get { return internalHitbox.X; }
+            set { internalHitbox.X = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the internal hitboxes' y value
+        /// </summary>
+        public int HitY
+        {
+            get { return internalHitbox.Y; }
+            set { internalHitbox.Y = value; }
+        }
+
+        /// <summary>
+        /// returns the original speed of the enemy
+        /// </summary>
         public float OriginalSpeed
         {
             get { return originalSpeed; }
@@ -91,6 +119,13 @@ namespace Bruh_Overtime_Defense
             this.speed = speed;
             this.position = position;
             this.isDead = true;
+            
+            //Creates an internal hitbox to fix the 
+            //issue of rotation overlap
+            internalHitbox =
+                new Rectangle(
+                    new Point(position.X + (position.Width), position.Y + position.Height),
+                    new Point(position.Width / 5, position.Height / 5));
 
             if(position.X == 0)
             {

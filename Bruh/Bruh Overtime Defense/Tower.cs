@@ -160,12 +160,11 @@ namespace Bruh_Overtime_Defense
             if (madeShot == false)
             {
                 //sb.Draw(Sprite, Position, Color.White);
-                if (direction.X < 0)
+                if (direction.X <= 0)
                     sb.Draw(Sprite,
                         new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
                         new Point(Position.Width, Position.Height)),
                         null, Color.White, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
-
                 else
                     sb.Draw(Sprite,
                         new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
@@ -175,7 +174,7 @@ namespace Bruh_Overtime_Defense
             else if (madeShot == true)
             {
                 //sb.Draw(Sprite, Position, Color.Red);
-                if (direction.X < 0)
+                if (direction.X <= 0)
                     sb.Draw(Sprite,
                         new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
                         new Point(Position.Width, Position.Height)),
@@ -187,21 +186,6 @@ namespace Bruh_Overtime_Defense
                         new Point(Position.Width, Position.Height)),
                         null, Color.Red, (float)rotation, origin, SpriteEffects.None, 0f);
             }
-
-            //Maneuvring to get shapebatch to work
-            //sb.End();
-            //ShapeBatch.Begin(_graphics.GraphicsDevice);
-            //
-            //if(!(this is SniperMonke))
-            //{
-            //    ShapeBatch.CircleOutline(new Vector2(Position.X + Position.Width/2,
-            //                                         Position.Y + Position.Height/2),
-            //                             radius,
-            //                             Color.Black);
-            //}
-            //
-            //ShapeBatch.End();
-            //sb.Begin();
         }
 
         /// <summary>
@@ -258,7 +242,7 @@ namespace Bruh_Overtime_Defense
                 {
                     if(!e.IsDead)
                     {
-                        if(Distance(Position, e.Position) <= Radius)
+                        if(Distance(Position, e.Hitbox) <= Radius)
                         {
                             targetEnemy = e;
                         }                      
@@ -285,7 +269,7 @@ namespace Bruh_Overtime_Defense
                     if (Distance(Position, targetEnemy.Position) <= Radius && !targetEnemy.IsDead)
                     {
                         Vector2 towerPosition = new Vector2(Position.X, Position.Y);
-                        Vector2 enemyPosition = new Vector2(targetEnemy.X, targetEnemy.Y);
+                        Vector2 enemyPosition = new Vector2(targetEnemy.Hitbox.X, targetEnemy.Hitbox.Y);
 
                         direction = enemyPosition - towerPosition;
                         rotation = Math.Atan(direction.Y / direction.X);

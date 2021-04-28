@@ -454,6 +454,8 @@ namespace Bruh_Overtime_Defense
                     Rectangle mouseCheck = new Rectangle(
                         mState.Position, new Point(1, 1));
 
+                    int radius = 0;
+
                     foreach (Rectangle r in trackLocs)
                     {
                         {
@@ -477,32 +479,54 @@ namespace Bruh_Overtime_Defense
                             _spriteBatch.Draw(baseTowerButton.DefaultSprite,
                                 currMousePos, 
                                 validPlaceForTower);
+
+                            radius = towerRadii[0];
                             break;
                         //SNIPER TOWER
                         case Towers.SniperTower:
                             _spriteBatch.Draw(sniperButton.DefaultSprite,
                                 currMousePos,
                                 validPlaceForTower);
+
+                            radius = towerRadii[1];
                             break;
                         //BUFF TOWER
                         case Towers.BuffTower:
                             _spriteBatch.Draw(buffButton.DefaultSprite,
                                 currMousePos,
                                 validPlaceForTower);
+
+                            radius = towerRadii[2];
                             break;
                         //GATEKEEPER TOWER
                         case Towers.GatekeeperTower:
                             _spriteBatch.Draw(gatekeeperButton.DefaultSprite,
                                 currMousePos,
                                 validPlaceForTower);
+
+                            radius = towerRadii[3];
                             break;
                         //NOT_ERIN Tower
                         case Towers.ErinTower:
                             _spriteBatch.Draw(notErinButton.DefaultSprite,
                                 currMousePos,
                                 validPlaceForTower);
+
+                            radius = towerRadii[4];
                             break;
                     }
+
+                    //Maneuvring to get shapebatch to work
+                    _spriteBatch.End();
+                    ShapeBatch.Begin(_graphics.GraphicsDevice);
+
+                    ShapeBatch.CircleOutline(new Vector2(mState.Position.X,
+                        mState.Position.Y),
+                        radius,
+                        Color.Black);
+
+                    ShapeBatch.End();
+                    _spriteBatch.Begin();
 
                     PlaceTower(gameTime);
 
@@ -523,7 +547,7 @@ namespace Bruh_Overtime_Defense
                     aniMan.Draw(_spriteBatch);
                     //draw the header and instructions
                     _spriteBatch.DrawString(gameText36, "Paused",
-                        new Vector2(240, 0), Color.Black);
+                        new Vector2(240, 50), Color.Black);
                     DrawInstructions();
                     _spriteBatch.DrawString(arial36, "Press Enter to return to game",
                         new Vector2(80, 490), Color.Black);
@@ -703,6 +727,8 @@ namespace Bruh_Overtime_Defense
                         collisions.LevelIntersects(enemies[i]);
                         enemies[i].X += (int)enemies[i].Movement.X;
                         enemies[i].Y += (int)enemies[i].Movement.Y;
+                        enemies[i].HitX += (int)enemies[i].Movement.X;
+                        enemies[i].HitY += (int)enemies[i].Movement.Y;
                     }
                 }
 
