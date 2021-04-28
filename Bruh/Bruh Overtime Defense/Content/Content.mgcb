@@ -214,6 +214,12 @@
 /processorParam:Quality=Best
 /build:Icy Game Over.mp3
 
+#begin map3Fixed.level_Appended
+/copy:map3Fixed.level_Appended
+
+#begin map4Fixed.level_Appended
+/copy:map4Fixed.level_Appended
+
 #begin mapSelect1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -225,6 +231,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:mapSelect1.png
+
+#begin newMap2FIXED.level_Appended
+/copy:newMap2FIXED.level_Appended
 
 #begin NextWaveButton.png
 /importer:TextureImporter
@@ -249,9 +258,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:NextWaveButtonActive.png
-
-#begin office1.level_Appended
-/copy:office1.level_Appended
 
 #begin OptionsButton.png
 /importer:TextureImporter

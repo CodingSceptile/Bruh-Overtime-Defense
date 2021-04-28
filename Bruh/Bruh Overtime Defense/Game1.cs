@@ -78,6 +78,8 @@ namespace Bruh_Overtime_Defense
 
         //buttons
         private Button mapSelectButton1;
+        private Button mapSelectButton2;
+        private Button mapSelectButton3;
         private Button towerMenuButton;
         private Button pauseButton;
         private Button nextWaveButton;
@@ -199,7 +201,9 @@ namespace Bruh_Overtime_Defense
 
             //initialize the buttons to where they'll be during gameplay
             //map select buttons
-            mapSelectButton1 = new Button(200, 200, 200, 200);
+            mapSelectButton1 = new Button(50, 150, 200, 200);
+            mapSelectButton2 = new Button(300, 150, 200, 200);
+            mapSelectButton3 = new Button(550, 150, 200, 200);
             //menu buttons
             erinModeButton = new Button(screenWidth - (tileWidth * 2),
                 0, tileWidth * 2, tileHeight);
@@ -241,7 +245,7 @@ namespace Bruh_Overtime_Defense
             //indices correspond to towers as follows:
             //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
             //3: Ryan the Gatekeeper, 4: Not Erin
-            towerRadii = new int[] { 120, int.MaxValue, 60, 100, 100 };
+            towerRadii = new int[] { 130, int.MaxValue, 60, 100, 100 };
             towerCost = new int[] { 20, 40, 60, 80, 200 };
             towerSpeed = new int[] { 1, 3, 1, 2, 3 };
             salaryDivider = 4;
@@ -383,7 +387,7 @@ namespace Bruh_Overtime_Defense
                     //draw the title and starting instructions
                     _spriteBatch.DrawString(gameText36, "Bruh Overtime \n   Defense", new Vector2(75, 250), Color.Gray);
                     _spriteBatch.DrawString(gameText36, "Bruh Overtime \n   Defense", new Vector2(78, 253), Color.Black);
-                    _spriteBatch.DrawString(gameText20, "Press Enter to start", new Vector2(135, 450), Color.Black);
+                    _spriteBatch.DrawString(gameText20, "Press Enter to start", new Vector2(130, 450), Color.Black);
 
                     break;
 
@@ -393,12 +397,19 @@ namespace Bruh_Overtime_Defense
                     aniMan.Draw(_spriteBatch);
 
                     //draw the header and base instructions
-                    _spriteBatch.DrawString(arial64, "Map Select", new Vector2(200, 0), Color.White);
-                    _spriteBatch.DrawString(arial36, "Press Enter to view Instructions",
-                        new Vector2(70, 700), Color.White);
+                    _spriteBatch.DrawString(gameText36, "Map Select", new Vector2(135, 25), Color.Black);
+                    _spriteBatch.DrawString(gameText20, "     Press Enter to view \n        Instructions",
+                        new Vector2(0, 700), Color.Black);
 
                     //draw the map select buttons
                     mapSelectButton1.Draw(_spriteBatch, mState);
+                    _spriteBatch.DrawString(gameText20, "Office 1", new Vector2(50, 360), Color.Black);
+
+                    mapSelectButton2.Draw(_spriteBatch, mState);
+                    _spriteBatch.DrawString(gameText20, "Office 2", new Vector2(310, 360), Color.Black);
+
+                    mapSelectButton3.Draw(_spriteBatch, mState);
+                    _spriteBatch.DrawString(gameText20, "Office 3", new Vector2(560, 360), Color.Black);
 
                     //draw the ErinMode button
                     erinModeButton.Draw(_spriteBatch, mState);
@@ -409,16 +420,16 @@ namespace Bruh_Overtime_Defense
                 case GameState.InstructionsScreen:
                     aniMan.Draw(_spriteBatch);
                     //draw the instructions
-                    _spriteBatch.DrawString(arial64, "Instructions", new Vector2(200, 0), Color.White);
+                    _spriteBatch.DrawString(gameText36, "Instructions", new Vector2(100, 25), Color.Black);
                     DrawInstructions();
                     if(instructionsPage == 0)
                     {
                         _spriteBatch.Draw(uiInstructions, new Rectangle(250, 420, 220, 220), Color.White);
                     }
                     _spriteBatch.DrawString(arial36, "Press Enter to change page",
-                        new Vector2(75, 660), Color.White);
+                        new Vector2(75, 660), Color.Black);
                     _spriteBatch.DrawString(arial36, "Press Ctrl to return to Map Select", 
-                        new Vector2(25, 720), Color.White);
+                        new Vector2(25, 720), Color.Black);
 
                     break;
 
@@ -446,7 +457,7 @@ namespace Bruh_Overtime_Defense
                 case GameState.PauseScreen:
                     aniMan.Draw(_spriteBatch);
                     //draw the header and instructions
-                    _spriteBatch.DrawString(arial64, "Paused",
+                    _spriteBatch.DrawString(gameText36, "Paused",
                         new Vector2(240, 0), Color.Black);
                     DrawInstructions();
                     _spriteBatch.DrawString(arial36, "Press Enter to return to game",
@@ -459,10 +470,10 @@ namespace Bruh_Overtime_Defense
                 case GameState.VictoryScreen:
                     aniMan.Draw(_spriteBatch);
                     //draw the header and base instructions
-                    _spriteBatch.DrawString(arial64, "VICTORY!!!",
-                        new Vector2(200, 300), Color.Green);
-                    _spriteBatch.DrawString(arial36, "Press Enter to return to map select",
-                        new Vector2(40, 450), Color.Green);
+                    _spriteBatch.DrawString(gameText36, "VICTORY!!!",
+                        new Vector2(160, 300), Color.Green);
+                    _spriteBatch.DrawString(gameText20, "Press Enter to return to map select",
+                        new Vector2(25, 450), Color.Green);
 
                     break;
 
@@ -470,10 +481,10 @@ namespace Bruh_Overtime_Defense
                 case GameState.GameOver:
                     aniMan.DrawGameOver(_spriteBatch);
                     //draw the header and base instructions
-                    _spriteBatch.DrawString(arial64, "Game Over",
-                        new Vector2(200, 300), Color.Red);
-                    _spriteBatch.DrawString(arial36, "Press Enter to return to map select",
-                        new Vector2(40, 450), Color.Red);
+                    _spriteBatch.DrawString(gameText36, "Game Over",
+                        new Vector2(180, 300), Color.Red);
+                    _spriteBatch.DrawString(gameText20, "Press Enter to return to map select",
+                        new Vector2(25, 450), Color.Red);
 
                     break;
             }
@@ -518,7 +529,7 @@ namespace Bruh_Overtime_Defense
                 //check to see which map button they pressed
                 if (mapSelectButton1.Clicked(mState, prevMState))
                 {
-                    InitializeCollisions("office1.level_Appended");
+                    InitializeCollisions("newMap2FIXED.level_Appended");
                     //reset the game
                     Reset();
                     //if Erin Mode is on
@@ -533,9 +544,44 @@ namespace Bruh_Overtime_Defense
                     gState = GameState.Gameplay;
                     soundPlaying = false;
                 }
+                //check to see which map button they pressed
+                else if (mapSelectButton2.Clicked(mState, prevMState))
+                {
+                    InitializeCollisions("map3Fixed.level_Appended");
+                    //reset the game
+                    Reset();
+                    //if Erin Mode is on
+                    if (isErinMode == true)
+                    {
+                        //massively increase health and money
+                        health = 9999;
+                        totalMoney = 9999;
+                    }
+
+                    //go to the gameplay state
+                    gState = GameState.Gameplay;
+                    soundPlaying = false;
+                }
+                else if(mapSelectButton3.Clicked(mState, prevMState))
+                {
+                    InitializeCollisions("map4Fixed.level_Appended");
+                    //reset the game
+                    Reset();
+                    //if Erin Mode is on
+                    if (isErinMode == true)
+                    {
+                        //massively increase health and money
+                        health = 9999;
+                        totalMoney = 9999;
+                    }
+
+                    //go to the gameplay state
+                    gState = GameState.Gameplay;
+                    soundPlaying = false;
+                }
 
                 //if the ErinModeButton is clicked when ErinMode is off
-                if(erinModeButton.Clicked(mState, prevMState) && isErinMode == false)
+                if (erinModeButton.Clicked(mState, prevMState) && isErinMode == false)
                 {
                     //turn on Erin Mode and change the button look
                     isErinMode = true;
@@ -800,7 +846,7 @@ namespace Bruh_Overtime_Defense
             {
                 //if the enemy is alive and off the map
                 if(enemies[i].IsDead == false && (enemies[i].X > screenWidth
-                    || enemies[i].X < -50))
+                    || enemies[i].X < -50 || enemies[i].Y > screenHeight || enemies[i].Y < -50))
                 {
                     //reduce the player's health by the enemy's health 
                     //kill the enemy to prevent repetition
@@ -1023,6 +1069,12 @@ namespace Bruh_Overtime_Defense
             //map select buttons
             mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
             mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
+
+            mapSelectButton2.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
+            mapSelectButton2.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
+
+            mapSelectButton3.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
+            mapSelectButton3.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
             //gameplay UI buttons
             towerMenuButton.DefaultSprite = Content.Load<Texture2D>("towerButton");
             towerMenuButton.ActiveSprite = Content.Load<Texture2D>("towerButtonActive");
@@ -1098,9 +1150,9 @@ namespace Bruh_Overtime_Defense
                     "again on the \nfield to place it. This costs money, which you get when your towers " +
                     "automatically \nshoot the bruhs. Clicking this button while a tower is selected " +
                     "also deselects that \ntower.\n\n";
-                instructions += "Your towers also have to be paid a salary every few waves, " +
-                    "which you can do by \nclicking on each tower and pressing the pay button. " +
-                    "Failing to pay this salary \ncauses the tower to leave and spawn more bruhs " +
+                instructions += "Your towers also have to be paid a salary every wave, " +
+                    "which you can do by \nclicking on a tower. " +
+                    "Failing to pay this salary causes the tower to leave and \nspawn more bruhs " +
                     "in retaliation.\n\n";
                 instructions += "When your defenses are set up, hit the Next Wave button to let the bruhs " +
                     "flow in. \n\nGood luck.";
@@ -1160,18 +1212,20 @@ namespace Bruh_Overtime_Defense
             //creates the collisionManager
             collisions = new CollisionManager(levelName);
 
+
             //initializes the level, codes, and rotations from the collisions
             level = collisions.CurrentLevel;
             codes = collisions.Codes;
             rotations = collisions.Rotations;
 
             //initialize managers
-            enMan = new EnemyManager(enemies, collisions.StartPosition);
+            enMan = new EnemyManager(enemies, collisions.StartPosition, arial10);
             waveMan = new WaveManager("enemyWave2.wave",
                 enemyTex, red, blue, green, hurb, collisions.StartPosition);
 
             towerManager = new TowerManager(towers, collisions.TrackLocations);
 
+            textures.Clear();
             //FROM LOAD_CONTENT
             //Main level
             foreach (string code in codes)
@@ -1202,7 +1256,7 @@ namespace Bruh_Overtime_Defense
                             new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                             tileWidth, tileHeight),
                             baseTowerButton.DefaultSprite,
-                            towerRadii[0], towerCost[0], towerSpeed[0], gameTime));
+                            towerRadii[0], towerCost[0], towerSpeed[0], gameTime, radius));
                         totalMoney -= towerCost[0];
                         break;
                     //SNIPER TOWER
@@ -1212,7 +1266,7 @@ namespace Bruh_Overtime_Defense
                             new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                             tileWidth, tileHeight),
                             sniperButton.DefaultSprite,
-                            towerRadii[1], towerCost[1], towerSpeed[1], gameTime));
+                            towerRadii[1], towerCost[1], towerSpeed[1], gameTime, radius));
                         totalMoney -= towerCost[1];
                         break;
                     //BUFF TOWER
@@ -1222,7 +1276,7 @@ namespace Bruh_Overtime_Defense
                             new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                             tileWidth, tileHeight),
                             buffButton.DefaultSprite,
-                            towerRadii[2], towerCost[2], towerSpeed[2], gameTime));
+                            towerRadii[2], towerCost[2], towerSpeed[2], gameTime, radius));
                         totalMoney -= towerCost[2];
                         break;
                     //GATEKEEPER TOWER
@@ -1232,7 +1286,7 @@ namespace Bruh_Overtime_Defense
                             new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                             tileWidth, tileHeight),
                             gatekeeperButton.DefaultSprite,
-                            towerRadii[3], towerCost[3], towerSpeed[3], gameTime));
+                            towerRadii[3], towerCost[3], towerSpeed[3], gameTime, radius));
                         totalMoney -= towerCost[3];
                         break;
                     //NOT_ERIN Tower
@@ -1242,7 +1296,7 @@ namespace Bruh_Overtime_Defense
                             new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                             tileWidth, tileHeight),
                             notErinButton.DefaultSprite,
-                            towerRadii[4], towerCost[4], towerSpeed[4], gameTime));
+                            towerRadii[4], towerCost[4], towerSpeed[4], gameTime, radius));
                         totalMoney -= towerCost[4];
                         break;
                 }

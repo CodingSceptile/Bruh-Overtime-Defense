@@ -16,8 +16,9 @@ namespace Bruh_Overtime_Defense
     class Level
     {
         //fields
-        List<Texture2D> tiles;
-        Rectangle map;
+        private List<Texture2D> tiles;
+        private Rectangle map;
+        private Rectangle beginTile;
         private string mapFile;
         private List<float> rotations;
         private List<Vector2> motionChange;
@@ -88,6 +89,13 @@ namespace Bruh_Overtime_Defense
         public int Height { get { return height; } }
 
         /// <summary>
+        /// returns the beginning tile of a level
+        /// </summary>
+        public Rectangle BeginTile
+        { get { return beginTile; } }
+
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="mapFile">the name of the map file</param>
@@ -153,7 +161,6 @@ namespace Bruh_Overtime_Defense
                                     new Vector2(1, 0));
 
                             }
-
                             //Vector that focuses on +y
                             else if (textureCode == "<0, 1>")
                             {
@@ -181,6 +188,14 @@ namespace Bruh_Overtime_Defense
                                     (new Point(((j * width) * 2),
                                     ((i * height))),
                                     new Point(width * 2, height * 2)));
+                                continue;
+                            }
+                            else if(textureCode == "begin_tile")
+                            {
+                                beginTile = new Rectangle
+                                    (new Point(((j * width) * 2),
+                                    ((i * height))),
+                                    new Point(width * 2, height * 2));
                                 continue;
                             }
 
@@ -256,6 +271,14 @@ namespace Bruh_Overtime_Defense
                                     new Point(width * 2, height * 2)));
                                 continue;
                             }
+                            else if (textureCode == "begin_tile")
+                            {
+                                beginTile = new Rectangle
+                                    (new Point(((j * width) * 2),
+                                    ((i * height))),
+                                    new Point(width * 2, height * 2));
+                                continue;
+                            }
 
                             //Adds the location of the interactible
                             //level component to another list
@@ -327,6 +350,14 @@ namespace Bruh_Overtime_Defense
                                     (new Point((((j * width) - width/2) * 2),
                                     (((i * height)) - height/2) * 2),
                                     new Point(width * 3, height * 3)));
+                                continue;
+                            }
+                            else if (textureCode == "begin_tile")
+                            {
+                                beginTile = new Rectangle
+                                    (new Point(((j * width) * 2),
+                                    ((i * height))),
+                                    new Point(width * 2, height * 2));
                                 continue;
                             }
 

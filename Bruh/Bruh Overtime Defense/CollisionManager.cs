@@ -20,6 +20,7 @@ namespace Bruh_Overtime_Defense
     {
         //Fields
         private string levelName;
+        private string levelName2;
         private Level level;
         private List<Vector2> vectors;
         private List<Rectangle> rectangles;
@@ -69,7 +70,7 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public Rectangle StartPosition
         {
-            get { return rectangles[0]; }
+            get { return level.BeginTile; }
         }
 
 
@@ -81,7 +82,6 @@ namespace Bruh_Overtime_Defense
         public CollisionManager(string levelName)
         {
             this.levelName = levelName;
-
             this.level = new Level(levelName);
             
             this.codes = level.GenerateMap();
@@ -102,12 +102,12 @@ namespace Bruh_Overtime_Defense
         /// <returns>true - intersecting/ false - not intersecting</returns>
         public void LevelIntersects(Enemy enemy)
         {
-            for(int i = 1; i < rectangles.Count; i++)
+            for(int i = 0; i < rectangles.Count; i++)
             {
               //Checks for intersection
                 if (enemy.Position.Intersects(rectangles[i]))
                 {
-                    enemy.Movement = level.Vectors[i - 1] * enemy.Speed;
+                    enemy.Movement = level.Vectors[i] * enemy.Speed;
                 }
             }
         }

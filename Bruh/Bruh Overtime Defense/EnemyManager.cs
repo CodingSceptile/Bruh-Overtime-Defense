@@ -22,6 +22,7 @@ namespace Bruh_Overtime_Defense
         private int startX;
         private int startY;
         private int numEnemiesSpawned;
+        private SpriteFont enemyHealthFont;
 
 
         //Properties
@@ -36,13 +37,14 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         /// <param name="enemies">List of enemy objects</param>
         /// <param name="startPos">Start position of the enemies</param>
-        public EnemyManager(List<Enemy> enemies, Rectangle startPos)
+        public EnemyManager(List<Enemy> enemies, Rectangle startPos, SpriteFont font)
         {
             this.enemies = enemies;
             enemyNum = 0;
             this.startPos = startPos;
             startX = startPos.X;
             startY = startPos.Y;
+            enemyHealthFont = font;
             
         }
 
@@ -84,6 +86,11 @@ namespace Bruh_Overtime_Defense
                 if(enemies[i].IsDead == false)
                 {
                     sb.Draw(enemies[i].Bruh, enemies[i].Position, Color.White);
+                    sb.DrawString(enemyHealthFont, 
+                        $"Health: {enemies[i].Health}",
+                        new Vector2(enemies[i].Position.X + (enemies[i].Position.Width / 5), 
+                        enemies[i].Position.Y + enemies[i].Position.Height),
+                        Color.White);
                 }                                         
             }
         }
@@ -119,7 +126,7 @@ namespace Bruh_Overtime_Defense
             {
                 enemies[i].Position = new Rectangle(
                         enemies[i].X, enemies[i].Y,
-                        75,75);
+                        50, 50);
             }
         }
 

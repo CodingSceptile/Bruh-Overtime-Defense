@@ -26,6 +26,8 @@ namespace Bruh_Overtime_Defense
         protected double rotation;
         protected Enemy targetEnemy;
 
+        protected Texture2D radii;
+
         //Properties
         /// <summary>
         /// Property to get the radius and set it if value is greater than zero.
@@ -127,7 +129,8 @@ namespace Bruh_Overtime_Defense
         /// <param name="radius">Hit radius of the tower.</param>
         /// <param name="initialCost">Initial cost to place the tower.</param>
         /// <param name="activitySpeed">Rate at which the tower functions.</param>
-        public Tower(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime):
+        public Tower(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime,
+            Texture2D radiusSpr):
             base(pos, spr)
         {
             this.radius = radius;
@@ -139,6 +142,8 @@ namespace Bruh_Overtime_Defense
             this.gameTime = gameTime;
             madeShot = false;
             targetEnemy = null;
+
+            radii = radiusSpr;
         }
 
         //Methods
@@ -184,19 +189,19 @@ namespace Bruh_Overtime_Defense
             }
 
             //Maneuvring to get shapebatch to work
-            sb.End();
-            ShapeBatch.Begin(_graphics.GraphicsDevice);
-
-            if(!(this is SniperMonke))
-            {
-                ShapeBatch.CircleOutline(new Vector2(Position.X + Position.Width/2,
-                                                     Position.Y + Position.Height/2),
-                                         radius,
-                                         Color.Black);
-            }
-
-            ShapeBatch.End();
-            sb.Begin();
+            //sb.End();
+            //ShapeBatch.Begin(_graphics.GraphicsDevice);
+            //
+            //if(!(this is SniperMonke))
+            //{
+            //    ShapeBatch.CircleOutline(new Vector2(Position.X + Position.Width/2,
+            //                                         Position.Y + Position.Height/2),
+            //                             radius,
+            //                             Color.Black);
+            //}
+            //
+            //ShapeBatch.End();
+            //sb.Begin();
         }
 
         /// <summary>
@@ -249,23 +254,33 @@ namespace Bruh_Overtime_Defense
             //thrown.
             if(targetEnemy == null && enemies.Count > 0)
             {
-                targetEnemy = enemies[0];
+                foreach(Enemy e in enemies)
+                {
+                    if(!e.IsDead)
+                    {
+                        if(Distance(Position, e.Position) <= Radius)
+                        {
+                            targetEnemy = e;
+                        }                      
+                    }
+                }
             }
 
             foreach (Enemy e in enemies)
             {          
-                //resets target enemy.
-                if(targetEnemy.IsDead)
-                {
-                    if (!e.IsDead)
-                    {
-                        targetEnemy = e;
-                        break;
-                    }
-                }
                 
                 if(targetEnemy != null)
                 {
+                    //resets target enemy.
+                    if (targetEnemy.IsDead)
+                    {
+                        if (!e.IsDead)
+                        {
+                            targetEnemy = e;
+                            break;
+                        }
+                    }
+
                     //code for aiming at target enemy
                     if (Distance(Position, targetEnemy.Position) <= Radius && !targetEnemy.IsDead)
                     {
@@ -293,12 +308,9 @@ namespace Bruh_Overtime_Defense
                                 e.IsDead = true;
                                 return 1;
                             }
-
                         }
-
                     }
-                }
-                                  
+                }                                 
             }
             return 0;
         }

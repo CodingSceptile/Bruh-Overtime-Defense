@@ -12,8 +12,9 @@ namespace Bruh_Overtime_Defense
 {
     class BuffDoge : Tower
     {
-        public BuffDoge(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime)
-           : base(pos, spr, radius, initialCost, activitySpeed, gameTime)
+        public BuffDoge(Rectangle pos, Texture2D spr, int radius, int initialCost, int activitySpeed, GameTime gameTime,
+            Texture2D radiusSpr)
+           : base(pos, spr, radius, initialCost, activitySpeed, gameTime, radiusSpr)
         {
 
         }
