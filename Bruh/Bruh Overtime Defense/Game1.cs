@@ -161,6 +161,10 @@ namespace Bruh_Overtime_Defense
         private TimeSpan timeSpanSincePause;
         private Texture2D uiInstructions;
         private int instructionsPage;
+
+        //track locations (for user feedback)
+        private List<Rectangle> trackLocs;
+        private Color validPlaceForTower;
         
 
         //MONOGAME GAME LOOP METHODS////////////////////////////////////////
@@ -265,6 +269,8 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             isErinMode = false;
             instructionsPage = 0;
+
+            validPlaceForTower = Color.Green;          
             
             //MonoGame stuff
             _graphics.ApplyChanges();
@@ -438,6 +444,65 @@ namespace Bruh_Overtime_Defense
                     //draw the map and tower menu
                     DrawMap();
                     DrawTowerMenu();
+
+
+                    Rectangle currMousePos = new Rectangle(
+                                    new Point(mState.Position.X - (baseTowerButton.DefaultSprite.Width / 2),
+                                    mState.Position.Y - (baseTowerButton.DefaultSprite.Height / 2)),
+                                    new Point(baseTowerButton.DefaultSprite.Width,
+                                    baseTowerButton.DefaultSprite.Height));
+                    Rectangle mouseCheck = new Rectangle(
+                        mState.Position, new Point(1, 1));
+
+                    foreach (Rectangle r in trackLocs)
+                    {
+                        {
+                            if (r.Intersects(mouseCheck))
+                            {
+                                validPlaceForTower = Color.Red;
+                                break;
+                            }
+                            else
+                            {
+                                validPlaceForTower = Color.Green;
+                            }
+                        }
+                    }
+
+                    //draw the selected tower
+                    switch (selectedTower)
+                    {
+                        //BASE TOWER
+                        case Towers.BaseTower:
+                            _spriteBatch.Draw(baseTowerButton.DefaultSprite,
+                                currMousePos, 
+                                validPlaceForTower);
+                            break;
+                        //SNIPER TOWER
+                        case Towers.SniperTower:
+                            _spriteBatch.Draw(sniperButton.DefaultSprite,
+                                currMousePos,
+                                validPlaceForTower);
+                            break;
+                        //BUFF TOWER
+                        case Towers.BuffTower:
+                            _spriteBatch.Draw(buffButton.DefaultSprite,
+                                currMousePos,
+                                validPlaceForTower);
+                            break;
+                        //GATEKEEPER TOWER
+                        case Towers.GatekeeperTower:
+                            _spriteBatch.Draw(gatekeeperButton.DefaultSprite,
+                                currMousePos,
+                                validPlaceForTower);
+                            break;
+                        //NOT_ERIN Tower
+                        case Towers.ErinTower:
+                            _spriteBatch.Draw(notErinButton.DefaultSprite,
+                                currMousePos,
+                                validPlaceForTower);
+                            break;
+                    }
 
                     PlaceTower(gameTime);
 
@@ -1217,6 +1282,7 @@ namespace Bruh_Overtime_Defense
             level = collisions.CurrentLevel;
             codes = collisions.Codes;
             rotations = collisions.Rotations;
+            trackLocs = collisions.TrackLocations;
 
             //initialize managers
             enMan = new EnemyManager(enemies, collisions.StartPosition, arial10);

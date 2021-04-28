@@ -124,9 +124,19 @@ namespace Bruh_Overtime_Defense
             //sets the location of the enemies
             for (int i = 0; i < enemies.Count; i++)
             {
-                enemies[i].Position = new Rectangle(
-                        enemies[i].X, enemies[i].Y,
+                if(startPos.X < startPos.Y)
+                {
+                    enemies[i].Position = new Rectangle(
+                        enemies[i].X, enemies[i].Y + 50,
                         50, 50);
+                }
+                else
+                {
+                    enemies[i].Position = new Rectangle(
+                        enemies[i].X, enemies[i].Y - 50,
+                        50, 50);
+                }
+                
             }
         }
 
