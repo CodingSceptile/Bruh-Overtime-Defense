@@ -126,7 +126,7 @@ namespace Bruh_Overtime_Defense
 
             try
             {
-                stream = new FileStream("Content/" + mapFile, FileMode.Open);
+                stream = new FileStream("Content/Levels/" + mapFile, FileMode.Open);
                 reader = new BinaryReader(stream);
 
                 //retrieves the width and height of each tile (to properly format each level)

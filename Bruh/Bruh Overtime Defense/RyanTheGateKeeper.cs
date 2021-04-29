@@ -40,31 +40,32 @@ namespace Bruh_Overtime_Defense
         /// <param name="enemies"></param>
         private void WaitingRoom(List<Enemy> enemies)
         {
-
-                if(WaitingRoomSwitch())
+            if(WaitingRoomSwitch())
+            {
+                for(int i = 0; i < enemies.Count; i++)
                 {
-                    for(int i = 0; i < enemies.Count; i++)
-                    {
-                         if (Distance(enemies[i].Position, Position) <= radius)
-                         {
-                              //apply texture here
-                               enemies[i].Speed = 0;
-                         }
 
-                         else
-                         {
-                               //change textures back
-                               enemies[i].Speed = enemies[i].OriginalSpeed;
-                         }
+                    if (Distance(enemies[i].Position, Position) <= radius)
+                     {
+                        //apply texture here
+                        enemies[i].Movement *= 0;
+                     }
+
+                     else
+                     {
+                        //change textures back
+                        //attendance check, one goes in at a time
+                        enemies[i].Movement = enemies[i].OriginalMovement;
                     }
-                     
                 }
+                 
+            }
 
             else
             {
                 for(int i = 0; i < enemies.Count; i++)
                 {
-                    enemies[i].Speed = enemies[i].OriginalSpeed;
+                    enemies[i].Movement = enemies[i].OriginalMovement;
                 }
             }
         }

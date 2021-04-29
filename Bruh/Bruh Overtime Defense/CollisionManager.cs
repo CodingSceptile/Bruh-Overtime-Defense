@@ -108,6 +108,8 @@ namespace Bruh_Overtime_Defense
                 if (enemy.Position.Intersects(rectangles[i]))
                 {
                     enemy.Movement = level.Vectors[i] * enemy.Speed;
+
+                    enemy.OriginalMovement = enemy.Movement;
                 }
             }
         }

@@ -23,7 +23,7 @@ namespace Bruh_Overtime_Defense
         private Texture2D texture;
         private Vector2 movement;
         private int vectorInteractions;
-        private float originalSpeed;
+        private Vector2 originalMovement;
         private Rectangle internalHitbox;
 
         //Properties
@@ -62,6 +62,12 @@ namespace Bruh_Overtime_Defense
             set { movement = value; }       
         }
 
+        public Vector2 OriginalMovement
+        {
+            get { return originalMovement; }
+            set { originalMovement = value; }
+        }
+
         /// <summary>
         /// Gets and sets the number of times
         /// an enemy has interacted with a vector
@@ -96,13 +102,6 @@ namespace Bruh_Overtime_Defense
             set { internalHitbox.Y = value; }
         }
 
-        /// <summary>
-        /// returns the original speed of the enemy
-        /// </summary>
-        public float OriginalSpeed
-        {
-            get { return originalSpeed; }
-        }
 
         /// <summary>
         /// Constructor that initializes the enemy object.
@@ -111,7 +110,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="health">Health of the enemy</param>
         /// <param name="speed">Movement speed of the enemy</param>
         /// <param name="position">Position of the enemy on the map</param>
-        public Enemy( Texture2D texture, int health, float speed, Rectangle position)
+        public Enemy(Texture2D texture, int health, float speed, Rectangle position)
             : base(position, texture)
         {
             this.texture = texture;
@@ -119,17 +118,22 @@ namespace Bruh_Overtime_Defense
             this.speed = speed;
             this.position = position;
             this.isDead = true;
-            
+
             //Creates an internal hitbox to fix the 
             //issue of rotation overlap
             internalHitbox =
                 new Rectangle(
-                    new Point(position.X + (position.Width), position.Y + position.Height),
-                    new Point(position.Width / 5, position.Height / 5));
+                    new Point(position.X + (position.Width / 2), position.Y + (position.Height / 2)),
+                    new Point(position.Width / 2, position.Height / 2));
 
-            if(position.X == 0)
+            if (position.X - position.Y < 0)
             {
                 this.movement = new Vector2(speed, 0);
+            }
+            else if (position.X - position.Y > 0
+                && !(position.Y == 0))
+            {
+                this.Movement = new Vector2(-speed, 0);
             }
             else
             {
@@ -137,7 +141,7 @@ namespace Bruh_Overtime_Defense
             }
             
             this.vectorInteractions = 0;
-            this.originalSpeed = speed;
+            this.originalMovement = movement;
         }
     } 
 }
