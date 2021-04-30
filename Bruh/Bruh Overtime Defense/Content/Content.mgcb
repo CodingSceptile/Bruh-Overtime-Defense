@@ -109,6 +109,18 @@
 /processorParam:Quality=Best
 /build:Music/Icy Game Over.mp3
 
+#begin Music/mukundBruh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/mukundBruh.wav
+
+#begin Music/samiBruh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/samiBruh.wav
+
 #begin Music/Victory!.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

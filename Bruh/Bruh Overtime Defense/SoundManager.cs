@@ -16,10 +16,14 @@ namespace Bruh_Overtime_Defense
     {
         //Fields
         private SoundEffect bruhHit;
+        private SoundEffect mukundBruh;
+        private SoundEffect samiBruh;
         private Song titleTheme;
         private Song gameTheme;
         private Song victoryTheme;
         private Song loseTheme;
+
+        private Random random;
 
         //Constructor
 
@@ -32,7 +36,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="victoryTheme">victory music</param>
         /// <param name="loseTheme">lose music</param>
         public SoundManager(SoundEffect bruhHit, Song titleTheme, Song gameTheme,
-            Song victoryTheme, Song loseTheme)
+            Song victoryTheme, Song loseTheme, SoundEffect sami, SoundEffect mukund)
         {
             this.bruhHit = bruhHit;
             this.titleTheme = titleTheme;
@@ -40,6 +44,11 @@ namespace Bruh_Overtime_Defense
             this.victoryTheme = victoryTheme;
             this.loseTheme = loseTheme;
             MediaPlayer.IsRepeating = true;
+
+            mukundBruh = mukund;
+            samiBruh = sami;
+
+            random = new Random();
         }
 
 
@@ -91,7 +100,32 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void PlayBruhSFX()
         {
-            bruhHit.Play(0.005f, -0.05f, 0);
+            float pitch = 0f;
+
+            int currSFX = random.Next(0, 3);
+
+            if(currSFX > 1)
+            {
+                pitch = -(float)random.NextDouble();
+            }
+            else
+            {
+                pitch = (float)random.NextDouble();
+            }
+
+            switch (currSFX)
+            {
+                case 0:
+                    bruhHit.Play(0.01f, pitch, 0);
+                    break;
+                case 1:
+                    samiBruh.Play(0.33f, pitch, 0);
+                    break;
+
+                case 2:
+                    mukundBruh.Play(0.33f, pitch, 0);
+                    break;           
+            }           
         }
 
         /// <summary>

@@ -269,7 +269,7 @@ namespace Bruh_Overtime_Defense
                     if (Distance(Position, targetEnemy.Position) <= Radius && !targetEnemy.IsDead)
                     {
                         Vector2 towerPosition = new Vector2(Position.X, Position.Y);
-                        Vector2 enemyPosition = new Vector2(targetEnemy.Hitbox.X, targetEnemy.Hitbox.Y);
+                        Vector2 enemyPosition = new Vector2(targetEnemy.Position.X, targetEnemy.Position.Y);
 
                         direction = enemyPosition - towerPosition;
                         rotation = Math.Atan(direction.Y / direction.X);

@@ -102,6 +102,8 @@ namespace Bruh_Overtime_Defense
 
         //sound effects
         private SoundEffect bruhEffect;
+        private SoundEffect samiBruh;
+        private SoundEffect mukundBruh;
 
         //Collisions
         private CollisionManager collisions;
@@ -156,6 +158,7 @@ namespace Bruh_Overtime_Defense
         private Song titleSong;
         private SoundManager soundMan;
         private bool soundPlaying;
+
 
         //misc
         private Random random;
@@ -293,6 +296,8 @@ namespace Bruh_Overtime_Defense
 
             //load other things
             bruhEffect = Content.Load<SoundEffect>("bruhEffect");
+            samiBruh = Content.Load<SoundEffect>("Music/samiBruh");
+            mukundBruh = Content.Load<SoundEffect>("Music/mukundBruh");
             towerMenuSprite = Content.Load<Texture2D>("towerSelector");
             uiInstructions = Content.Load<Texture2D>("BOD UI instructions");
 
@@ -327,7 +332,8 @@ namespace Bruh_Overtime_Defense
                 _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             //Sound Manager
-            soundMan = new SoundManager(bruhEffect, titleSong, gameSong, victory, lose);
+            soundMan = new SoundManager(bruhEffect, titleSong, gameSong, victory, lose,
+                samiBruh, mukundBruh);
 
 
             //Tower radius
@@ -527,7 +533,7 @@ namespace Bruh_Overtime_Defense
                     ShapeBatch.CircleOutline(new Vector2(mState.Position.X,
                         mState.Position.Y),
                         radius,
-                        Color.Black);
+                        validPlaceForTower);
 
                     ShapeBatch.End();
                     _spriteBatch.Begin();
@@ -1249,6 +1255,7 @@ namespace Bruh_Overtime_Defense
                 newWave = true;
                 //increment the wave
                 currWave += 1;
+                totalMoney += 5 * currWave;
 
 
                 //reset the enemy list
