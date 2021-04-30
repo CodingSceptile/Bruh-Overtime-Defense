@@ -456,16 +456,24 @@ namespace Bruh_Overtime_Defense
                     DrawMap();
                     DrawTowerMenu();
 
+                    //constructs a rectangle where the mouse currently is,
+                    //sizes it to the size of the tower selected
                     Rectangle currMousePos = new Rectangle(
                                     new Point(mState.Position.X - (baseTowerButton.DefaultSprite.Width / 2),
                                     mState.Position.Y - (baseTowerButton.DefaultSprite.Height / 2)),
                                     new Point(baseTowerButton.DefaultSprite.Width,
                                     baseTowerButton.DefaultSprite.Height));
+
+                    //Gets another rectangle for collisions with the mouse
                     Rectangle mouseCheck = new Rectangle(
                         mState.Position, new Point(1, 1));
 
                     int radius = 0;
 
+                    //Checks if there is an intersection with any
+                    //of the track rectangles, if so, it changes the color
+                    //to red instead of green, indicating that the player
+                    //cannot place a tower in that given area
                     foreach (Rectangle r in trackLocs)
                     {
                         {
@@ -481,7 +489,8 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
-                    //draw the selected tower
+                    //draw the selected tower to the mouse
+                    //cursor
                     switch (selectedTower)
                     {
                         //BASE TOWER
@@ -500,6 +509,7 @@ namespace Bruh_Overtime_Defense
 
                             radius = towerRadii[1];
                             break;
+
                         //BUFF TOWER
                         case Towers.BuffTower:
                             _spriteBatch.Draw(buffButton.DefaultSprite,
@@ -530,6 +540,7 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.End();
                     ShapeBatch.Begin(_graphics.GraphicsDevice);
 
+                    //draws the radius of the tower
                     ShapeBatch.CircleOutline(new Vector2(mState.Position.X,
                         mState.Position.Y),
                         radius,

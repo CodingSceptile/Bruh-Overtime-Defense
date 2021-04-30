@@ -102,9 +102,15 @@ namespace Bruh_Overtime_Defense
         {
             float pitch = 0f;
 
+            //gets a random number to
+            // indicate which bruh sound effect needs
+            // to be played
             int currSFX = random.Next(0, 3);
 
-            if(currSFX > 1)
+            int pitchDetermine = random.Next(0, 2);
+            //gets a random pitch dependent
+            // on the 
+            if(pitchDetermine == 0)
             {
                 pitch = -(float)random.NextDouble();
             }
@@ -113,6 +119,8 @@ namespace Bruh_Overtime_Defense
                 pitch = (float)random.NextDouble();
             }
 
+            //plays a bruh sound effect given the
+            //currSFX random number
             switch (currSFX)
             {
                 case 0:
