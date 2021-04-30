@@ -254,7 +254,7 @@ namespace Bruh_Overtime_Defense
             //indices correspond to towers as follows:
             //0: Doot Skeleton, 1: Sniper Monke, 2: Buff Doge
             //3: Ryan the Gatekeeper, 4: Not Erin
-            towerRadii = new int[] { 130, int.MaxValue, 60, 100, 100 };
+            towerRadii = new int[] { 130, int.MaxValue, 80, 100, 100 };
             towerCost = new int[] { 20, 40, 60, 80, 200 };
             towerSpeed = new int[] { 1, 3, 1, 2, 3 };
             salaryDivider = 4;
@@ -295,37 +295,37 @@ namespace Bruh_Overtime_Defense
             LoadButtons();
 
             //load other things
-            bruhEffect = Content.Load<SoundEffect>("bruhEffect");
+            bruhEffect = Content.Load<SoundEffect>("Music/bruhEffectnew");
             samiBruh = Content.Load<SoundEffect>("Music/samiBruh");
             mukundBruh = Content.Load<SoundEffect>("Music/mukundBruh");
-            towerMenuSprite = Content.Load<Texture2D>("towerSelector");
-            uiInstructions = Content.Load<Texture2D>("BOD UI instructions");
+            towerMenuSprite = Content.Load<Texture2D>("Textures/towerSelector");
+            uiInstructions = Content.Load<Texture2D>("Textures/BOD UI instructions");
 
             //SpriteFonts
-            arial10 = Content.Load<SpriteFont>("arial10");
-            arial16 = Content.Load<SpriteFont>("arial16");
-            arial36 = Content.Load<SpriteFont>("arial36");
-            arial64 = Content.Load<SpriteFont>("arial64");
-            gameText36 = Content.Load<SpriteFont>("gameFont");
-            gameText20 = Content.Load<SpriteFont>("gameText20");
+            arial10 = Content.Load<SpriteFont>("Fonts/arial10");
+            arial16 = Content.Load<SpriteFont>("Fonts/arial16");
+            arial36 = Content.Load<SpriteFont>("Fonts/arial36");
+            arial64 = Content.Load<SpriteFont>("Fonts/arial64");
+            gameText36 = Content.Load<SpriteFont>("Fonts/gameFont");
+            gameText20 = Content.Load<SpriteFont>("Fonts/gameText20");
 
             //Bruh enemy texture
-            enemyTex = Content.Load<Texture2D>("bruh");
-            red = Content.Load<Texture2D>("bruhRed");
-            blue = Content.Load<Texture2D>("bruhBlue");
-            green = Content.Load<Texture2D>("bruhGreen");
-            hurb = Content.Load<Texture2D>("hurb");
+            enemyTex = Content.Load<Texture2D>("Textures/bruh");
+            red = Content.Load<Texture2D>("Textures/bruhRed");
+            blue = Content.Load<Texture2D>("Textures/bruhBlue");
+            green = Content.Load<Texture2D>("Textures/bruhGreen");
+            hurb = Content.Load<Texture2D>("Textures/hurb");
 
             //title textures
-            sky = Content.Load<Texture2D>("Sky-layer");
-            buildings = Content.Load<Texture2D>("buildings-layer");
-            nightSky = Content.Load<Texture2D>("Ruined City Background Preview");
+            sky = Content.Load<Texture2D>("Textures/Sky-layer");
+            buildings = Content.Load<Texture2D>("Textures/buildings-layer");
+            nightSky = Content.Load<Texture2D>("Textures/Ruined City Background Preview");
 
             //Songs
-            victory = Content.Load<Song>("Victory!");
-            lose = Content.Load<Song>("Icy Game Over");
-            titleSong = Content.Load<Song>("8_bit_iced_village_lofi");
-            gameSong = Content.Load<Song>("ChillLofiR");
+            victory = Content.Load<Song>("Music/Victory!");
+            lose = Content.Load<Song>("Music/Icy Game Over");
+            titleSong = Content.Load<Song>("Music/8_bit_iced_village_lofi");
+            gameSong = Content.Load<Song>("Music/ChillLofiR");
 
             //animation manager
             aniMan = new AnimationManager(sky, buildings, nightSky,
@@ -724,16 +724,16 @@ namespace Bruh_Overtime_Defense
                 {
                     //turn on Erin Mode and change the button look
                     isErinMode = true;
-                    erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeON");
-                    erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeONActive");
+                    erinModeButton.DefaultSprite = Content.Load<Texture2D>("Textures/ErinModeON");
+                    erinModeButton.ActiveSprite = Content.Load<Texture2D>("Textures/ErinModeONActive");
                 }
                 //if the ErinModeButton is clicked when ErinMode is on
                 else if (erinModeButton.Clicked(mState, prevMState) && isErinMode == true)
                 {
                     //turn off Erin Mode and change the button look
                     isErinMode = false;
-                    erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeOFF");
-                    erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
+                    erinModeButton.DefaultSprite = Content.Load<Texture2D>("Textures/ErinModeOFF");
+                    erinModeButton.ActiveSprite = Content.Load<Texture2D>("Textures/ErinModeOFFActive");
                 }
 
                 //if enter is pressed, view the instructions
@@ -1208,25 +1208,25 @@ namespace Bruh_Overtime_Defense
         public void LoadButtons()
         {
             //map select buttons
-            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
-            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
+            mapSelectButton1.DefaultSprite = Content.Load<Texture2D>("Textures/preview1");
+            mapSelectButton1.ActiveSprite = Content.Load<Texture2D>("Textures/preview1");
 
-            mapSelectButton2.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
-            mapSelectButton2.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
+            mapSelectButton2.DefaultSprite = Content.Load<Texture2D>("Textures/preview2");
+            mapSelectButton2.ActiveSprite = Content.Load<Texture2D>("Textures/preview2");
 
-            mapSelectButton3.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
-            mapSelectButton3.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
+            mapSelectButton3.DefaultSprite = Content.Load<Texture2D>("Textures/preview3");
+            mapSelectButton3.ActiveSprite = Content.Load<Texture2D>("Textures/preview3");
 
-            mapSelectButton4.DefaultSprite = Content.Load<Texture2D>("mapSelect1");
-            mapSelectButton4.ActiveSprite = Content.Load<Texture2D>("mapSelect1");
+            mapSelectButton4.DefaultSprite = Content.Load<Texture2D>("Textures/preview4");
+            mapSelectButton4.ActiveSprite = Content.Load<Texture2D>("Textures/preview4");
 
             //gameplay UI buttons
-            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("towerButton");
-            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("towerButtonActive");
-            pauseButton.DefaultSprite = Content.Load<Texture2D>("optionsButton");
-            pauseButton.ActiveSprite = Content.Load<Texture2D>("optionsButtonActive");
-            nextWaveButton.DefaultSprite = Content.Load<Texture2D>("NextWaveButton");
-            nextWaveButton.ActiveSprite = Content.Load<Texture2D>("NextWaveButtonActive");
+            towerMenuButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerButton");
+            towerMenuButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerButtonActive");
+            pauseButton.DefaultSprite = Content.Load<Texture2D>("Textures/optionsButton");
+            pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/optionsButtonActive");
+            nextWaveButton.DefaultSprite = Content.Load<Texture2D>("Textures/NextWaveButton");
+            nextWaveButton.ActiveSprite = Content.Load<Texture2D>("Textures/NextWaveButtonActive");
             //tower buttons
             baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
             baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
@@ -1239,8 +1239,8 @@ namespace Bruh_Overtime_Defense
             notErinButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
             notErinButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
             //other buttons
-            erinModeButton.DefaultSprite = Content.Load<Texture2D>("ErinModeOFF");
-            erinModeButton.ActiveSprite = Content.Load<Texture2D>("ErinModeOFFActive");
+            erinModeButton.DefaultSprite = Content.Load<Texture2D>("Textures/ErinModeOFF");
+            erinModeButton.ActiveSprite = Content.Load<Texture2D>("Textures/ErinModeOFFActive");
         }
 
         /// <summary>
