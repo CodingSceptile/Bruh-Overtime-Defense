@@ -85,6 +85,9 @@
 #begin Levels/office1.level_Appended
 /copy:Levels/office1.level_Appended
 
+#begin Levels/tutorialFixed.level_Appended
+/copy:Levels/tutorialFixed.level_Appended
+
 #begin Music/8_bit_iced_village_lofi.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -318,6 +321,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/NextWaveButtonActive.png
+
+#begin Textures/ok.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/ok.png
+
+#begin Textures/okActive.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/okActive.png
 
 #begin Textures/OptionsButton.png
 /importer:TextureImporter
@@ -762,4 +789,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/towerSelector.png
+
+#begin Textures/tutorialBackground.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/tutorialBackground.png
 

@@ -26,6 +26,8 @@ namespace Bruh_Overtime_Defense
         private Vector2 originalMovement;
         private Rectangle internalHitbox;
 
+        private bool startPosSet;
+
         //Properties
         public int Health { get { return health; } set { health = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
@@ -93,6 +95,13 @@ namespace Bruh_Overtime_Defense
             set { internalHitbox.X = value; }
         }
 
+        public bool StartPosSet
+        {
+            get { return startPosSet; }
+            set { startPosSet = value; }
+        }
+
+
         /// <summary>
         /// Gets or sets the internal hitboxes' y value
         /// </summary>
@@ -119,6 +128,7 @@ namespace Bruh_Overtime_Defense
             this.position = position;
             this.isDead = true;
 
+            startPosSet = false;
             //Creates an internal hitbox to fix the 
             //issue of rotation overlap
             internalHitbox =

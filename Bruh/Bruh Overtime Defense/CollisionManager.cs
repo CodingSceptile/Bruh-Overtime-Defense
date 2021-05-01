@@ -63,6 +63,14 @@ namespace Bruh_Overtime_Defense
             get { return rotations; }
         }
 
+        /// <summary>
+        /// Returns the name of the currently loaded level.
+        /// </summary>
+        public string LevelName
+        {
+            get { return levelName; }
+        }
+
 
         /// <summary>
         /// Returns the starting position of a
