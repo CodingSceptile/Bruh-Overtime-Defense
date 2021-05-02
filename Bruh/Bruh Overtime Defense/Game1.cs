@@ -1459,9 +1459,31 @@ namespace Bruh_Overtime_Defense
                 newWave = true;
                 //increment the wave
                 currWave += 1;
-                totalMoney += 5 * towers.Count;
 
-
+                foreach(Tower tower in towers)
+                {
+                    if (tower is DootSkeleton)
+                    {
+                        totalMoney += 1;
+                    }
+                    else if (tower is SniperMonke)
+                    {
+                        totalMoney += 2;
+                    }
+                    else if(tower is BuffDoge)
+                    {
+                        totalMoney += 3;
+                    }
+                    else if(tower is RyanTheGateKeeper)
+                    {
+                        totalMoney += 4;
+                    }
+                    else if(tower is Not_Erin)
+                    {
+                        totalMoney += 5;
+                    }
+                }
+                
                 //reset the enemy list
                 enMan.ResetEnemies();
 
