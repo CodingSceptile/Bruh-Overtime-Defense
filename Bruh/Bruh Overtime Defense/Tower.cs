@@ -282,12 +282,34 @@ namespace Bruh_Overtime_Defense
                 }
             }
 
+            else if(towerPriority == Priority.Close)
+            {
+                if (targetEnemy == null && enemies.Count > 0)
+                {
+                    targetEnemy = enemies[0];
+                    foreach (Enemy e in enemies)
+                    {
+                        if (!e.IsDead)
+                        {
+                            if (Distance(Position, e.Position) <= Radius)
+                            {
+                                if (Distance(e.Hitbox, Position) < Distance(targetEnemy.Hitbox, Position))
+                                {
+                                    targetEnemy = e;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
            foreach (Enemy e in enemies)
            {          
                 
                 if(targetEnemy != null)
                 {
-                    //resets target enemy.
+                    //resets target enemy in case something
+                    //is shot down mid-cycle
                     if (targetEnemy.IsDead)
                     {
                         if(towerPriority == Priority.First)
@@ -310,6 +332,23 @@ namespace Bruh_Overtime_Defense
                                         if (en.Health > targetEnemy.Health)
                                         {
                                             targetEnemy = en;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        else if(towerPriority == Priority.Close)
+                        {
+                            foreach (Enemy ene in enemies)
+                            {
+                                if (!ene.IsDead)
+                                {
+                                    if (Distance(Position, ene.Position) <= Radius)
+                                    {
+                                        if (Distance(ene.Hitbox, Position) < Distance(targetEnemy.Hitbox, Position))
+                                        {
+                                            targetEnemy = ene;
                                         }
                                     }
                                 }
