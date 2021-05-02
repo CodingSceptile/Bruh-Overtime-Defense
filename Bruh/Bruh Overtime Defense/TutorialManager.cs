@@ -84,8 +84,8 @@ namespace Bruh_Overtime_Defense
                     sb.DrawString(gameFont,
                         "We've supplied enough\n" +
                         "money to get a Doot Skeleton!\n" +
-                        "It has medium range, and \n" +
-                        "average shoot speed.",
+                        "It has high range, and \n" +
+                        "high shoot speed.",
                         new Vector2(13, 250),
                         Color.White);
                     break;
@@ -233,7 +233,7 @@ namespace Bruh_Overtime_Defense
                     sb.DrawString(gameFont,
                         "Buff Doge:" +
                         "\n-Has low range\n" +
-                        "-Normal Shoot speed\n" +
+                        "-High Shoot speed\n" +
                         "-It can damage\n" +
                         "multiple enemies at once!\n" +
                         "-Medium-High salary\n\n" +
@@ -255,8 +255,8 @@ namespace Bruh_Overtime_Defense
                     okButton.Draw(sb, ms);
                     sb.DrawString(gameFont,
                         "Ryan the Gatekeeper:\n" +
-                        "\n-Has lower-than-average\nrange\n" +
-                        "-Normal Shoot speed\n" +
+                        "\n-Has medium\nrange\n" +
+                        "-Medium Shoot speed\n" +
                         "- They stop everything\n" +
                         "in their radius!\n" +
                         "- High salary\n\n" +
@@ -278,8 +278,8 @@ namespace Bruh_Overtime_Defense
                     okButton.Draw(sb, ms);
                     sb.DrawString(gameFont,
                         "Not Erin:\n" +
-                        "-Has normal range\n" +
-                        "-Normal Shoot speed\n\n" +
+                        "-Has medium range\n" +
+                        "-High Shoot speed\n\n" +
                         "- They DESTROY everything\n" +
                         "in sight!\n" +
                         "- VERY High salary\n\n" +
