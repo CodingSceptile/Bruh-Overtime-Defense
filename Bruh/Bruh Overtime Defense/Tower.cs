@@ -126,6 +126,11 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public GameTime GameTime { get { return gameTime; } }
 
+        /// <summary>
+        /// Property to get and set the enemy priorities of the tower.
+        /// </summary>
+        public Priority TowerPriority { get { return towerPriority; } set { towerPriority = value; } }
+
         //Constructor
         /// <summary>
         /// Constructor that initializes Tower class
