@@ -860,6 +860,13 @@ namespace Bruh_Overtime_Defense
                         //pause the game
                         gState = GameState.PauseScreen;
                     }
+                    //if the player hits left or right control
+                    if (SingleKeyPress(Keys.Back) || SingleKeyPress(Keys.Back))
+                    {
+                        //pause the game
+                        gState = GameState.MapSelect;
+                        soundPlaying = false;
+                    }
 
                     //enables tower function on the
                     //third stage, when it is

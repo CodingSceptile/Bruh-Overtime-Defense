@@ -70,17 +70,8 @@ namespace Bruh_Overtime_Defense
                     sb.DrawString(gameFont, 
                         "Welcome to Bruh\nOvertime Defense!\n" +
                         "Let's get the basics\ndown before moving on...\n" +
-                        "\n\n(Exit to the map select\n using the settings menu)",
+                        "\n\n(Exit to the map select\nusing BACKSPACE)",
                         new Vector2(75, 250),
-                        Color.White);
-                    sb.DrawString(gameFont,
-                        "Icon:",
-                        new Vector2(425, 485),
-                        Color.White);
-                    sb.Draw(settingsIcon,
-                        new Rectangle(
-                            new Point(550, 475),
-                            new Point(50, 50)),
                         Color.White);
                     break;
                 
