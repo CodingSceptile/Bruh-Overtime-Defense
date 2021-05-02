@@ -20,6 +20,7 @@ namespace Bruh_Overtime_Defense
     enum GameState
     {
         TitleScreen,
+        Tutorial,
         MapSelect,
         InstructionsScreen,
         Gameplay,
@@ -90,6 +91,7 @@ namespace Bruh_Overtime_Defense
         private Button gatekeeperButton;
         private Button notErinButton;
         private Button erinModeButton;
+        private Button okButton;
         private bool isErinMode;
 
         //SpriteFonts
@@ -104,6 +106,7 @@ namespace Bruh_Overtime_Defense
         private SoundEffect bruhEffect;
         private SoundEffect samiBruh;
         private SoundEffect mukundBruh;
+        private SoundEffect calebBruh;
 
         //Collisions
         private CollisionManager collisions;
@@ -169,8 +172,20 @@ namespace Bruh_Overtime_Defense
         //track locations (for user feedback)
         private List<Rectangle> trackLocs;
         private Color validPlaceForTower;
-        
 
+        //tutorial
+        private TutorialManager tutMan;
+        private int tutorialPhase;
+        private Texture2D tutorialBG;
+        private Texture2D options;
+        private Texture2D towerIcon;
+        private Texture2D dootSprite;
+        private Texture2D sniperSprite;
+        private Texture2D dogeSprite;
+        private Texture2D ryanSprite;
+        private Texture2D erinSprite;
+
+        private bool firstEnemySpawned;
         //MONOGAME GAME LOOP METHODS////////////////////////////////////////
         
         /// <summary>
@@ -233,6 +248,9 @@ namespace Bruh_Overtime_Defense
                 (tileHeight * 5) - 5, tileWidth, tileHeight);
             notErinButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 6) - 5, tileWidth, tileHeight);
+
+            okButton = new Button((screenWidth / 4) + 35,
+                ((2 * screenHeight) / 3) + 100, 300, 100);
             
             //the position of the Tower Menu
             towerMenuPos = new Rectangle(screenWidth - (tileWidth * 3),
@@ -256,7 +274,7 @@ namespace Bruh_Overtime_Defense
             //3: Ryan the Gatekeeper, 4: Not Erin
             towerRadii = new int[] { 130, int.MaxValue, 80, 100, 100 };
             towerCost = new int[] { 20, 40, 60, 80, 200 };
-            towerSpeed = new int[] { 1, 3, 1, 2, 3 };
+            towerSpeed = new int[] { 1, 3, 1, 2, 1};
             salaryDivider = 4;
 
             //initialize waves and related
@@ -269,13 +287,16 @@ namespace Bruh_Overtime_Defense
             gainMoney = 0;
             health = 10;
 
+            //Tutorial logic
+            firstEnemySpawned = false;
+
             //misc
             random = new Random();
             openTowerMenu = false;
             isErinMode = false;
             instructionsPage = 0;
 
-            validPlaceForTower = Color.Green;          
+            validPlaceForTower = Color.Green;
             
             //MonoGame stuff
             _graphics.ApplyChanges();
@@ -298,6 +319,8 @@ namespace Bruh_Overtime_Defense
             bruhEffect = Content.Load<SoundEffect>("Music/bruhEffectnew");
             samiBruh = Content.Load<SoundEffect>("Music/samiBruh");
             mukundBruh = Content.Load<SoundEffect>("Music/mukundBruh");
+            calebBruh = Content.Load<SoundEffect>("Music/calebBruh");
+
             towerMenuSprite = Content.Load<Texture2D>("Textures/towerSelector");
             uiInstructions = Content.Load<Texture2D>("Textures/BOD UI instructions");
 
@@ -327,14 +350,29 @@ namespace Bruh_Overtime_Defense
             titleSong = Content.Load<Song>("Music/8_bit_iced_village_lofi");
             gameSong = Content.Load<Song>("Music/ChillLofiR");
 
+
+
             //animation manager
             aniMan = new AnimationManager(sky, buildings, nightSky,
                 _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             //Sound Manager
             soundMan = new SoundManager(bruhEffect, titleSong, gameSong, victory, lose,
-                samiBruh, mukundBruh);
+                samiBruh, mukundBruh, calebBruh);
 
+            //tutorial manager
+            tutorialBG = Content.Load<Texture2D>("Textures/tutorialBackground");
+            options = Content.Load<Texture2D>("Textures/OptionsButton");
+            towerIcon = Content.Load<Texture2D>("Textures/TowerButton");
+            dootSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
+            sniperSprite = Content.Load<Texture2D>("Textures/towerDefense_tile292");
+            dogeSprite = Content.Load<Texture2D>("Textures/towerDefense_tile204");
+            ryanSprite = Content.Load<Texture2D>("Textures/towerDefense_tile250");
+            erinSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
+
+            tutMan = new TutorialManager(okButton, gameText20,
+                tutorialBG, options, towerIcon, dootSprite,
+                sniperSprite, dogeSprite, ryanSprite, erinSprite);
 
             //Tower radius
             radius = Content.Load<Texture2D>("Textures/radius");
@@ -388,7 +426,7 @@ namespace Bruh_Overtime_Defense
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //begin the SpriteBatch
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
             //draws different things based on the game state
             switch (gState)
@@ -403,6 +441,10 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.DrawString(gameText36, "Bruh Overtime \n   Defense", new Vector2(78, 253), Color.Black);
                     _spriteBatch.DrawString(gameText20, "Press Enter to start", new Vector2(130, 450), Color.Black);
 
+                    break;
+
+                case GameState.Tutorial:
+                    aniMan.Draw(_spriteBatch);
                     break;
 
                 //MAP SELECT SCREEN
@@ -454,18 +496,25 @@ namespace Bruh_Overtime_Defense
                 case GameState.Gameplay:
                     //draw the map and tower menu
                     DrawMap();
-                    DrawTowerMenu();
 
+                    //constructs a rectangle where the mouse currently is,
+                    //sizes it to the size of the tower selected
                     Rectangle currMousePos = new Rectangle(
                                     new Point(mState.Position.X - (baseTowerButton.DefaultSprite.Width / 2),
                                     mState.Position.Y - (baseTowerButton.DefaultSprite.Height / 2)),
                                     new Point(baseTowerButton.DefaultSprite.Width,
                                     baseTowerButton.DefaultSprite.Height));
+
+                    //Gets another rectangle for collisions with the mouse
                     Rectangle mouseCheck = new Rectangle(
                         mState.Position, new Point(1, 1));
 
                     int radius = 0;
 
+                    //Checks if there is an intersection with any
+                    //of the track rectangles, if so, it changes the color
+                    //to red instead of green, indicating that the player
+                    //cannot place a tower in that given area
                     foreach (Rectangle r in trackLocs)
                     {
                         {
@@ -481,7 +530,8 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
-                    //draw the selected tower
+                    //draw the selected tower to the mouse
+                    //cursor
                     switch (selectedTower)
                     {
                         //BASE TOWER
@@ -500,6 +550,7 @@ namespace Bruh_Overtime_Defense
 
                             radius = towerRadii[1];
                             break;
+
                         //BUFF TOWER
                         case Towers.BuffTower:
                             _spriteBatch.Draw(buffButton.DefaultSprite,
@@ -530,6 +581,7 @@ namespace Bruh_Overtime_Defense
                     _spriteBatch.End();
                     ShapeBatch.Begin(_graphics.GraphicsDevice);
 
+                    //draws the radius of the tower
                     ShapeBatch.CircleOutline(new Vector2(mState.Position.X,
                         mState.Position.Y),
                         radius,
@@ -550,6 +602,12 @@ namespace Bruh_Overtime_Defense
                         enMan.Draw(_spriteBatch);
                     }
 
+                    if (collisions.LevelName == "tutorialFixed.level_Appended")
+                    {
+                        TutorialDraw(_spriteBatch);
+                    }
+
+                    DrawTowerMenu();
                     break;
 
                 //PAUSE SCREEN
@@ -584,7 +642,6 @@ namespace Bruh_Overtime_Defense
                         new Vector2(180, 300), Color.Red);
                     _spriteBatch.DrawString(gameText20, "Press Enter to return to map select",
                         new Vector2(25, 450), Color.Red);
-
                     break;
             }
                      
@@ -599,7 +656,6 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void FiniteStateMachine(GameTime gameTime)
         {
-
             //if the player is on the title screen
             if (gState == GameState.TitleScreen)
             {
@@ -612,9 +668,21 @@ namespace Bruh_Overtime_Defense
                 //if the player hits enter or space
                 if(SingleKeyPress(Keys.Enter) || SingleKeyPress(Keys.Space))
                 {
-                    //go to map select
-                    gState = GameState.MapSelect;
+                    //go to tutorial level
+                    tutorialPhase = 0;
+                    gState = GameState.Tutorial;
                 }
+            }
+            else if(gState == GameState.Tutorial)
+            {
+                InitializeCollisions("tutorialFixed.level_Appended");
+
+                Reset();
+
+                totalMoney = 20;    
+                //go to the gameplay state
+                gState = GameState.Gameplay;
+                soundPlaying = false;
             }
             //if the player is on the map select screen
             else if(gState == GameState.MapSelect)
@@ -769,138 +837,268 @@ namespace Bruh_Overtime_Defense
                     soundMan.PlayGameTheme();
                     soundPlaying = true;
                 }
-                //Check for changes in movement
-                for (int i = 0; i < enemies.Count; i++)
+                
+                //checks if the tutorial level is active
+                if(collisions.LevelName == "tutorialFixed.level_Appended")
                 {
-                    if (enemies[i].IsDead == false)
+                    //progresses the tutorial when a
+                    //user presses the ok button
+                    if ((okButton.Clicked(mState, prevMState))
+                        && !(tutorialPhase == 3) && !(tutorialPhase == 5))
                     {
-                        collisions.LevelIntersects(enemies[i]);
-                        enemies[i].X += (int)enemies[i].Movement.X;
-                        enemies[i].Y += (int)enemies[i].Movement.Y;
-                        enemies[i].HitX += (int)enemies[i].Movement.X;
-                        enemies[i].HitY += (int)enemies[i].Movement.Y;                      
+                        tutorialPhase++;
                     }
-                }
-
-                //Checks if the user needs to take damage
-                TakeDamage();
-                //checks if bruhs are hit
-                ResolveShot(gameTime);
-                //pay salaries
-                PayTowers();
-
-                //No more health left! Game over!
-                if(health <= 0)
-                {
-                    soundPlaying = false;
-                    gState = GameState.GameOver;
-                }
-
-
-                //if the mouse button is clicked and none of the buttons are pressed
-                if (mState.LeftButton == ButtonState.Pressed && !pauseButton.RollOver(mState) &&
-                    !nextWaveButton.RollOver(mState) && !towerMenuButton.RollOver(mState) &&
-                    !baseTowerButton.RollOver(mState) && !sniperButton.RollOver(mState) && 
-                    !buffButton.RollOver(mState) && !gatekeeperButton.RollOver(mState) && 
-                    !notErinButton.RollOver(mState))
-                {
-
-                    bool inTrack = false;
-                    //let the user place a tower
-                    for(int i = 0; i < collisions.TrackLocations.Count; i++)
+                    //if the player hits the pause button
+                    if (pauseButton.Clicked(mState, prevMState))
                     {
-                        if(collisions.TrackLocations[i].Contains(mState.Position))
+                        //pause the game
+                        gState = GameState.PauseScreen;
+                    }
+                    //if the player hits left or right control
+                    if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
+                    {
+                        //pause the game
+                        gState = GameState.PauseScreen;
+                    }
+
+                    //enables tower function on the
+                    //third stage, when it is
+                    //introduced
+                    if (tutorialPhase == 3)
+                    {
+                        TowerFunction(gameTime);
+
+                        if(towers.Count == 1 &&
+                            !(tutorialPhase >= 4))
                         {
-                            inTrack = true;
+                            tutorialPhase++;
                         }
                     }
-                    if(!inTrack)
-                    {
-                        placeTower = true;
-                    }  
-                }
-
-                //if the player hits left or right control
-                if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
-                {
-                    //pause the game
-                    gState = GameState.PauseScreen;
                     
-                }
-                //if the player hits the pause button
-                if (pauseButton.Clicked(mState, prevMState))
-                {
-                    //pause the game
-                    gState = GameState.PauseScreen;
-                }
+                    //implements wave and enemy function
+                    if(tutorialPhase == 5
+                        || tutorialPhase == 12
+                        || tutorialPhase == 14
+                        || tutorialPhase == 16
+                        || tutorialPhase == 18
+                        || tutorialPhase == 23)
+                    {
+                        if(tutorialPhase == 5)
+                        {
+                            totalMoney = 0;
+                        }
+                        //Next wave button clicked
+                        if (nextWaveButton.Clicked(mState, prevMState))
+                        {
+                            if(tutorialPhase != 23)
+                            {
+                                NextWave();
+                            }
+                            
+                            if(firstEnemySpawned == false)
+                            {
+                                enemies[0].IsDead = false;
+                                firstEnemySpawned = true;
+                            }
+                        }
+                       
+                        //Check for changes in movement
+                        for (int i = 0; i < enemies.Count; i++)
+                        {                           
+                            if (enemies[i].IsDead == false)
+                            {
+                                collisions.LevelIntersects(enemies[i]);
+                                enemies[i].X += (int)enemies[i].Movement.X;
+                                enemies[i].Y += (int)enemies[i].Movement.Y;
+                            }
 
-                //if the player hits the towerMenu button while the menu is closed
-                if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == false)
-                {
-                    //open the towerMenu
-                    openTowerMenu = true;
-                    //deselect the player's tower
-                    selectedTower = Towers.None;
-                }
-                //if the player hits the towerMenu button while the menu is open
-                else if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == true)
-                {
-                    //close the towerMenu
-                    openTowerMenu = false;
-                }
+                            if (enMan.AllEnemiesDead()
+                                && tutorialPhase == 5 && currWave == 1)
+                            {
+                                tutorialPhase++;
+                            }
+                        }
 
-                //if the towerMenu is open
-                if(openTowerMenu == true)
-                {
-                    //if the baseTower button is clicked and the player can afford it
-                    if(baseTowerButton.Clicked(mState, prevMState) &&
-                    totalMoney >= towerCost[0])
-                    {
-                        //select the baseTower and close the towerMenu
-                        selectedTower = Towers.BaseTower;
-                        openTowerMenu = false;
+                        TowerFunction(gameTime);
+                        //Checks if the user needs to take damage
+                        TakeDamage();
                     }
-                    else if(sniperButton.Clicked(mState, prevMState) &&
-                    totalMoney >= towerCost[1])
-                    {
-                        //select the sniperTower and close the towerMenu
-                        selectedTower = Towers.SniperTower;
-                        openTowerMenu = false;
-                    }
-                    else if (buffButton.Clicked(mState, prevMState) &&
-                    totalMoney >= towerCost[2])
-                    {
-                        //select the buffTower and close the towerMenu
-                        selectedTower = Towers.BuffTower;
-                        openTowerMenu = false;
-                    }
-                    else if (gatekeeperButton.Clicked(mState, prevMState) &&
-                    totalMoney >= towerCost[3])
-                    {
-                        //select the gatekeeperTower and close the towerMenu
-                        selectedTower = Towers.GatekeeperTower;
-                        openTowerMenu = false;
-                    }
-                    else if (notErinButton.Clicked(mState, prevMState) &&
-                    totalMoney >= towerCost[4])
-                    {
-                        //select the erinTower and close the towerMenu
-                        selectedTower = Towers.ErinTower;
-                        openTowerMenu = false;
-                    }
-                }
 
-                //Next wave button clicked
-                if (nextWaveButton.Clicked(mState,prevMState))
-                {
-                    NextWave();  
-                }
+                    //stage that tells the user
+                    //to pay salary
+                    if(tutorialPhase == 7)
+                    {
+                        totalMoney = 5;
+                    }
+                    else if(tutorialPhase == 8)
+                    {
+                        TowerFunction(gameTime);
+                        if(towers[0].Salary >= 20)
+                        {
+                            tutorialPhase++;
+                            firstEnemySpawned = false;
+                        }
+                    }
 
-                if(currWave == 21)
-                {
-                    gState = GameState.VictoryScreen;
-                    soundPlaying = false;
+                    //resets the waves, 
+                    //spawns a few sniper monkes
+                    //for demonstration.
+                    else if(tutorialPhase == 12
+                        || tutorialPhase == 14
+                        || tutorialPhase == 16
+                        || tutorialPhase == 18)
+                    {
+                        //Sniper monke being shown off
+                        if(towers[0] is DootSkeleton)
+                        {
+                            //Resets the game (as if a 
+                            //new game is starting)
+                            Reset();
+                            NextWave();
+
+                            //spawns the first enemy immediately
+                            if (firstEnemySpawned == false)
+                            {
+                                enemies[0].IsDead = false;
+                                firstEnemySpawned = true;
+                            }
+                            
+                            //sets the total money to 0,
+                            //spawns a singular tower
+                            totalMoney = 0;
+                            towers.Add(new SniperMonke
+                            (new Rectangle(new Point(500, 300),
+                            new Point(tileWidth, tileHeight)),
+                            sniperSprite, towerRadii[1], 40, towerSpeed[1],
+                            gameTime, radius));                      
+                        }
+
+                        //buff doge showoff
+                        else if(towers[0] is SniperMonke
+                            && tutorialPhase == 14)
+                        {
+                            Reset();
+                            NextWave();
+                            firstEnemySpawned = false;
+
+                            enemies[0].IsDead = false;
+
+                            totalMoney = 0;
+
+                            towers.Add(new BuffDoge
+                            (new Rectangle(new Point(350, 325),
+                            new Point(tileWidth, tileHeight)),
+                            dogeSprite, towerRadii[2], 40, towerSpeed[2],
+                            gameTime, radius));
+                        }
+
+                        //ryan showoff
+                        else if (towers[0] is BuffDoge
+                            && tutorialPhase == 16)
+                        {
+                            Reset();
+                            NextWave();
+                            firstEnemySpawned = false;
+
+                            enemies[0].IsDead = false;
+
+                            totalMoney = 0;
+
+                            towers.Add(new RyanTheGateKeeper
+                            (new Rectangle(new Point(350, 325),
+                            new Point(tileWidth, tileHeight)),
+                            ryanSprite, towerRadii[3], 40, towerSpeed[2],
+                            gameTime, radius));
+                        }
+
+                        //Erin showoff
+                        else if (towers[0] is RyanTheGateKeeper
+                            && tutorialPhase == 18)
+                        {
+                            Reset();
+                            NextWave();
+                            firstEnemySpawned = false;
+
+                            enemies[0].IsDead = false;
+
+                            totalMoney = 0;
+
+                            towers.Add(new Not_Erin
+                            (new Rectangle(new Point(350, 325),
+                            new Point(tileWidth, tileHeight)),
+                            erinSprite, towerRadii[4], 40, towerSpeed[2],
+                            gameTime, radius));
+                        }
+
+                        if (enMan.AllEnemiesDead() && currWave == 1)
+                        {
+                            tutorialPhase++;
+                        }
+                    }
+
+                    //Showcases each of the bruhs
+                    else if(tutorialPhase == 23)
+                    {
+                        soundPlaying = false;
+                        gState = GameState.MapSelect;
+                    }
                 }
+                else
+                {
+                    //Check for changes in movement
+                    for (int i = 0; i < enemies.Count; i++)
+                    {
+                        if (enemies[i].IsDead == false)
+                        {
+                            collisions.LevelIntersects(enemies[i]);
+                            enemies[i].X += (int)enemies[i].Movement.X;
+                            enemies[i].Y += (int)enemies[i].Movement.Y;
+                        }
+                    }
+
+                    TowerFunction(gameTime);
+
+                    //Checks if the user needs to take damage
+                    TakeDamage();
+
+
+                    //No more health left! Game over!
+                    if (health <= 0)
+                    {
+                        soundPlaying = false;
+                        gState = GameState.GameOver;
+                    }
+
+
+                   
+
+                    //if the player hits left or right control
+                    if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
+                    {
+                        //pause the game
+                        gState = GameState.PauseScreen;
+
+                    }
+                    //if the player hits the pause button
+                    if (pauseButton.Clicked(mState, prevMState))
+                    {
+                        //pause the game
+                        gState = GameState.PauseScreen;
+                    }
+                    
+
+                    //Next wave button clicked
+                    if (nextWaveButton.Clicked(mState, prevMState))
+                    {
+                        NextWave();
+                    }
+
+                    if (currWave == 21)
+                    {
+                        gState = GameState.VictoryScreen;
+                        soundPlaying = false;
+                    }
+                }               
             }
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
@@ -1241,6 +1439,10 @@ namespace Bruh_Overtime_Defense
             //other buttons
             erinModeButton.DefaultSprite = Content.Load<Texture2D>("Textures/ErinModeOFF");
             erinModeButton.ActiveSprite = Content.Load<Texture2D>("Textures/ErinModeOFFActive");
+
+            //Ok button
+            okButton.DefaultSprite = Content.Load<Texture2D>("Textures/ok");
+            okButton.ActiveSprite = Content.Load<Texture2D>("Textures/okActive");
         }
 
         /// <summary>
@@ -1255,7 +1457,7 @@ namespace Bruh_Overtime_Defense
                 newWave = true;
                 //increment the wave
                 currWave += 1;
-                totalMoney += 5 * currWave;
+                totalMoney += 5 * towers.Count;
 
 
                 //reset the enemy list
@@ -1451,6 +1653,116 @@ namespace Bruh_Overtime_Defense
                 //turns off place tower and empties the selectedTower
                 placeTower = false;
                 selectedTower = Towers.None;
+            }
+        }
+
+        /// <summary>
+        /// Provides functionality to the tutorial using the
+        /// TutorialManager class
+        /// </summary>
+        public void TutorialFunctions()
+        {
+            
+        }
+
+        /// <summary>
+        /// draws aspects of the tutorial
+        /// </summary>
+        /// <param name="_spriteBatch"></param>
+        public void TutorialDraw(SpriteBatch _spriteBatch)
+        {
+            tutMan.DrawInstructions(_spriteBatch, mState, prevMState, tutorialPhase);
+        }
+
+        /// <summary>
+        /// Moves the tower code previously in the FSM
+        /// to it's own method, in order to cut down
+        /// on code that is being copy and pasted
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public void TowerFunction(GameTime gameTime)
+        {
+            //if the mouse button is clicked and none of the buttons are pressed
+            if (mState.LeftButton == ButtonState.Pressed && !pauseButton.RollOver(mState) &&
+                !nextWaveButton.RollOver(mState) && !towerMenuButton.RollOver(mState) &&
+                !baseTowerButton.RollOver(mState) && !sniperButton.RollOver(mState) &&
+                !buffButton.RollOver(mState) && !gatekeeperButton.RollOver(mState) &&
+                !notErinButton.RollOver(mState))
+            {
+                bool inTrack = false;
+                //let the user place a tower
+                for (int i = 0; i < collisions.TrackLocations.Count; i++)
+                {
+                    if (collisions.TrackLocations[i].Contains(mState.Position))
+                    {
+                        inTrack = true;
+                    }
+                }
+                if (!inTrack)
+                {
+                    placeTower = true;
+                }
+            }
+
+            //checks if bruhs are hit
+            ResolveShot(gameTime);
+            //pay salaries
+            PayTowers();
+
+            //if the player hits the towerMenu button while the menu is closed
+            if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == false)
+            {
+                //open the towerMenu
+                openTowerMenu = true;
+                //deselect the player's tower
+                selectedTower = Towers.None;
+            }
+            //if the player hits the towerMenu button while the menu is open
+            else if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == true)
+            {
+                //close the towerMenu
+                openTowerMenu = false;
+            }
+
+            //if the towerMenu is open
+            if (openTowerMenu == true)
+            {
+                //if the baseTower button is clicked and the player can afford it
+                if (baseTowerButton.Clicked(mState, prevMState) &&
+                totalMoney >= towerCost[0])
+                {
+                    //select the baseTower and close the towerMenu
+                    selectedTower = Towers.BaseTower;
+                    openTowerMenu = false;
+                }
+                else if (sniperButton.Clicked(mState, prevMState) &&
+                totalMoney >= towerCost[1])
+                {
+                    //select the sniperTower and close the towerMenu
+                    selectedTower = Towers.SniperTower;
+                    openTowerMenu = false;
+                }
+                else if (buffButton.Clicked(mState, prevMState) &&
+                totalMoney >= towerCost[2])
+                {
+                    //select the buffTower and close the towerMenu
+                    selectedTower = Towers.BuffTower;
+                    openTowerMenu = false;
+                }
+                else if (gatekeeperButton.Clicked(mState, prevMState) &&
+                totalMoney >= towerCost[3])
+                {
+                    //select the gatekeeperTower and close the towerMenu
+                    selectedTower = Towers.GatekeeperTower;
+                    openTowerMenu = false;
+                }
+                else if (notErinButton.Clicked(mState, prevMState) &&
+                totalMoney >= towerCost[4])
+                {
+                    //select the erinTower and close the towerMenu
+                    selectedTower = Towers.ErinTower;
+                    openTowerMenu = false;
+                }
             }
         }
     }

@@ -113,8 +113,6 @@ namespace Bruh_Overtime_Defense
                 //checks if more enemies need to be spawned
                 if (enemyNum < enemies.Count)
                 {
-                    enemies[enemyNum].X = startX;
-                    enemies[enemyNum].Y = startY;
                     enemies[enemyNum].IsDead = false;
                     enemyNum++;
                     numEnemiesSpawned++;
@@ -124,26 +122,48 @@ namespace Bruh_Overtime_Defense
             //sets the location of the enemies
             for (int i = 0; i < enemies.Count; i++)
             {
-                if(startPos.X - startPos.Y < 0)
+                if (enemies[i].StartPosSet == false)
                 {
-                    enemies[i].Position = new Rectangle(
-                        enemies[i].X, enemies[i].Y + 50,
-                        50, 50);
-                }
-                else if(startPos.X - startPos.Y > 0 
-                    && !(startPos.Y == 0))
-                {
-                    enemies[i].Position = new Rectangle(
-                        enemies[i].X, enemies[i].Y + 50,
-                        50, 50);
+                    if (startPos.X == 0
+                        && startPos.X - startPos.Y < 0)
+                    {
+                        enemies[i].X -= 50;
+                        enemies[i].Y = enemies[i].Y * 2;
+                        enemies[i].Position = new Rectangle(
+                            enemies[i].X, enemies[i].Y,
+                            50, 50);
+                    }
+                    else if (startPos.X - startPos.Y < 0)
+                    {
+                        enemies[i].Y = enemies[i].Y * 2;
+                        enemies[i].Position = new Rectangle(
+                            enemies[i].X, enemies[i].Y,
+                            50, 50);
+                    }
+                    else if (startPos.X - startPos.Y > 0
+                        && !(startPos.Y == 0))
+                    {
+                        enemies[i].Y = enemies[i].Y * 2;
+                        enemies[i].Position = new Rectangle(
+                            enemies[i].X, enemies[i].Y,
+                            50, 50);
+                    }
+                    else
+                    {
+                        enemies[i].Y = enemies[i].Y / 2;
+                        enemies[i].Position = new Rectangle(
+                            enemies[i].X, enemies[i].Y,
+                            50, 50);
+                    }
+
+                    enemies[i].StartPosSet = true;
                 }
                 else
                 {
                     enemies[i].Position = new Rectangle(
-                        enemies[i].X, enemies[i].Y - 50,
-                        50, 50);
+                            enemies[i].X, enemies[i].Y,
+                            50, 50);
                 }
-                
             }
         }
 

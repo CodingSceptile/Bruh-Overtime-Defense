@@ -100,7 +100,7 @@ namespace Bruh_Overtime_Defense
                     {
                         towers[i].Draw(sb, _graphics);
                         sb.DrawString(sf, "Total Pay: " + towers[i].Salary,
-                            new Vector2(towers[i].Position.X, towers[i].Position.Y + 30),
+                            new Vector2(towers[i].Position.X - 30, towers[i].Position.Y + 30),
                             Color.White);
                     }
                 }
