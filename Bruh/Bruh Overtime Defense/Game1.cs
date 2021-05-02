@@ -860,6 +860,13 @@ namespace Bruh_Overtime_Defense
                         //pause the game
                         gState = GameState.PauseScreen;
                     }
+                    //if the player hits left or right control
+                    if (SingleKeyPress(Keys.Back) || SingleKeyPress(Keys.Back))
+                    {
+                        //pause the game
+                        gState = GameState.MapSelect;
+                        soundPlaying = false;
+                    }
 
                     //enables tower function on the
                     //third stage, when it is
@@ -1397,6 +1404,8 @@ namespace Bruh_Overtime_Defense
                     tileHeight * 6),
                     Color.White);
                 notErinButton.Draw(_spriteBatch, mState);
+
+                CheckRollover();
             }
         }
 
@@ -1457,9 +1466,31 @@ namespace Bruh_Overtime_Defense
                 newWave = true;
                 //increment the wave
                 currWave += 1;
-                totalMoney += 5 * towers.Count;
 
-
+                foreach(Tower tower in towers)
+                {
+                    if (tower is DootSkeleton)
+                    {
+                        totalMoney += 1;
+                    }
+                    else if (tower is SniperMonke)
+                    {
+                        totalMoney += 2;
+                    }
+                    else if(tower is BuffDoge)
+                    {
+                        totalMoney += 3;
+                    }
+                    else if(tower is RyanTheGateKeeper)
+                    {
+                        totalMoney += 4;
+                    }
+                    else if(tower is Not_Erin)
+                    {
+                        totalMoney += 5;
+                    }
+                }
+                
                 //reset the enemy list
                 enMan.ResetEnemies();
 
@@ -1657,15 +1688,6 @@ namespace Bruh_Overtime_Defense
         }
 
         /// <summary>
-        /// Provides functionality to the tutorial using the
-        /// TutorialManager class
-        /// </summary>
-        public void TutorialFunctions()
-        {
-            
-        }
-
-        /// <summary>
         /// draws aspects of the tutorial
         /// </summary>
         /// <param name="_spriteBatch"></param>
@@ -1763,6 +1785,57 @@ namespace Bruh_Overtime_Defense
                     selectedTower = Towers.ErinTower;
                     openTowerMenu = false;
                 }
+            }
+        }
+
+        /// <summary>
+        /// draws a little help box when rolling over a tower button
+        /// </summary>
+        /// <param name="instructions">the instructions</param>
+        /// <param name="y">the y value of the tower</param>
+        public void DrawTowerInstructions(string instructions, int y)
+        {
+            //draw the background box next to the tower
+            _spriteBatch.Draw(towerMenuSprite, 
+                new Rectangle(screenWidth - tileWidth * 6, y, tileWidth * 3, tileHeight * 2), 
+                Color.White);
+            //draw the instructions
+            _spriteBatch.DrawString(arial10, instructions, 
+                new Vector2(screenWidth - tileWidth * 6, y), Color.White);
+        }
+
+        /// <summary>
+        /// checks the tower button rollovers to print instructions
+        /// </summary>
+        public void CheckRollover()
+        {
+            //if rolling over Doot Skeleton
+            if (baseTowerButton.RollOver(mState))
+            {
+                DrawTowerInstructions("  Doot Skeleton:\n  -high range\n  -high speed", baseTowerButton.Y);
+            }
+            //if rolling over Sniper Monke
+            else if (sniperButton.RollOver(mState))
+            {
+                DrawTowerInstructions("  Sniper Monke:\n  -infinte range\n  -slow speed", sniperButton.Y);
+            }
+            //if rolling over Buff Doge
+            else if (buffButton.RollOver(mState))
+            {
+                DrawTowerInstructions("  Buff Doge:\n  -small range\n  -high speed\n  " +
+                    "-hits multiple \n  bruhs at once", buffButton.Y);
+            }
+            //if rolling over Ryan the Gatekeeper
+            else if (gatekeeperButton.RollOver(mState))
+            {
+                DrawTowerInstructions("  Ryan the \n  Gatekeeper:\n  -medium range\n  -medium speed\n  " +
+                    "-stops bruhs", gatekeeperButton.Y);
+            }
+            //if rolling over Not Erin
+            else if (notErinButton.RollOver(mState))
+            {
+                DrawTowerInstructions("  Not Erin:\n  -medium range\n  -high speed\n  " +
+                    "-instantly kills \n  bruhs in range", notErinButton.Y);
             }
         }
     }

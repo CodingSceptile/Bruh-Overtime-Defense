@@ -61,6 +61,7 @@ namespace Bruh_Overtime_Defense
         {
             switch(tutorialPhase)
             {
+                //Introduction to the game
                 case 0:
                     sb.Draw(bg,
                         new Rectangle(new Point(0, 0),
@@ -69,20 +70,12 @@ namespace Bruh_Overtime_Defense
                     sb.DrawString(gameFont, 
                         "Welcome to Bruh\nOvertime Defense!\n" +
                         "Let's get the basics\ndown before moving on...\n" +
-                        "\n\n(Exit to the map select\n using the settings menu)",
+                        "\n\n(Exit to the map select\nusing BACKSPACE)",
                         new Vector2(75, 250),
                         Color.White);
-                    sb.DrawString(gameFont,
-                        "Icon:",
-                        new Vector2(425, 485),
-                        Color.White);
-                    sb.Draw(settingsIcon,
-                        new Rectangle(
-                            new Point(550, 475),
-                            new Point(50, 50)),
-                        Color.White);
                     break;
-
+                
+                //Doot skeleton introduction
                 case 1:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -91,12 +84,13 @@ namespace Bruh_Overtime_Defense
                     sb.DrawString(gameFont,
                         "We've supplied enough\n" +
                         "money to get a Doot Skeleton!\n" +
-                        "It has medium range, and \n" +
-                        "average shoot speed.",
+                        "It has high range, and \n" +
+                        "high shoot speed.",
                         new Vector2(13, 250),
                         Color.White);
                     break;
 
+                // Placing towers introduction
                 case 2:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -121,6 +115,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Next wave button introduction
                 case 4:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -136,6 +131,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Displays after the first wave
                 case 6:
 
                     sb.Draw(bg,
@@ -154,8 +150,8 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Salary introduction
                 case 7:
-
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
                        new Point(2000, 2000)), Color.White);
@@ -170,6 +166,8 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Displays after the user pays salary, depicts
+                //the mechanic in a greater sense
                 case 9:
 
                     sb.Draw(bg,
@@ -190,9 +188,9 @@ namespace Bruh_Overtime_Defense
                         "as possible!",
                         new Vector2(30, 150),
                         Color.White);
-
                     break;
 
+                //Introduces tower variants
                 case 10:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -205,6 +203,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Sniper monke introduction
                 case 11:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -225,6 +224,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Buff doge introduction
                 case 13:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -233,7 +233,7 @@ namespace Bruh_Overtime_Defense
                     sb.DrawString(gameFont,
                         "Buff Doge:" +
                         "\n-Has low range\n" +
-                        "-Normal Shoot speed\n" +
+                        "-High Shoot speed\n" +
                         "-It can damage\n" +
                         "multiple enemies at once!\n" +
                         "-Medium-High salary\n\n" +
@@ -247,6 +247,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Ryan introduction
                 case 15:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -254,8 +255,8 @@ namespace Bruh_Overtime_Defense
                     okButton.Draw(sb, ms);
                     sb.DrawString(gameFont,
                         "Ryan the Gatekeeper:\n" +
-                        "\n-Has lower-than-average\nrange\n" +
-                        "-Normal Shoot speed\n" +
+                        "\n-Has medium\nrange\n" +
+                        "-Medium Shoot speed\n" +
                         "- They stop everything\n" +
                         "in their radius!\n" +
                         "- High salary\n\n" +
@@ -269,6 +270,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //erin introduction
                 case 17:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -276,8 +278,8 @@ namespace Bruh_Overtime_Defense
                     okButton.Draw(sb, ms);
                     sb.DrawString(gameFont,
                         "Not Erin:\n" +
-                        "-Has normal range\n" +
-                        "-Normal Shoot speed\n\n" +
+                        "-Has medium range\n" +
+                        "-High Shoot speed\n\n" +
                         "- They DESTROY everything\n" +
                         "in sight!\n" +
                         "- VERY High salary\n\n" +
@@ -291,6 +293,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Tower conclusion
                 case 19:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -305,6 +308,8 @@ namespace Bruh_Overtime_Defense
                         new Vector2(75, 250),
                         Color.White);
                     break;
+
+                //Enemy variant introduction
                 case 20:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -320,6 +325,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Enemy descriptions
                 case 21:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
@@ -336,6 +342,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     break;
 
+                //Goal, and farewell
                 case 22:
                     sb.Draw(bg,
                        new Rectangle(new Point(0, 0),
