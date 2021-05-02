@@ -106,6 +106,7 @@ namespace Bruh_Overtime_Defense
         private SoundEffect bruhEffect;
         private SoundEffect samiBruh;
         private SoundEffect mukundBruh;
+        private SoundEffect calebBruh;
 
         //Collisions
         private CollisionManager collisions;
@@ -318,6 +319,8 @@ namespace Bruh_Overtime_Defense
             bruhEffect = Content.Load<SoundEffect>("Music/bruhEffectnew");
             samiBruh = Content.Load<SoundEffect>("Music/samiBruh");
             mukundBruh = Content.Load<SoundEffect>("Music/mukundBruh");
+            calebBruh = Content.Load<SoundEffect>("Music/calebBruh");
+
             towerMenuSprite = Content.Load<Texture2D>("Textures/towerSelector");
             uiInstructions = Content.Load<Texture2D>("Textures/BOD UI instructions");
 
@@ -355,7 +358,7 @@ namespace Bruh_Overtime_Defense
 
             //Sound Manager
             soundMan = new SoundManager(bruhEffect, titleSong, gameSong, victory, lose,
-                samiBruh, mukundBruh);
+                samiBruh, mukundBruh, calebBruh);
 
             //tutorial manager
             tutorialBG = Content.Load<Texture2D>("Textures/tutorialBackground");
@@ -493,7 +496,6 @@ namespace Bruh_Overtime_Defense
                 case GameState.Gameplay:
                     //draw the map and tower menu
                     DrawMap();
-                    DrawTowerMenu();
 
                     //constructs a rectangle where the mouse currently is,
                     //sizes it to the size of the tower selected
@@ -605,6 +607,7 @@ namespace Bruh_Overtime_Defense
                         TutorialDraw(_spriteBatch);
                     }
 
+                    DrawTowerMenu();
                     break;
 
                 //PAUSE SCREEN
@@ -875,7 +878,8 @@ namespace Bruh_Overtime_Defense
                     
                     //implements wave and enemy function
                     if(tutorialPhase == 5
-                        || tutorialPhase == 12)
+                        || tutorialPhase == 12
+                        || tutorialPhase == 14)
                     {
                         if(tutorialPhase == 5)
                         {
@@ -933,7 +937,8 @@ namespace Bruh_Overtime_Defense
                     //resets the waves, 
                     //spawns a few sniper monkes
                     //for demonstration.
-                    else if(tutorialPhase == 12)
+                    else if(tutorialPhase == 12
+                        || tutorialPhase == 14)
                     {
                         if(towers[0] is DootSkeleton)
                         {
@@ -949,13 +954,24 @@ namespace Bruh_Overtime_Defense
                             (new Rectangle(new Point(500, 300),
                             new Point(tileWidth, tileHeight)),
                             sniperSprite, towerRadii[1], 40, towerSpeed[1],
-                            gameTime, radius));
+                            gameTime, radius));                      
+                        }
+                        else if(towers[0] is SniperMonke
+                            && tutorialPhase == 14)
+                        {
+                            Reset();
+                            NextWave();
+                            firstEnemySpawned = false;
 
-                            towers.Add(new SniperMonke
-                            (new Rectangle(new Point(400, 450),
+                            enemies[0].IsDead = false;
+
+                            totalMoney = 0;
+
+                            towers.Add(new BuffDoge
+                            (new Rectangle(new Point(350, 325),
                             new Point(tileWidth, tileHeight)),
-                            sniperSprite, towerRadii[1], 40, towerSpeed[1],
-                            gameTime, radius));                           
+                            dogeSprite, towerRadii[2], 40, towerSpeed[2],
+                            gameTime, radius));
                         }
 
                         if (enMan.AllEnemiesDead() && currWave == 1)

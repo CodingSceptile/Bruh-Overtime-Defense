@@ -100,6 +100,12 @@
 /processorParam:Quality=Best
 /build:Music/bruhEffectnew.wav
 
+#begin Music/calebBruh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/calebBruh.wav
+
 #begin Music/ChillLofiR.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

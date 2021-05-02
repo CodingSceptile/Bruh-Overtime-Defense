@@ -18,6 +18,7 @@ namespace Bruh_Overtime_Defense
         private SoundEffect bruhHit;
         private SoundEffect mukundBruh;
         private SoundEffect samiBruh;
+        private SoundEffect calebBruh;
         private Song titleTheme;
         private Song gameTheme;
         private Song victoryTheme;
@@ -36,7 +37,8 @@ namespace Bruh_Overtime_Defense
         /// <param name="victoryTheme">victory music</param>
         /// <param name="loseTheme">lose music</param>
         public SoundManager(SoundEffect bruhHit, Song titleTheme, Song gameTheme,
-            Song victoryTheme, Song loseTheme, SoundEffect sami, SoundEffect mukund)
+            Song victoryTheme, Song loseTheme, SoundEffect sami, SoundEffect mukund,
+            SoundEffect calebBruh)
         {
             this.bruhHit = bruhHit;
             this.titleTheme = titleTheme;
@@ -44,9 +46,11 @@ namespace Bruh_Overtime_Defense
             this.victoryTheme = victoryTheme;
             this.loseTheme = loseTheme;
             MediaPlayer.IsRepeating = true;
+            
 
             mukundBruh = mukund;
             samiBruh = sami;
+            this.calebBruh = calebBruh;
 
             random = new Random();
         }
@@ -105,7 +109,7 @@ namespace Bruh_Overtime_Defense
             //gets a random number to
             // indicate which bruh sound effect needs
             // to be played
-            int currSFX = random.Next(0, 3);
+            int currSFX = random.Next(0, 4);
 
             int pitchDetermine = random.Next(0, 2);
             //gets a random pitch dependent
@@ -132,7 +136,10 @@ namespace Bruh_Overtime_Defense
 
                 case 2:
                     mukundBruh.Play(0.33f, pitch, 0);
-                    break;           
+                    break;
+                case 3:
+                    calebBruh.Play(0.33f, pitch, 0);
+                    break;
             }           
         }
 

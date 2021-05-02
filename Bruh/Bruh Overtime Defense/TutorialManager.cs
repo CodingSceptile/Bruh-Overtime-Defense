@@ -215,7 +215,7 @@ namespace Bruh_Overtime_Defense
                         "\n-Has infinite range\n" +
                         "-Slow shoot speed\n" +
                         "- Medium salary\n\n" +
-                        "Let's try some out!",
+                        "Let's try it out!",
                         new Vector2(150, 250),
                         Color.White);
                     sb.Draw(sniperSprite,
@@ -231,12 +231,20 @@ namespace Bruh_Overtime_Defense
                        new Point(2000, 2000)), Color.White);
                     okButton.Draw(sb, ms);
                     sb.DrawString(gameFont,
-                        "Placeholder",
-                        new Vector2(150, 250),
+                        "Buff Doge:" +
+                        "\n-Has low range\n" +
+                        "-Normal Shoot speed\n" +
+                        "- It can damage\n" +
+                        "multiple enemies at once!" +
+                        "- Medium-High salary\n\n" +
+                        "Let's try it out!",
+                        new Vector2(75, 250),
                         Color.White);
-
-
-
+                    sb.Draw(dogeSprite,
+                        new Rectangle(
+                            new Point(350, 230),
+                            new Point(50, 50)),
+                        Color.White);
                     break;
             }
         }
