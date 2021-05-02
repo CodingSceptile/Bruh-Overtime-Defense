@@ -52,6 +52,9 @@ namespace Bruh_Overtime_Defense
                         enemies[i].Staller = this;
                      }
 
+
+                     //So only the ryan that stops it can free it and 
+                     //other ryans don't affect it.
                      else if((enemies[i].Staller != null) && enemies[i].Staller.Equals(this))
                      {
                         //change textures back
