@@ -1232,8 +1232,8 @@ namespace Bruh_Overtime_Defense
             baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
             sniperButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile292");
             sniperButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile292");
-            buffButton.DefaultSprite = Content.Load<Texture2D>("towerDefense_tile204");
-            buffButton.ActiveSprite = Content.Load<Texture2D>("towerDefense_tile204");
+            buffButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile204");
+            buffButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile204");
             gatekeeperButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile250");
             gatekeeperButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile250");
             notErinButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
