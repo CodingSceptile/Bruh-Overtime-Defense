@@ -25,7 +25,6 @@ namespace Bruh_Overtime_Defense
         private int vectorInteractions;
         private Vector2 originalMovement;
         private Rectangle internalHitbox;
-
         private bool startPosSet;
 
         //Properties

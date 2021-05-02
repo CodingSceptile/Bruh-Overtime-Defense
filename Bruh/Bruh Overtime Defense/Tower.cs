@@ -10,6 +10,12 @@ using Microsoft.Xna.Framework.Input;
 //=============================================
 namespace Bruh_Overtime_Defense
 {
+    public enum Priority
+    {
+        First,
+        Strong,
+        Close
+    }
      abstract class Tower : GameObject //not abstract FOR NOW
     {
         //Fields
@@ -25,7 +31,7 @@ namespace Bruh_Overtime_Defense
         protected Vector2 direction;
         protected double rotation;
         protected Enemy targetEnemy;
-
+        protected Priority towerPriority;
         protected Texture2D radii;
 
         //Properties
@@ -120,6 +126,11 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public GameTime GameTime { get { return gameTime; } }
 
+        /// <summary>
+        /// Property to get and set the enemy priorities of the tower.
+        /// </summary>
+        public Priority TowerPriority { get { return towerPriority; } set { towerPriority = value; } }
+
         //Constructor
         /// <summary>
         /// Constructor that initializes Tower class
@@ -142,7 +153,7 @@ namespace Bruh_Overtime_Defense
             this.gameTime = gameTime;
             madeShot = false;
             targetEnemy = null;
-
+            towerPriority = Priority.First;
             radii = radiusSpr;
         }
 
@@ -236,32 +247,117 @@ namespace Bruh_Overtime_Defense
 
             //sets target enemy to first one so null reference is not
             //thrown.
-            if(targetEnemy == null && enemies.Count > 0)
+            //First priority
+
+            if(towerPriority == Priority.First)
             {
-                foreach(Enemy e in enemies)
+                if (targetEnemy == null && enemies.Count > 0)
                 {
-                    if(!e.IsDead)
+                    foreach (Enemy e in enemies)
                     {
-                        if(Distance(Position, e.Position) <= Radius)
+                        if (!e.IsDead)
                         {
-                            targetEnemy = e;
-                        }                      
+                            if (Distance(Position, e.Position) <= Radius)
+                            {
+                                targetEnemy = e;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            else if(towerPriority == Priority.Strong)
+            {
+                if (targetEnemy == null && enemies.Count > 0)
+                {
+                    targetEnemy = enemies[0];
+                    foreach (Enemy e in enemies)
+                    {
+                        if (!e.IsDead)
+                        {
+                            if (Distance(Position, e.Position) <= Radius)
+                            {
+                                if(e.Health > targetEnemy.Health)
+                                {
+                                    targetEnemy = e;
+                                }
+                            }
+                        }
                     }
                 }
             }
 
-            foreach (Enemy e in enemies)
-            {          
-                
-                if(targetEnemy != null)
+            else if(towerPriority == Priority.Close)
+            {
+                if (targetEnemy == null && enemies.Count > 0)
                 {
-                    //resets target enemy.
-                    if (targetEnemy.IsDead)
+                    targetEnemy = enemies[0];
+                    foreach (Enemy e in enemies)
                     {
                         if (!e.IsDead)
                         {
-                            targetEnemy = e;
-                            break;
+                            if (Distance(Position, e.Position) <= Radius)
+                            {
+                                if (Distance(e.Hitbox, Position) < Distance(targetEnemy.Hitbox, Position))
+                                {
+                                    targetEnemy = e;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+           foreach (Enemy e in enemies)
+           {          
+                
+                if(targetEnemy != null)
+                {
+                    //resets target enemy in case something
+                    //is shot down mid-cycle
+                    if (targetEnemy.IsDead)
+                    {
+                        if(towerPriority == Priority.First)
+                        {
+                            if (!e.IsDead)
+                            {
+                                targetEnemy = e;
+                                break;
+                            }
+                        }
+                        
+                        else if(towerPriority == Priority.Strong)
+                        {
+                            foreach (Enemy en in enemies)
+                            {
+                                if (!en.IsDead)
+                                {
+                                    if (Distance(Position, en.Position) <= Radius)
+                                    {
+                                        if (en.Health > targetEnemy.Health)
+                                        {
+                                            targetEnemy = en;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        else if(towerPriority == Priority.Close)
+                        {
+                            foreach (Enemy ene in enemies)
+                            {
+                                if (!ene.IsDead)
+                                {
+                                    if (Distance(Position, ene.Position) <= Radius)
+                                    {
+                                        if (Distance(ene.Hitbox, Position) < Distance(targetEnemy.Hitbox, Position))
+                                        {
+                                            targetEnemy = ene;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
