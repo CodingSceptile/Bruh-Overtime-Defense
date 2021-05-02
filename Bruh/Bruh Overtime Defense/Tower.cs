@@ -164,7 +164,7 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         /// <param name="sb">_spriteBatch</param>
         public void Draw(SpriteBatch sb,  GraphicsDeviceManager _graphics)
-        {
+        {  
             Vector2 origin = new Vector2((float)(Sprite.Width / 2f), (float)(Sprite.Height / 2f));
             //if the tower landed a shot, make it flash red as an indicator
             //Using this if else because it only seems to be aiming in the positive directions
@@ -173,12 +173,12 @@ namespace Bruh_Overtime_Defense
                 //sb.Draw(Sprite, Position, Color.White);
                 if (direction.X <= 0)
                     sb.Draw(Sprite,
-                        new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
+                        new Rectangle(new Point((int)(Position.X + 15), (int)(Position.Y + 15)),
                         new Point(Position.Width, Position.Height)),
                         null, Color.White, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
                 else
                     sb.Draw(Sprite,
-                        new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
+                        new Rectangle(new Point((int)(Position.X + 15), (int)(Position.Y + 15)),
                         new Point(Position.Width, Position.Height)),
                         null, Color.White, (float)rotation, origin, SpriteEffects.None, 0f);
             }
@@ -187,13 +187,13 @@ namespace Bruh_Overtime_Defense
                 //sb.Draw(Sprite, Position, Color.Red);
                 if (direction.X <= 0)
                     sb.Draw(Sprite,
-                        new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
+                        new Rectangle(new Point((int)(Position.X + 15), (int)(Position.Y + 15)),
                         new Point(Position.Width, Position.Height)),
                         null, Color.Red, (float)rotation, origin, SpriteEffects.FlipHorizontally, 0f);
 
                 else
                     sb.Draw(Sprite,
-                        new Rectangle(new Point((int)(Position.X + origin.X / 2), (int)(Position.Y + origin.Y / 2)),
+                        new Rectangle(new Point((int)(Position.X + 15), (int)(Position.Y + 15)),
                         new Point(Position.Width, Position.Height)),
                         null, Color.Red, (float)rotation, origin, SpriteEffects.None, 0f);
             }

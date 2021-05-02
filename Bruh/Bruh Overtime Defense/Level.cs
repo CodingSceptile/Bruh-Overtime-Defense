@@ -377,6 +377,25 @@ namespace Bruh_Overtime_Defense
                         }
                     }
                 }
+                trackLocs.Add(
+                        new Rectangle(
+                            new Point(-30, 0),
+                            new Point(30, 1000)));
+                
+                trackLocs.Add(
+                        new Rectangle(
+                            new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, 0),
+                            new Point(30, 1000)));
+                trackLocs.Add(
+                        new Rectangle(
+                            new Point(0, -30),
+                            new Point(1000, 30)));
+                trackLocs.Add(
+                        new Rectangle(
+                            new Point(0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height),
+                            new Point(1000, 30)));
+
+
                 return codes;                
             }
 
