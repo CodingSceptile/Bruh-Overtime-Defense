@@ -250,7 +250,7 @@ namespace Bruh_Overtime_Defense
                 (tileHeight * 6) - 5, tileWidth, tileHeight);
 
             okButton = new Button((screenWidth / 4) + 35,
-                (2 * screenHeight) / 3, 300, 100);
+                ((2 * screenHeight) / 3) + 100, 300, 100);
             
             //the position of the Tower Menu
             towerMenuPos = new Rectangle(screenWidth - (tileWidth * 3),
@@ -274,7 +274,7 @@ namespace Bruh_Overtime_Defense
             //3: Ryan the Gatekeeper, 4: Not Erin
             towerRadii = new int[] { 130, int.MaxValue, 80, 100, 100 };
             towerCost = new int[] { 20, 40, 60, 80, 200 };
-            towerSpeed = new int[] { 1, 3, 1, 2, 3 };
+            towerSpeed = new int[] { 1, 3, 1, 2, 1};
             salaryDivider = 4;
 
             //initialize waves and related
@@ -656,7 +656,6 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         public void FiniteStateMachine(GameTime gameTime)
         {
-
             //if the player is on the title screen
             if (gState == GameState.TitleScreen)
             {
@@ -879,7 +878,10 @@ namespace Bruh_Overtime_Defense
                     //implements wave and enemy function
                     if(tutorialPhase == 5
                         || tutorialPhase == 12
-                        || tutorialPhase == 14)
+                        || tutorialPhase == 14
+                        || tutorialPhase == 16
+                        || tutorialPhase == 18
+                        || tutorialPhase == 23)
                     {
                         if(tutorialPhase == 5)
                         {
@@ -888,7 +890,11 @@ namespace Bruh_Overtime_Defense
                         //Next wave button clicked
                         if (nextWaveButton.Clicked(mState, prevMState))
                         {
-                            NextWave();
+                            if(tutorialPhase != 23)
+                            {
+                                NextWave();
+                            }
+                            
                             if(firstEnemySpawned == false)
                             {
                                 enemies[0].IsDead = false;
@@ -938,17 +944,27 @@ namespace Bruh_Overtime_Defense
                     //spawns a few sniper monkes
                     //for demonstration.
                     else if(tutorialPhase == 12
-                        || tutorialPhase == 14)
+                        || tutorialPhase == 14
+                        || tutorialPhase == 16
+                        || tutorialPhase == 18)
                     {
+                        //Sniper monke being shown off
                         if(towers[0] is DootSkeleton)
                         {
+                            //Resets the game (as if a 
+                            //new game is starting)
                             Reset();
                             NextWave();
+
+                            //spawns the first enemy immediately
                             if (firstEnemySpawned == false)
                             {
                                 enemies[0].IsDead = false;
                                 firstEnemySpawned = true;
                             }
+                            
+                            //sets the total money to 0,
+                            //spawns a singular tower
                             totalMoney = 0;
                             towers.Add(new SniperMonke
                             (new Rectangle(new Point(500, 300),
@@ -956,6 +972,8 @@ namespace Bruh_Overtime_Defense
                             sniperSprite, towerRadii[1], 40, towerSpeed[1],
                             gameTime, radius));                      
                         }
+
+                        //buff doge showoff
                         else if(towers[0] is SniperMonke
                             && tutorialPhase == 14)
                         {
@@ -974,10 +992,55 @@ namespace Bruh_Overtime_Defense
                             gameTime, radius));
                         }
 
+                        //ryan showoff
+                        else if (towers[0] is BuffDoge
+                            && tutorialPhase == 16)
+                        {
+                            Reset();
+                            NextWave();
+                            firstEnemySpawned = false;
+
+                            enemies[0].IsDead = false;
+
+                            totalMoney = 0;
+
+                            towers.Add(new RyanTheGateKeeper
+                            (new Rectangle(new Point(350, 325),
+                            new Point(tileWidth, tileHeight)),
+                            ryanSprite, towerRadii[3], 40, towerSpeed[2],
+                            gameTime, radius));
+                        }
+
+                        //Erin showoff
+                        else if (towers[0] is RyanTheGateKeeper
+                            && tutorialPhase == 18)
+                        {
+                            Reset();
+                            NextWave();
+                            firstEnemySpawned = false;
+
+                            enemies[0].IsDead = false;
+
+                            totalMoney = 0;
+
+                            towers.Add(new Not_Erin
+                            (new Rectangle(new Point(350, 325),
+                            new Point(tileWidth, tileHeight)),
+                            erinSprite, towerRadii[4], 40, towerSpeed[2],
+                            gameTime, radius));
+                        }
+
                         if (enMan.AllEnemiesDead() && currWave == 1)
                         {
                             tutorialPhase++;
                         }
+                    }
+
+                    //Showcases each of the bruhs
+                    else if(tutorialPhase == 23)
+                    {
+                        soundPlaying = false;
+                        gState = GameState.MapSelect;
                     }
                 }
                 else

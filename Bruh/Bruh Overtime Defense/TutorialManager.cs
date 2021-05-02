@@ -234,9 +234,9 @@ namespace Bruh_Overtime_Defense
                         "Buff Doge:" +
                         "\n-Has low range\n" +
                         "-Normal Shoot speed\n" +
-                        "- It can damage\n" +
-                        "multiple enemies at once!" +
-                        "- Medium-High salary\n\n" +
+                        "-It can damage\n" +
+                        "multiple enemies at once!\n" +
+                        "-Medium-High salary\n\n" +
                         "Let's try it out!",
                         new Vector2(75, 250),
                         Color.White);
@@ -244,6 +244,108 @@ namespace Bruh_Overtime_Defense
                         new Rectangle(
                             new Point(350, 230),
                             new Point(50, 50)),
+                        Color.White);
+                    break;
+
+                case 15:
+                    sb.Draw(bg,
+                       new Rectangle(new Point(0, 0),
+                       new Point(2000, 2000)), Color.White);
+                    okButton.Draw(sb, ms);
+                    sb.DrawString(gameFont,
+                        "Ryan the Gatekeeper:\n" +
+                        "\n-Has lower-than-average\nrange\n" +
+                        "-Normal Shoot speed\n" +
+                        "- They stop everything\n" +
+                        "in their radius!\n" +
+                        "- High salary\n\n" +
+                        "Let's try it out!",
+                        new Vector2(75, 250),
+                        Color.White);
+                    sb.Draw(ryanSprite,
+                        new Rectangle(
+                            new Point(600, 230),
+                            new Point(50, 50)),
+                        Color.White);
+                    break;
+
+                case 17:
+                    sb.Draw(bg,
+                       new Rectangle(new Point(0, 0),
+                       new Point(2000, 2000)), Color.White);
+                    okButton.Draw(sb, ms);
+                    sb.DrawString(gameFont,
+                        "Not Erin:\n" +
+                        "-Has normal range\n" +
+                        "-Normal Shoot speed\n\n" +
+                        "- They DESTROY everything\n" +
+                        "in sight!\n" +
+                        "- VERY High salary\n\n" +
+                        "Let's try it out!",
+                        new Vector2(75, 250),
+                        Color.White);
+                    sb.Draw(notErinSprite,
+                        new Rectangle(
+                            new Point(300, 238),
+                            new Point(50, 50)),
+                        Color.White);
+                    break;
+
+                case 19:
+                    sb.Draw(bg,
+                       new Rectangle(new Point(0, 0),
+                       new Point(2000, 2000)), Color.White);
+                    okButton.Draw(sb, ms);
+                    sb.DrawString(gameFont,
+                        "Those are all of the\n" +
+                        "available towers!\n\n" +
+                        "Each tower has it's\n" +
+                        "own purpose when fighting\n" +
+                        "off the bruhs.",
+                        new Vector2(75, 250),
+                        Color.White);
+                    break;
+                case 20:
+                    sb.Draw(bg,
+                       new Rectangle(new Point(0, 0),
+                       new Point(2000, 2000)), Color.White);
+                    okButton.Draw(sb, ms);
+                    sb.DrawString(gameFont,
+                        "Now, onto enemy variants.\n\n" +
+                        "There are five enemy\n" +
+                        "variants in this game,\n\n" +
+                        "each has a different\n" +
+                        "health and speed.",
+                        new Vector2(75, 250),
+                        Color.White);
+                    break;
+
+                case 21:
+                    sb.Draw(bg,
+                       new Rectangle(new Point(0, 0),
+                       new Point(2000, 2000)), Color.White);
+                    okButton.Draw(sb, ms);
+                    sb.DrawString(gameFont,
+                        "Black Bruh - weakest, slow.\n\n" +
+                        "Red Bruh - A little stronger,\n" +
+                        "has a moderate pace.\n\n" +
+                        "Green Bruh - Strong \nand fast\n\n" +
+                        "Blue Bruh - Very strong \nand Very fast\n\n" +
+                        "HURB - EXTREMELY strong, \nbut slow.",
+                        new Vector2(15, 250),
+                        Color.White);
+                    break;
+
+                case 22:
+                    sb.Draw(bg,
+                       new Rectangle(new Point(0, 0),
+                       new Point(2000, 2000)), Color.White);
+                    okButton.Draw(sb, ms);
+                    sb.DrawString(gameFont,
+                        "The objective of the game\n" +
+                        "is to beat wave 20!\n\n\n" +
+                        "Good luck!",
+                        new Vector2(15, 250),
                         Color.White);
                     break;
             }
