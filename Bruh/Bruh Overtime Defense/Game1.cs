@@ -853,6 +853,10 @@ namespace Bruh_Overtime_Defense
                 }
                 else if(SingleKeyPress(Keys.Enter) && instructionsPage == 1)
                 {
+                    instructionsPage = 2;
+                }
+                else if (SingleKeyPress(Keys.Enter) && instructionsPage == 2)
+                {
                     instructionsPage = 0;
                 }
 
@@ -1587,6 +1591,8 @@ namespace Bruh_Overtime_Defense
                     "in retaliation.\n\n";
                 instructions += "When your defenses are set up, hit the Next Wave button to let the bruhs " +
                     "flow in. \n\nGood luck.";
+                //draws the instructions to the screen
+                _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.Black);
             }
             //second instructions page
             else if(instructionsPage == 1)
@@ -1607,10 +1613,43 @@ namespace Bruh_Overtime_Defense
                 instructions += "NOT ERIN: This tower has moderate range, and is very expensive, but it " +
                     "vaporizes \nall bruhs in range at a decent speed, being just as quick as the " +
                     "DOOT SKELETON.\n\n";
+                //draws the instructions to the screen
+                _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.Black);
+            }
+            //third instructions page (credits)
+            else if(instructionsPage == 2)
+            {
+                _spriteBatch.DrawString(gameText36, "Credits", new Vector2(230, 80), Color.White);
+                _spriteBatch.DrawString(gameText20, "Main Programmers", new Vector2(200, 140), Color.White);
+                _spriteBatch.DrawString(arial16, "Sami Chamberlain, London Emmerich, Caleb Jeon, Mukund Suresh",
+                    new Vector2(100, 170), Color.White);
+
+                _spriteBatch.DrawString(gameText20, "External Assets", new Vector2(200, 230), Color.White);
+                _spriteBatch.DrawString(arial16, "ansimuz: Urban Landscape Background parallax",
+                    new Vector2(100, 260), Color.White);
+                _spriteBatch.DrawString(arial16, "Big Purp: Doot Skeleton image",
+                    new Vector2(100, 290), Color.White);
+                _spriteBatch.DrawString(arial16, "Chris Cascioli: SpriteBatch library",
+                    new Vector2(100, 320), Color.White);
+                _spriteBatch.DrawString(arial16, "Game Developer Studio: Sniper Rifle image",
+                    new Vector2(100, 350), Color.White);
+                _spriteBatch.DrawString(arial16, "jkfite01: Victory! song",
+                    new Vector2(100, 380), Color.White);
+                _spriteBatch.DrawString(arial16, "omfgdude: Chill Lofi Inspired song",
+                    new Vector2(100, 410), Color.White);
+                _spriteBatch.DrawString(arial16, "Sudocolon: Icy Game Over song",
+                    new Vector2(100, 440), Color.White);
+                _spriteBatch.DrawString(arial16, "TAD: Iced Village (8 Bit Lofi Hip Hop) song",
+                    new Vector2(100, 470), Color.White);
+                _spriteBatch.DrawString(arial16, "TokyoGeisha: Ruined City Background parallax",
+                    new Vector2(100, 500), Color.White);
+
+                _spriteBatch.DrawString(gameText20, "Special Thanks", new Vector2(200, 560), Color.White);
+                _spriteBatch.DrawString(arial16, "Erin Cascioli, Ryan Ress",
+                    new Vector2(250, 600), Color.White);
             }
 
-            //draws the instructions to the screen
-            _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.Black);
+            
         }
 
         /// <summary>
@@ -1851,21 +1890,25 @@ namespace Bruh_Overtime_Defense
 
                     //priority button
                     //display the correct button based on the tower's priority
-                    switch (towers[i].TowerPriority)
+                    if (towers[i].RollOver(mState))
                     {
-                        case Priority.First:
-                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PFirstButton");
-                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PFirstButtonActive");
-                            break;
-                        case Priority.Strong:
-                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PStrongButton");
-                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PStrongButtonActive");
-                            break;
-                        case Priority.Close:
-                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PCloseButton");
-                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PCloseButtonActive");
-                            break;
+                        switch (towers[i].TowerPriority)
+                        {
+                            case Priority.First:
+                                priorityButton.DefaultSprite = Content.Load<Texture2D>("PFirstButton");
+                                priorityButton.ActiveSprite = Content.Load<Texture2D>("PFirstButtonActive");
+                                break;
+                            case Priority.Strong:
+                                priorityButton.DefaultSprite = Content.Load<Texture2D>("PStrongButton");
+                                priorityButton.ActiveSprite = Content.Load<Texture2D>("PStrongButtonActive");
+                                break;
+                            case Priority.Close:
+                                priorityButton.DefaultSprite = Content.Load<Texture2D>("PCloseButton");
+                                priorityButton.ActiveSprite = Content.Load<Texture2D>("PCloseButtonActive");
+                                break;
+                        }
                     }
+                    
                     //if the button is clicked, change the priority
                     if (priorityButton.Clicked(mState, prevMState))
                     {
@@ -1975,28 +2018,9 @@ namespace Bruh_Overtime_Defense
             //check each tower
             for (int i = 0; i < towers.Count; i++)
             {
-                //if the tower is being rolled over
-                if (towers[i].RollOver(mState))
-                {
-                    //draw the tower options and mark the tower as being rolled over
-                    if(towers[i].Position.Y > 100)
-                    {
-                        DrawTowerOptions(towers[i].Position.X - tileWidth, towers[i].Position.Y - tileHeight * 3,
-                        (int)towers[i].OriginalSalary / salaryDivider);
-                        towerRollover[i] = true;
-                        return i;
-                    }
-                    //changes the position of the menu so it doesn't go off the top of the screen
-                    else if (towers[i].Position.Y <= 100)
-                    {
-                        DrawTowerOptions(towers[i].Position.X - tileWidth, towers[i].Position.Y + tileHeight,
-                        (int)towers[i].OriginalSalary / salaryDivider);
-                        towerRollover[i] = true;
-                        return i;
-                    }
-                }
+                
                 //if the tower is marked as being rolled over
-                else if(towerRollover[i] == true)
+                if(towerRollover[i] == true)
                 {
                     //if the tower is below the top of the map
                     if (towers[i].Position.Y > 100)
@@ -2029,6 +2053,26 @@ namespace Bruh_Overtime_Defense
                             towerRollover[i] = true;
                             return i;
                         }
+                    }
+                }
+                //if the tower is being rolled over
+                else if (towers[i].RollOver(mState))
+                {
+                    //draw the tower options and mark the tower as being rolled over
+                    if (towers[i].Position.Y > 100)
+                    {
+                        DrawTowerOptions(towers[i].Position.X - tileWidth, towers[i].Position.Y - tileHeight * 3,
+                        (int)towers[i].OriginalSalary / salaryDivider);
+                        towerRollover[i] = true;
+                        return i;
+                    }
+                    //changes the position of the menu so it doesn't go off the top of the screen
+                    else if (towers[i].Position.Y <= 100)
+                    {
+                        DrawTowerOptions(towers[i].Position.X - tileWidth, towers[i].Position.Y + tileHeight,
+                        (int)towers[i].OriginalSalary / salaryDivider);
+                        towerRollover[i] = true;
+                        return i;
                     }
                 }
                 //if the tower and menu are not being rolled over
