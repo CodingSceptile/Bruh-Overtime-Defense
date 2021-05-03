@@ -27,13 +27,15 @@ namespace Bruh_Overtime_Defense
         private Rectangle internalHitbox;
         private bool startPosSet;
         private RyanTheGateKeeper staller;
+        private Texture2D originalTexture;
 
         //Properties
         public int Health { get { return health; } set { health = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public bool IsDead { get { return isDead; } set { isDead = value; } }
-        public Texture2D Bruh { get { return texture; } }
+        public Texture2D Bruh { get { return texture; } set { texture = value; } }
         public RyanTheGateKeeper Staller { get { return staller; } set { staller = value; } }
+        public Texture2D OriginalBruh { get { return originalTexture; } }
 
         /// <summary>
         /// Returns the X coordinate of the
@@ -124,6 +126,7 @@ namespace Bruh_Overtime_Defense
             : base(position, texture)
         {
             this.texture = texture;
+            originalTexture = texture;
             this.health = health;
             this.speed = speed;
             this.position = position;

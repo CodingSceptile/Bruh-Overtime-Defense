@@ -121,6 +121,7 @@ namespace Bruh_Overtime_Defense
         private Texture2D blue;
         private Texture2D green;
         private Texture2D hurb;
+        private Texture2D waitingTexture;
         private List<Enemy> enemies;
         private float enemySpeed;
         private int enemyHealth;
@@ -348,6 +349,7 @@ namespace Bruh_Overtime_Defense
             blue = Content.Load<Texture2D>("Textures/bruhBlue");
             green = Content.Load<Texture2D>("Textures/bruhGreen");
             hurb = Content.Load<Texture2D>("Textures/hurb");
+            waitingTexture = Content.Load<Texture2D>("Textures/waitingRoom");
 
             //title textures
             sky = Content.Load<Texture2D>("Textures/Sky-layer");
@@ -1032,7 +1034,7 @@ namespace Bruh_Overtime_Defense
                             (new Rectangle(new Point(350, 325),
                             new Point(tileWidth, tileHeight)),
                             ryanSprite, towerRadii[3], 40, towerSpeed[2],
-                            gameTime, radius));
+                            gameTime, radius, waitingTexture));
                             towerRollover.Add(false);
                         }
 
@@ -1459,6 +1461,7 @@ namespace Bruh_Overtime_Defense
             salaryButton.ActiveSprite = Content.Load<Texture2D>("PaySalaryButton");
             fireButton.DefaultSprite = Content.Load<Texture2D>("FireTowerButton");
             fireButton.ActiveSprite = Content.Load<Texture2D>("FireTowerButtonActive");
+
             //tower buttons
             baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
             baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
@@ -1470,6 +1473,8 @@ namespace Bruh_Overtime_Defense
             gatekeeperButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile250");
             notErinButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
             notErinButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile205");
+
+
             //other buttons
             erinModeButton.DefaultSprite = Content.Load<Texture2D>("Textures/ErinModeOFF");
             erinModeButton.ActiveSprite = Content.Load<Texture2D>("Textures/ErinModeOFFActive");
@@ -1672,7 +1677,7 @@ namespace Bruh_Overtime_Defense
                             new Rectangle(mState.X - tileWidth / 3, mState.Y - tileHeight / 3,
                             tileWidth, tileHeight),
                             gatekeeperButton.DefaultSprite,
-                            towerRadii[3], towerCost[3], towerSpeed[3], gameTime, radius));
+                            towerRadii[3], towerCost[3], towerSpeed[3], gameTime, radius, waitingTexture));
                         totalMoney -= towerCost[3];
                         break;
                     //NOT_ERIN Tower
