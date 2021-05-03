@@ -284,7 +284,7 @@ namespace Bruh_Overtime_Defense
             //3: Ryan the Gatekeeper, 4: Not Erin
             towerRadii = new int[] { 130, int.MaxValue, 80, 100, 100 };
             towerCost = new int[] { 20, 40, 60, 80, 200 };
-            towerSpeed = new int[] { 1, 3, 1, 2, 1};
+            towerSpeed = new int[] { 3, 6, 2, 4, 2};
             salaryDivider = 4;
 
             //initialize waves and related
@@ -959,7 +959,7 @@ namespace Bruh_Overtime_Defense
                     else if(tutorialPhase == 8)
                     {
                         TowerFunction(gameTime);
-                        if(towers[0].Salary >= 40)
+                        if(towers[0].Salary >= 20)
                         {
                             tutorialPhase++;
                             firstEnemySpawned = false;
@@ -1505,7 +1505,7 @@ namespace Bruh_Overtime_Defense
                 {
                     if (tower is DootSkeleton)
                     {
-                        totalMoney += 2;
+                        totalMoney += 1;
                     }
                     else if (tower is SniperMonke)
                     {
