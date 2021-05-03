@@ -288,7 +288,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     sb.Draw(notErinSprite,
                         new Rectangle(
-                            new Point(300, 238),
+                            new Point(315, 230),
                             new Point(50, 50)),
                         Color.White);
                     break;

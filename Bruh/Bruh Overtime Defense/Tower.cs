@@ -372,7 +372,7 @@ namespace Bruh_Overtime_Defense
                     }
 
                     //Shoots every activitySpeed amount of seconds.
-                    if ((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 1000) == 0)
+                    if ((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 500) == 0)
                     {
                         if (Distance(Position, e.Position) <= Radius)
                         {
