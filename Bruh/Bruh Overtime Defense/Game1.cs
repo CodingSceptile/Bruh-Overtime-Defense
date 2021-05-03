@@ -244,9 +244,9 @@ namespace Bruh_Overtime_Defense
                 0, tileWidth, tileHeight);
             pauseButton = new Button(screenWidth - tileWidth,
                 0, tileWidth, tileHeight);
-            salaryButton = new Button(0, 0, tileWidth * 2, tileHeight);
-            fireButton = new Button(0, 0, tileWidth * 2, tileHeight);
-            priorityButton = new Button(0, 0, tileWidth * 3, tileHeight);
+            salaryButton = new Button(0, 0, tileWidth * 2, tileHeight - 3);
+            fireButton = new Button(0, 0, tileWidth * 2, tileHeight - 3);
+            priorityButton = new Button(0, 0, tileWidth * 3 - 6, tileHeight);
             //tower buttons
             baseTowerButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 2) - 5, tileWidth, tileHeight);
@@ -591,8 +591,7 @@ namespace Bruh_Overtime_Defense
                             break;
                     }
 
-                    //mark the tower that is being rolled over
-                    rolledOverTower = CheckTowerRollover();
+                    
 
                     //Maneuvring to get shapebatch to work
                     _spriteBatch.End();
@@ -623,6 +622,9 @@ namespace Bruh_Overtime_Defense
                     {
                         TutorialDraw(_spriteBatch);
                     }
+
+                    //mark the tower that is being rolled over
+                    rolledOverTower = CheckTowerRollover();
 
                     DrawTowerMenu();
                     break;
@@ -1898,19 +1900,19 @@ namespace Bruh_Overtime_Defense
                 Color.White);
             //adjusts the location of the salary button and draws it
             salaryButton.X = x + 5;
-            salaryButton.Y = y + 5;
+            salaryButton.Y = y + 3;
             salaryButton.Draw(_spriteBatch, mState);
             //print the salary of the tower
             _spriteBatch.DrawString(arial10, "$" + salary, 
-                new Vector2(x + 10 + tileWidth * 2, y + 15), 
+                new Vector2(x + 10 + tileWidth * 2, y + 10), 
                 Color.White);
             //adjusts the location of the fire button and draws it
             fireButton.X = x + tileWidth / 2;
-            fireButton.Y = y + 10 + tileHeight;
+            fireButton.Y = y + tileHeight;
             fireButton.Draw(_spriteBatch, mState);
             //adjusts the location of the priority button and draws it
-            priorityButton.X = x;
-            priorityButton.Y = y + 10 + tileHeight * 2;
+            priorityButton.X = x + 3;
+            priorityButton.Y = y - 3 + tileHeight * 2;
             priorityButton.Draw(_spriteBatch, mState);
         }
 
@@ -1972,7 +1974,7 @@ namespace Bruh_Overtime_Defense
                     //changes the position of the menu so it doesn't go off the top of the screen
                     else if (towers[i].Position.Y <= 100)
                     {
-                        DrawTowerOptions(towers[i].Position.X + tileWidth, towers[i].Position.Y,
+                        DrawTowerOptions(towers[i].Position.X - tileWidth, towers[i].Position.Y + tileHeight,
                         (int)towers[i].OriginalSalary / salaryDivider);
                         towerRollover[i] = true;
                         return i;
@@ -2000,12 +2002,13 @@ namespace Bruh_Overtime_Defense
                     //if the tower is at the top of the map, change the position of the menu
                     else if(towers[i].Position.Y <= 100)
                     {
-                        if (mState.Position.X < towers[i].Position.X + (tileWidth * 4) &&
-                            mState.Position.X > towers[i].Position.X  &&
-                            mState.Position.Y < towers[i].Position.Y  + tileHeight * 3 &&
+                        if (mState.Position.X < towers[i].Position.X + (tileWidth * 2) &&
+                            mState.Position.X > towers[i].Position.X - tileWidth &&
+                            mState.Position.Y < towers[i].Position.Y  + tileHeight * 4 &&
                             mState.Position.Y > towers[i].Position.Y)
                         {
-                            DrawTowerOptions(towers[i].Position.X + tileWidth, towers[i].Position.Y,
+                            DrawTowerOptions(towers[i].Position.X - tileWidth, 
+                                towers[i].Position.Y + tileHeight,
                                 (int)towers[i].OriginalSalary / salaryDivider);
                             //keep the tower as being rolled over and return the index of the tower
                             towerRollover[i] = true;
