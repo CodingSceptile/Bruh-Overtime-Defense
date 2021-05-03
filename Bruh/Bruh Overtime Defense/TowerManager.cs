@@ -106,7 +106,7 @@ namespace Bruh_Overtime_Defense
                             new Vector2(towers[i].Position.X - 20, towers[i].Position.Y + 30),
                             Color.White);
                     }
-                }
+                }            
             }
         }
     }

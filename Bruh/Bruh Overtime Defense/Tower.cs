@@ -33,6 +33,7 @@ namespace Bruh_Overtime_Defense
         protected Enemy targetEnemy;
         protected Priority towerPriority;
         protected Texture2D radii;
+        protected int damageGiven;
 
         //Properties
         /// <summary>
@@ -155,6 +156,7 @@ namespace Bruh_Overtime_Defense
             targetEnemy = null;
             towerPriority = Priority.First;
             radii = radiusSpr;
+            damageGiven = 1;
         }
 
         //Methods
@@ -382,7 +384,7 @@ namespace Bruh_Overtime_Defense
                                 continue;
                             }
 
-                            e.Health -= 1;
+                            e.Health -= damageGiven;
                             money++;
                             madeShot = true;
                             if (e.Health <= 0)

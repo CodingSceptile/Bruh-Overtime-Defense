@@ -17,7 +17,8 @@ namespace Bruh_Overtime_Defense
             : base(pos, spr, radius, initialCost, activitySpeed, gameTime, radiusSpr)
         {
             radius = int.MaxValue;
-            activitySpeed = 3; //arbitrary, can balance later
+            this.activitySpeed = activitySpeed; //arbitrary, can balance later
+            damageGiven = 2;
         }
 
     }
