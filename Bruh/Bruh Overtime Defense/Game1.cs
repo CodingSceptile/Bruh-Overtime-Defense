@@ -284,7 +284,7 @@ namespace Bruh_Overtime_Defense
             //3: Ryan the Gatekeeper, 4: Not Erin
             towerRadii = new int[] { 130, int.MaxValue, 80, 100, 100 };
             towerCost = new int[] { 20, 40, 60, 80, 200 };
-            towerSpeed = new int[] { 3, 6, 2, 4, 2};
+            towerSpeed = new int[] { 3, 6, 1, 1, 1};
             salaryDivider = 4;
 
             //initialize waves and related
@@ -541,6 +541,20 @@ namespace Bruh_Overtime_Defense
                             {
                                 validPlaceForTower = Color.Green;
                             }
+                        }
+                    }
+
+                    //checks for intersecting towers
+                    foreach(Tower t in towers)
+                    {
+                        if (t.Position.Intersects(mouseCheck))
+                        {
+                            validPlaceForTower = Color.Red;
+                            break;
+                        }
+                        else
+                        {
+                            validPlaceForTower = Color.Green;
                         }
                     }
 
@@ -1539,6 +1553,7 @@ namespace Bruh_Overtime_Defense
 
                 //check for resignations (which
                 //adds an enemy to the list)
+
                 towerManager.Resignations(towers,
                     enemies, blue, collisions.StartPosition, towerRollover);
 
@@ -2018,7 +2033,6 @@ namespace Bruh_Overtime_Defense
                 {
                     //mark the tower as not being rolled over and return -1
                     towerRollover[i] = false;
-                    return -1;
                 }
             }
             //reset towerRollover and return -1
