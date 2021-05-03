@@ -2018,7 +2018,6 @@ namespace Bruh_Overtime_Defense
                 {
                     //mark the tower as not being rolled over and return -1
                     towerRollover[i] = false;
-                    return -1;
                 }
             }
             //reset towerRollover and return -1
