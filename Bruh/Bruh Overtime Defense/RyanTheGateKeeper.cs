@@ -48,7 +48,7 @@ namespace Bruh_Overtime_Defense
 
                     if (Distance(enemies[i].Position, Position) <= radius)
                      {
-                        //apply texture here
+                        //waiting room texture also applied here
                         enemies[i].Bruh = waitingRoom;
                         enemies[i].Movement *= 0;
                         enemies[i].Staller = this;
@@ -59,8 +59,7 @@ namespace Bruh_Overtime_Defense
                      //other ryans don't affect it.
                      else if((enemies[i].Staller != null) && enemies[i].Staller.Equals(this))
                      {
-                        //change textures back
-                        //attendance check, one goes in at a time
+                        //changed textures back
                         enemies[i].Bruh = enemies[i].OriginalBruh;
                         enemies[i].Movement = enemies[i].OriginalMovement;
                      }
@@ -72,6 +71,7 @@ namespace Bruh_Overtime_Defense
             {
                 for(int i = 0; i < enemies.Count; i++)
                 {
+                    //textures are also reverted back
                     enemies[i].Bruh = enemies[i].OriginalBruh;
                     enemies[i].Movement = enemies[i].OriginalMovement;
                 }
