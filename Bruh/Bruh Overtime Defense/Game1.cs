@@ -1884,14 +1884,13 @@ namespace Bruh_Overtime_Defense
                             totalMoney += (int)towers[i].Salary;
                             towerRollover.RemoveAt(i);
                             towers.RemoveAt(i);
-
                         }
                     }
 
-                    //priority button
-                    //display the correct button based on the tower's priority
-                    if (towers[i].RollOver(mState))
+                    if (i < towers.Count && towers[i].RollOver(mState))
                     {
+                        //priority button
+                        //display the correct button based on the tower's priority
                         switch (towers[i].TowerPriority)
                         {
                             case Priority.First:
@@ -1907,24 +1906,24 @@ namespace Bruh_Overtime_Defense
                                 priorityButton.ActiveSprite = Content.Load<Texture2D>("PCloseButtonActive");
                                 break;
                         }
-                    }
-                    
-                    //if the button is clicked, change the priority
-                    if (priorityButton.Clicked(mState, prevMState))
-                    {
-                        switch (towers[i].TowerPriority)
+                        //if the button is clicked, change the priority
+                        if (priorityButton.Clicked(mState, prevMState))
                         {
-                            case Priority.First:
-                                towers[i].TowerPriority = Priority.Strong;
-                                break;
-                            case Priority.Strong:
-                                towers[i].TowerPriority = Priority.Close;
-                                break;
-                            case Priority.Close:
-                                towers[i].TowerPriority = Priority.First;
-                                break;
+                            switch (towers[i].TowerPriority)
+                            {
+                                case Priority.First:
+                                    towers[i].TowerPriority = Priority.Strong;
+                                    break;
+                                case Priority.Strong:
+                                    towers[i].TowerPriority = Priority.Close;
+                                    break;
+                                case Priority.Close:
+                                    towers[i].TowerPriority = Priority.First;
+                                    break;
+                            }
                         }
                     }
+                  
                 }              
             }
         }

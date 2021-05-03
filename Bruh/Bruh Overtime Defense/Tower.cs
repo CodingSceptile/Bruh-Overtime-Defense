@@ -273,6 +273,7 @@ namespace Bruh_Overtime_Defense
                 if (targetEnemy == null && enemies.Count > 0)
                 {
                     targetEnemy = enemies[0];
+
                     foreach (Enemy e in enemies)
                     {
                         if (!e.IsDead)
@@ -300,7 +301,7 @@ namespace Bruh_Overtime_Defense
                         {
                             if (Distance(Position, e.Position) <= Radius)
                             {
-                                if (Distance(e.Hitbox, Position) < Distance(targetEnemy.Hitbox, Position))
+                                if (Distance(e.Position, Position) < Distance(targetEnemy.Position, Position))
                                 {
                                     targetEnemy = e;
                                 }
@@ -354,7 +355,8 @@ namespace Bruh_Overtime_Defense
                                 {
                                     if (Distance(Position, ene.Position) <= Radius)
                                     {
-                                        if (Distance(ene.Hitbox, Position) < Distance(targetEnemy.Hitbox, Position))
+                                        if (Distance(ene.Position, Position) 
+                                            < Distance(targetEnemy.Position, Position))
                                         {
                                             targetEnemy = ene;
                                         }

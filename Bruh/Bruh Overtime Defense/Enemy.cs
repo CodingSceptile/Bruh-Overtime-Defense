@@ -24,7 +24,6 @@ namespace Bruh_Overtime_Defense
         private Vector2 movement;
         private int vectorInteractions;
         private Vector2 originalMovement;
-        private Rectangle internalHitbox;
         private bool startPosSet;
         private RyanTheGateKeeper staller;
         private Texture2D originalTexture;
@@ -83,20 +82,6 @@ namespace Bruh_Overtime_Defense
             set { vectorInteractions = value; }      
         }
 
-        /// <summary>
-        /// returns the internal hitbox of the enemy
-        /// </summary>
-        public Rectangle Hitbox { get { return internalHitbox; } }
-
-        /// <summary>
-        /// Gets or sets the internal
-        /// hitboxes' x value
-        /// </summary>
-        public int HitX
-        {
-            get { return internalHitbox.X; }
-            set { internalHitbox.X = value; }
-        }
 
         public bool StartPosSet
         {
@@ -104,15 +89,6 @@ namespace Bruh_Overtime_Defense
             set { startPosSet = value; }
         }
 
-
-        /// <summary>
-        /// Gets or sets the internal hitboxes' y value
-        /// </summary>
-        public int HitY
-        {
-            get { return internalHitbox.Y; }
-            set { internalHitbox.Y = value; }
-        }
 
 
         /// <summary>
@@ -133,12 +109,6 @@ namespace Bruh_Overtime_Defense
             this.isDead = true;
 
             startPosSet = false;
-            //Creates an internal hitbox to fix the 
-            //issue of rotation overlap
-            internalHitbox =
-                new Rectangle(
-                    new Point(position.X + (position.Width / 2), position.Y + (position.Height / 2)),
-                    new Point(position.Width / 2, position.Height / 2));
 
             if (position.X - position.Y < 0)
             {
