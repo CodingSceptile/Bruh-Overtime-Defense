@@ -92,6 +92,8 @@ namespace Bruh_Overtime_Defense
         private Button notErinButton;
         private Button erinModeButton;
         private Button okButton;
+        private Button salaryButton;
+        private Button fireButton;
         private bool isErinMode;
 
         //SpriteFonts
@@ -168,6 +170,8 @@ namespace Bruh_Overtime_Defense
         private TimeSpan timeSpanSincePause;
         private Texture2D uiInstructions;
         private int instructionsPage;
+        private List<bool> towerRollover;
+        private int rolledOverTower;
 
         //track locations (for user feedback)
         private List<Rectangle> trackLocs;
@@ -237,6 +241,8 @@ namespace Bruh_Overtime_Defense
                 0, tileWidth, tileHeight);
             pauseButton = new Button(screenWidth - tileWidth,
                 0, tileWidth, tileHeight);
+            salaryButton = new Button(0, 0, tileWidth * 2, tileHeight);
+            fireButton = new Button(0, 0, tileWidth * 2, tileHeight);
             //tower buttons
             baseTowerButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 2) - 5, tileWidth, tileHeight);
@@ -295,6 +301,8 @@ namespace Bruh_Overtime_Defense
             openTowerMenu = false;
             isErinMode = false;
             instructionsPage = 0;
+            towerRollover = new List<bool>();
+            rolledOverTower = -1;
 
             validPlaceForTower = Color.Green;
             
@@ -576,6 +584,9 @@ namespace Bruh_Overtime_Defense
                             radius = towerRadii[4];
                             break;
                     }
+
+                    //mark the tower that is being rolled over
+                    rolledOverTower = CheckTowerRollover();
 
                     //Maneuvring to get shapebatch to work
                     _spriteBatch.End();
@@ -1216,6 +1227,7 @@ namespace Bruh_Overtime_Defense
             currWave = 0;
             enemyCount = 0;
             waveMan.GenerateBruhStats();
+            towerRollover.Clear();
 
             //enemies and towers
             towers.Clear();
@@ -1398,7 +1410,8 @@ namespace Bruh_Overtime_Defense
                     Color.White);
                 notErinButton.Draw(_spriteBatch, mState);
 
-                CheckRollover();
+                //draw applicable tower instructions
+                CheckMenuRollover();
             }
         }
 
@@ -1427,6 +1440,10 @@ namespace Bruh_Overtime_Defense
             pauseButton.ActiveSprite = Content.Load<Texture2D>("Textures/optionsButtonActive");
             nextWaveButton.DefaultSprite = Content.Load<Texture2D>("Textures/NextWaveButton");
             nextWaveButton.ActiveSprite = Content.Load<Texture2D>("Textures/NextWaveButtonActive");
+            salaryButton.DefaultSprite = Content.Load<Texture2D>("SalaryButton");
+            salaryButton.ActiveSprite = Content.Load<Texture2D>("PaySalaryButton");
+            fireButton.DefaultSprite = Content.Load<Texture2D>("FireTowerButton");
+            fireButton.ActiveSprite = Content.Load<Texture2D>("FireTowerButtonActive");
             //tower buttons
             baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
             baseTowerButton.ActiveSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
@@ -1499,7 +1516,7 @@ namespace Bruh_Overtime_Defense
                 //check for resignations (which
                 //adds an enemy to the list)
                 towerManager.Resignations(towers,
-                    enemies, blue, collisions.StartPosition);
+                    enemies, blue, collisions.StartPosition, towerRollover);
 
                 //changes the display to the current
                 //amount of enemies in the list
@@ -1513,6 +1530,7 @@ namespace Bruh_Overtime_Defense
         public void DrawInstructions()
         {
             string instructions = "";
+            //first instructions page
             if(instructionsPage == 0)
             {
                 instructions = "Welcome to Bruh Overtime Defense! Protect your workforce by paying " +
@@ -1529,6 +1547,7 @@ namespace Bruh_Overtime_Defense
                 instructions += "When your defenses are set up, hit the Next Wave button to let the bruhs " +
                     "flow in. \n\nGood luck.";
             }
+            //second instructions page
             else if(instructionsPage == 1)
             {
                 instructions = "There are five towers that you can use to defend yourself. Here's " +
@@ -1549,29 +1568,8 @@ namespace Bruh_Overtime_Defense
                     "DOOT SKELETON.\n\n";
             }
 
+            //draws the instructions to the screen
             _spriteBatch.DrawString(arial16, instructions, new Vector2(20, 100), Color.Black);
-        }
-
-        /// <summary>
-        /// pays a tower's salary if it's clicked on
-        /// </summary>
-        public void PayTowers()
-        {
-            //for each tower
-            for(int i = 0; i < towers.Count; i++)
-            {
-                //if the tower is clicked
-                if(towers[i].Clicked(mState, prevMState))
-                {
-                    //if your money is greater than their salary
-                    if(totalMoney >= (int)towers[i].OriginalSalary/salaryDivider)
-                    {
-                        //pay the salary
-                        towerManager.SalaryPaid(towers[i]);
-                        totalMoney -= (int)towers[i].OriginalSalary/salaryDivider;
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -1676,6 +1674,7 @@ namespace Bruh_Overtime_Defense
 
                 //turns off place tower and empties the selectedTower
                 placeTower = false;
+                towerRollover.Add(false);
                 selectedTower = Towers.None;
             }
         }
@@ -1722,7 +1721,7 @@ namespace Bruh_Overtime_Defense
             //checks if bruhs are hit
             ResolveShot(gameTime);
             //pay salaries
-            PayTowers();
+            //PayTowers();
 
             //if the player hits the towerMenu button while the menu is closed
             if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == false)
@@ -1779,6 +1778,35 @@ namespace Bruh_Overtime_Defense
                     openTowerMenu = false;
                 }
             }
+
+            //for each tower
+            for(int i = 0; i < towers.Count; i++)
+            {
+                //if the tower is currently being rolled over
+                if(i == rolledOverTower)
+                {
+                    //salary button
+                    if (salaryButton.Clicked(mState, prevMState))
+                    {
+                        //if your money is greater than their salary
+                        if (totalMoney >= (int)towers[i].OriginalSalary / salaryDivider)
+                        {
+                            //pay the salary
+                            towerManager.SalaryPaid(towers[i]);
+                            totalMoney -= (int)towers[i].OriginalSalary / salaryDivider;
+                        }
+                    }
+
+                    //fire button
+                    if(fireButton.Clicked(mState, prevMState))
+                    {
+                        //remove the tower
+                        towerRollover.RemoveAt(i);
+                        towers.RemoveAt(i);
+                    }
+                }
+                
+            }
         }
 
         /// <summary>
@@ -1798,9 +1826,34 @@ namespace Bruh_Overtime_Defense
         }
 
         /// <summary>
+        /// draws the tower options
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void DrawTowerOptions(int x, int y, int salary)
+        {
+            //draws the back panel
+            _spriteBatch.Draw(towerMenuSprite,
+                new Rectangle(x, y, tileWidth * 3, tileHeight * 3),
+                Color.White);
+            //adjusts the location of the salary button and draws it
+            salaryButton.X = x + 5;
+            salaryButton.Y = y + 5;
+            salaryButton.Draw(_spriteBatch, mState);
+            //print the salary of the tower
+            _spriteBatch.DrawString(arial10, "$" + salary, 
+                new Vector2(x + 10 + tileWidth * 2, y + 15), 
+                Color.White);
+            //adjusts the location of the fire button and draws it
+            fireButton.X = x + tileWidth / 2;
+            fireButton.Y = y + 10 + tileHeight;
+            fireButton.Draw(_spriteBatch, mState);
+        }
+
+        /// <summary>
         /// checks the tower button rollovers to print instructions
         /// </summary>
-        public void CheckRollover()
+        public void CheckMenuRollover()
         {
             //if rolling over Doot Skeleton
             if (baseTowerButton.RollOver(mState))
@@ -1830,6 +1883,52 @@ namespace Bruh_Overtime_Defense
                 DrawTowerInstructions("  Not Erin:\n  -medium range\n  -high speed\n  " +
                     "-instantly kills \n  bruhs in range", notErinButton.Y);
             }
+        }
+
+        /// <summary>
+        /// checks to see if a tower is being rolled over, and returns the index of the tower being rolled over
+        /// </summary>
+        /// <returns></returns>
+        public int CheckTowerRollover()
+        {
+            //check each tower
+            for (int i = 0; i < towers.Count; i++)
+            {
+                //if the tower is being rolled over
+                if (towers[i].RollOver(mState))
+                {
+                    //draw the tower options and mark the tower as being rolled over
+                    DrawTowerOptions(towers[i].Position.X - tileWidth, towers[i].Position.Y - tileHeight * 3, 
+                        (int)towers[i].OriginalSalary/salaryDivider);
+                    towerRollover[i] = true;
+                }
+                //if the tower is marked as being rolled over
+                else if(towerRollover[i] == true)
+                {
+                    if(mState.Position.X < towers[i].Position.X + (tileWidth * 2) && 
+                        mState.Position.X > towers[i].Position.X - tileWidth && 
+                        mState.Position.Y < towers[i].Position.Y &&
+                        mState.Position.Y > towers[i].Position.Y - (tileHeight * 3))
+                    {
+                        //draw the tower options
+                        DrawTowerOptions(towers[i].Position.X - tileWidth, 
+                            towers[i].Position.Y - tileHeight * 3, 
+                            (int)towers[i].OriginalSalary/salaryDivider);
+                        //keep the tower as being rolled over and return the index of the tower
+                        towerRollover[i] = true;
+                        return i;
+                    }
+                    //if the tower and menu are not being rolled over
+                    else
+                    {
+                        //mark the tower as not being rolled over and return -1
+                        towerRollover[i] = false;
+                        return -1;
+                    }
+                }
+            }
+            //return -1
+            return -1;
         }
     }
 }

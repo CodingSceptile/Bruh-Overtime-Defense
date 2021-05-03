@@ -42,7 +42,7 @@ namespace Bruh_Overtime_Defense
         /// </summary>
         /// <returns>True if it's resigning, false if not.</returns>
         public void Resignations(List<Tower> towers, List<Enemy> enemies,
-            Texture2D enemyTexture, Rectangle startPos)
+            Texture2D enemyTexture, Rectangle startPos, List<bool> towerRollover)
         {
             for(int i = 0; i < towers.Count; i++)
             {
@@ -70,7 +70,8 @@ namespace Bruh_Overtime_Defense
                         newEnemy = new Enemy(enemyTexture, 10, 6, startPos);
                     }
 
-                    towers.Remove(towers[i]);                   
+                    towers.Remove(towers[i]);
+                    towerRollover.RemoveAt(i);
                     enemies.Add(newEnemy);
                 }
             }
@@ -96,11 +97,13 @@ namespace Bruh_Overtime_Defense
             {
                 foreach(Rectangle r in trackLocs)
                 {
+                    //if the tower is not on a track tile
                     if(!r.Intersects(towers[i].Position))
                     {
+                        //draw the tower and its remaining pay beneath it
                         towers[i].Draw(sb, _graphics);
-                        sb.DrawString(sf, "Total Pay: " + towers[i].Salary,
-                            new Vector2(towers[i].Position.X - 30, towers[i].Position.Y + 30),
+                        sb.DrawString(sf, "Pay Left: " + towers[i].Salary,
+                            new Vector2(towers[i].Position.X - 20, towers[i].Position.Y + 30),
                             Color.White);
                     }
                 }
