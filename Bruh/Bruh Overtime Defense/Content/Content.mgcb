@@ -25,8 +25,8 @@
 /processorParam:TextureFormat=Color
 /build:default-min.png
 
-#begin enemyWave2.wave
-/copy:enemyWave2.wave
+#begin enemyWave4.wave
+/copy:enemyWave4.wave
 
 #begin FireTowerButton.png
 /importer:TextureImporter

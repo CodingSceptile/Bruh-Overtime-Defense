@@ -1230,7 +1230,7 @@ namespace Bruh_Overtime_Defense
             placeTower = false;
             totalMoney = 100;
             gainMoney = 0;
-            health = 20;
+            health = 50;
             waveAmount = 5;
             newWave = false;
             currWave = 0;
@@ -1490,23 +1490,23 @@ namespace Bruh_Overtime_Defense
                 {
                     if (tower is DootSkeleton)
                     {
-                        totalMoney += 1;
+                        totalMoney += 2;
                     }
                     else if (tower is SniperMonke)
                     {
-                        totalMoney += 2;
+                        totalMoney += 4;
                     }
                     else if(tower is BuffDoge)
                     {
-                        totalMoney += 3;
+                        totalMoney += 6;
                     }
                     else if(tower is RyanTheGateKeeper)
                     {
-                        totalMoney += 4;
+                        totalMoney += 8;
                     }
                     else if(tower is Not_Erin)
                     {
-                        totalMoney += 5;
+                        totalMoney += 10;
                     }
                 }
                 
@@ -1600,7 +1600,7 @@ namespace Bruh_Overtime_Defense
 
             //initialize managers
             enMan = new EnemyManager(enemies, collisions.StartPosition, arial10);
-            waveMan = new WaveManager("enemyWave2.wave",
+            waveMan = new WaveManager("enemyWave4.wave",
                 enemyTex, red, blue, green, hurb, collisions.StartPosition);
 
             towerManager = new TowerManager(towers, collisions.TrackLocations);
