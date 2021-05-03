@@ -94,6 +94,7 @@ namespace Bruh_Overtime_Defense
         private Button okButton;
         private Button salaryButton;
         private Button fireButton;
+        private Button priorityButton;
         private bool isErinMode;
 
         //SpriteFonts
@@ -245,6 +246,7 @@ namespace Bruh_Overtime_Defense
                 0, tileWidth, tileHeight);
             salaryButton = new Button(0, 0, tileWidth * 2, tileHeight);
             fireButton = new Button(0, 0, tileWidth * 2, tileHeight);
+            priorityButton = new Button(0, 0, tileWidth * 3, tileHeight);
             //tower buttons
             baseTowerButton = new Button(screenWidth - (tileWidth * 3),
                 (tileHeight * 2) - 5, tileWidth, tileHeight);
@@ -1475,6 +1477,8 @@ namespace Bruh_Overtime_Defense
             salaryButton.ActiveSprite = Content.Load<Texture2D>("PaySalaryButton");
             fireButton.DefaultSprite = Content.Load<Texture2D>("FireTowerButton");
             fireButton.ActiveSprite = Content.Load<Texture2D>("FireTowerButtonActive");
+            priorityButton.DefaultSprite = Content.Load<Texture2D>("PFirstButton");
+            priorityButton.ActiveSprite = Content.Load<Texture2D>("PFirstButtonActive");
 
             //tower buttons
             baseTowerButton.DefaultSprite = Content.Load<Texture2D>("Textures/towerDefense_tile291");
@@ -1841,7 +1845,41 @@ namespace Bruh_Overtime_Defense
                             towers.RemoveAt(i);
 
                         }
-                    }                  
+                    }
+
+                    //priority button
+                    //display the correct button based on the tower's priority
+                    switch (towers[i].TowerPriority)
+                    {
+                        case Priority.First:
+                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PFirstButton");
+                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PFirstButtonActive");
+                            break;
+                        case Priority.Strong:
+                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PStrongButton");
+                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PStrongButtonActive");
+                            break;
+                        case Priority.Close:
+                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PCloseButton");
+                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PCloseButtonActive");
+                            break;
+                    }
+                    //if the button is clicked, change the priority
+                    if (priorityButton.Clicked(mState, prevMState))
+                    {
+                        switch (towers[i].TowerPriority)
+                        {
+                            case Priority.First:
+                                towers[i].TowerPriority = Priority.Strong;
+                                break;
+                            case Priority.Strong:
+                                towers[i].TowerPriority = Priority.Close;
+                                break;
+                            case Priority.Close:
+                                towers[i].TowerPriority = Priority.First;
+                                break;
+                        }
+                    }
                 }              
             }
         }
@@ -1885,6 +1923,10 @@ namespace Bruh_Overtime_Defense
             fireButton.X = x + tileWidth / 2;
             fireButton.Y = y + 10 + tileHeight;
             fireButton.Draw(_spriteBatch, mState);
+            //adjusts the location of the priority button and draws it
+            priorityButton.X = x;
+            priorityButton.Y = y + 10 + tileHeight * 2;
+            priorityButton.Draw(_spriteBatch, mState);
         }
 
         /// <summary>
@@ -1991,7 +2033,6 @@ namespace Bruh_Overtime_Defense
                 {
                     //mark the tower as not being rolled over and return -1
                     towerRollover[i] = false;
-                    return -1;
                 }
             }
             //reset towerRollover and return -1

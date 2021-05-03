@@ -16,7 +16,7 @@ namespace Bruh_Overtime_Defense
         Strong,
         Close
     }
-     abstract class Tower : GameObject //not abstract FOR NOW
+     abstract class Tower : GameObject
     {
         //Fields
         protected int radius;
