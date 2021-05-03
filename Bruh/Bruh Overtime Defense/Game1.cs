@@ -857,7 +857,9 @@ namespace Bruh_Overtime_Defense
                     //progresses the tutorial when a
                     //user presses the ok button
                     if ((okButton.Clicked(mState, prevMState))
-                        && !(tutorialPhase == 3) && !(tutorialPhase == 5))
+                        && !(tutorialPhase == 3) && !(tutorialPhase == 5)
+                        && !(tutorialPhase == 12) && !(tutorialPhase == 14)
+                        && !(tutorialPhase == 16) && !(tutorialPhase == 18))
                     {
                         tutorialPhase++;
                     }
@@ -953,7 +955,7 @@ namespace Bruh_Overtime_Defense
                     else if(tutorialPhase == 8)
                     {
                         TowerFunction(gameTime);
-                        if(towers[0].Salary >= 20)
+                        if(towers[0].Salary >= 40)
                         {
                             tutorialPhase++;
                             firstEnemySpawned = false;
@@ -990,7 +992,8 @@ namespace Bruh_Overtime_Defense
                             (new Rectangle(new Point(500, 300),
                             new Point(tileWidth, tileHeight)),
                             sniperSprite, towerRadii[1], 40, towerSpeed[1],
-                            gameTime, radius));                      
+                            gameTime, radius));
+                            towerRollover.Add(false);
                         }
 
                         //buff doge showoff
@@ -1010,6 +1013,7 @@ namespace Bruh_Overtime_Defense
                             new Point(tileWidth, tileHeight)),
                             dogeSprite, towerRadii[2], 40, towerSpeed[2],
                             gameTime, radius));
+                            towerRollover.Add(false);
                         }
 
                         //ryan showoff
@@ -1029,6 +1033,7 @@ namespace Bruh_Overtime_Defense
                             new Point(tileWidth, tileHeight)),
                             ryanSprite, towerRadii[3], 40, towerSpeed[2],
                             gameTime, radius));
+                            towerRollover.Add(false);
                         }
 
                         //Erin showoff
@@ -1048,6 +1053,7 @@ namespace Bruh_Overtime_Defense
                             new Point(tileWidth, tileHeight)),
                             erinSprite, towerRadii[4], 40, towerSpeed[2],
                             gameTime, radius));
+                            towerRollover.Add(false);
                         }
 
                         if (enMan.AllEnemiesDead() && currWave == 1)
@@ -1600,7 +1606,7 @@ namespace Bruh_Overtime_Defense
 
             //initialize managers
             enMan = new EnemyManager(enemies, collisions.StartPosition, arial10);
-            waveMan = new WaveManager("enemyWave4.wave",
+            waveMan = new WaveManager("enemyWaveFixed.wave",
                 enemyTex, red, blue, green, hurb, collisions.StartPosition);
 
             towerManager = new TowerManager(towers, collisions.TrackLocations);
@@ -1806,15 +1812,19 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
-                    //fire button
-                    if(fireButton.Clicked(mState, prevMState))
+                    if(collisions.LevelName != "tutorialFixed.level_Appended")
                     {
-                        //remove the tower
-                        towerRollover.RemoveAt(i);
-                        towers.RemoveAt(i);
-                    }
-                }
-                
+                        //fire button
+                        if (fireButton.Clicked(mState, prevMState))
+                        {
+                            //remove the tower
+                            totalMoney += (int)towers[i].Salary;
+                            towerRollover.RemoveAt(i);
+                            towers.RemoveAt(i);
+
+                        }
+                    }                  
+                }              
             }
         }
 

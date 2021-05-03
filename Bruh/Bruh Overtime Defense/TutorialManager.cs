@@ -160,7 +160,7 @@ namespace Bruh_Overtime_Defense
                         "It looks as if\n" +
                         "the total pay of \n" +
                         "your tower decreased!\n\n" +
-                        "Try clicking on it to \n" +
+                        "Try hovering over it to \n" +
                         "pay it some money!",
                         new Vector2(75, 250),
                         Color.White);
