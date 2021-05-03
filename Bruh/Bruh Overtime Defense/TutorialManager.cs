@@ -110,7 +110,7 @@ namespace Bruh_Overtime_Defense
                         Color.White);
                     sb.Draw(dootSprite,
                         new Rectangle(
-                            new Point(215, 375),
+                            new Point(215, 370),
                             new Point(50, 50)),
                         Color.White);
                     break;
