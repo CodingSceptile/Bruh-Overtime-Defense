@@ -1845,43 +1845,46 @@ namespace Bruh_Overtime_Defense
                             totalMoney += (int)towers[i].Salary;
                             towerRollover.RemoveAt(i);
                             towers.RemoveAt(i);
-
                         }
                     }
 
-                    //priority button
-                    //display the correct button based on the tower's priority
-                    switch (towers[i].TowerPriority)
+                    if (i < towers.Count && towers[i].RollOver(mState))
                     {
-                        case Priority.First:
-                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PFirstButton");
-                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PFirstButtonActive");
-                            break;
-                        case Priority.Strong:
-                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PStrongButton");
-                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PStrongButtonActive");
-                            break;
-                        case Priority.Close:
-                            priorityButton.DefaultSprite = Content.Load<Texture2D>("PCloseButton");
-                            priorityButton.ActiveSprite = Content.Load<Texture2D>("PCloseButtonActive");
-                            break;
-                    }
-                    //if the button is clicked, change the priority
-                    if (priorityButton.Clicked(mState, prevMState))
-                    {
+                        //priority button
+                        //display the correct button based on the tower's priority
                         switch (towers[i].TowerPriority)
                         {
                             case Priority.First:
-                                towers[i].TowerPriority = Priority.Strong;
+                                priorityButton.DefaultSprite = Content.Load<Texture2D>("PFirstButton");
+                                priorityButton.ActiveSprite = Content.Load<Texture2D>("PFirstButtonActive");
                                 break;
                             case Priority.Strong:
-                                towers[i].TowerPriority = Priority.Close;
+                                priorityButton.DefaultSprite = Content.Load<Texture2D>("PStrongButton");
+                                priorityButton.ActiveSprite = Content.Load<Texture2D>("PStrongButtonActive");
                                 break;
                             case Priority.Close:
-                                towers[i].TowerPriority = Priority.First;
+                                priorityButton.DefaultSprite = Content.Load<Texture2D>("PCloseButton");
+                                priorityButton.ActiveSprite = Content.Load<Texture2D>("PCloseButtonActive");
                                 break;
                         }
+                        //if the button is clicked, change the priority
+                        if (priorityButton.Clicked(mState, prevMState))
+                        {
+                            switch (towers[i].TowerPriority)
+                            {
+                                case Priority.First:
+                                    towers[i].TowerPriority = Priority.Strong;
+                                    break;
+                                case Priority.Strong:
+                                    towers[i].TowerPriority = Priority.Close;
+                                    break;
+                                case Priority.Close:
+                                    towers[i].TowerPriority = Priority.First;
+                                    break;
+                            }
+                        }
                     }
+                  
                 }              
             }
         }
