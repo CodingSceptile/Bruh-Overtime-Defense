@@ -1729,8 +1729,6 @@ namespace Bruh_Overtime_Defense
 
             //checks if bruhs are hit
             ResolveShot(gameTime);
-            //pay salaries
-            //PayTowers();
 
             //if the player hits the towerMenu button while the menu is closed
             if (towerMenuButton.Clicked(mState, prevMState) && openTowerMenu == false)
@@ -1907,36 +1905,70 @@ namespace Bruh_Overtime_Defense
                 if (towers[i].RollOver(mState))
                 {
                     //draw the tower options and mark the tower as being rolled over
-                    DrawTowerOptions(towers[i].Position.X - tileWidth, towers[i].Position.Y - tileHeight * 3, 
-                        (int)towers[i].OriginalSalary/salaryDivider);
-                    towerRollover[i] = true;
+                    if(towers[i].Position.Y > 100)
+                    {
+                        DrawTowerOptions(towers[i].Position.X - tileWidth, towers[i].Position.Y - tileHeight * 3,
+                        (int)towers[i].OriginalSalary / salaryDivider);
+                        towerRollover[i] = true;
+                        return i;
+                    }
+                    //changes the position of the menu so it doesn't go off the top of the screen
+                    else if (towers[i].Position.Y <= 100)
+                    {
+                        DrawTowerOptions(towers[i].Position.X + tileWidth, towers[i].Position.Y,
+                        (int)towers[i].OriginalSalary / salaryDivider);
+                        towerRollover[i] = true;
+                        return i;
+                    }
                 }
                 //if the tower is marked as being rolled over
                 else if(towerRollover[i] == true)
                 {
-                    if(mState.Position.X < towers[i].Position.X + (tileWidth * 2) && 
-                        mState.Position.X > towers[i].Position.X - tileWidth && 
-                        mState.Position.Y < towers[i].Position.Y &&
-                        mState.Position.Y > towers[i].Position.Y - (tileHeight * 3))
+                    //if the tower is below the top of the map
+                    if (towers[i].Position.Y > 100)
                     {
-                        //draw the tower options
-                        DrawTowerOptions(towers[i].Position.X - tileWidth, 
-                            towers[i].Position.Y - tileHeight * 3, 
-                            (int)towers[i].OriginalSalary/salaryDivider);
-                        //keep the tower as being rolled over and return the index of the tower
-                        towerRollover[i] = true;
-                        return i;
+                        if (mState.Position.X < towers[i].Position.X + (tileWidth * 2) &&
+                            mState.Position.X > towers[i].Position.X - tileWidth &&
+                            mState.Position.Y < towers[i].Position.Y + tileWidth &&
+                            mState.Position.Y > towers[i].Position.Y - (tileHeight * 3))
+                        {
+                            DrawTowerOptions(towers[i].Position.X - tileWidth,
+                                towers[i].Position.Y - tileHeight * 3,
+                            (int)towers[i].OriginalSalary / salaryDivider);
+                            //keep the tower as being rolled over and return the index of the tower
+                            towerRollover[i] = true;
+                            return i;
+                        }
                     }
-                    //if the tower and menu are not being rolled over
-                    else
+                    //if the tower is at the top of the map, change the position of the menu
+                    else if(towers[i].Position.Y <= 100)
                     {
-                        //mark the tower as not being rolled over and return -1
-                        towerRollover[i] = false;
-                        return -1;
+                        if (mState.Position.X < towers[i].Position.X + (tileWidth * 4) &&
+                            mState.Position.X > towers[i].Position.X  &&
+                            mState.Position.Y < towers[i].Position.Y  + tileHeight * 3 &&
+                            mState.Position.Y > towers[i].Position.Y)
+                        {
+                            DrawTowerOptions(towers[i].Position.X + tileWidth, towers[i].Position.Y,
+                                (int)towers[i].OriginalSalary / salaryDivider);
+                            //keep the tower as being rolled over and return the index of the tower
+                            towerRollover[i] = true;
+                            return i;
+                        }
                     }
                 }
+                //if the tower and menu are not being rolled over
+                else
+                {
+                    //mark the tower as not being rolled over and return -1
+                    towerRollover[i] = false;
+                    return -1;
+                }
             }
-            //return -1
+            //reset towerRollover and return -1
+            for(int i = 0; i < towerRollover.Count; i++)
+            {
+                towerRollover[i] = false;
+            }
             return -1;
         }
     }
