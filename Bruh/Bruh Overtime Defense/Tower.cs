@@ -408,6 +408,27 @@ namespace Bruh_Overtime_Defense
         }
 
         /// <summary>
+        /// checks to see if the tower is being rolled over
+        /// </summary>
+        /// <param name="mState"></param>
+        /// <returns></returns>
+        public bool RollOver(MouseState mState)
+        {
+            //if the x coord is right
+            if (mState.X > Position.X && mState.X < Position.X + Position.Width)
+            {
+                //if the y coord is right
+                if (mState.Y > Position.Y && mState.Y < Position.Y + Position.Height)
+                {
+                    //return true
+                    return true;
+                }
+            }
+            //else return false
+            return false;
+        }
+
+        /// <summary>
         /// allows the tower to be clicked
         /// </summary>
         /// <param name="mState"></param>
