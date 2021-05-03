@@ -49,14 +49,18 @@ namespace Bruh_Overtime_Defense
                      {
                         //apply texture here
                         enemies[i].Movement *= 0;
+                        enemies[i].Staller = this;
                      }
 
-                     else
+
+                     //So only the ryan that stops it can free it and 
+                     //other ryans don't affect it.
+                     else if((enemies[i].Staller != null) && enemies[i].Staller.Equals(this))
                      {
                         //change textures back
                         //attendance check, one goes in at a time
                         enemies[i].Movement = enemies[i].OriginalMovement;
-                    }
+                     }
                 }
                  
             }
@@ -84,6 +88,7 @@ namespace Bruh_Overtime_Defense
                 (time >9))
             {
                 System.Diagnostics.Debug.WriteLine(time);
+                System.Diagnostics.Debug.WriteLine(this.Position);
                 return true;
             }
 

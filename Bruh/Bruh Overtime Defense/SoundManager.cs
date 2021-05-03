@@ -19,6 +19,7 @@ namespace Bruh_Overtime_Defense
         private SoundEffect mukundBruh;
         private SoundEffect samiBruh;
         private SoundEffect calebBruh;
+        private SoundEffect londonBruh;
         private Song titleTheme;
         private Song gameTheme;
         private Song victoryTheme;
@@ -38,6 +39,7 @@ namespace Bruh_Overtime_Defense
         /// <param name="loseTheme">lose music</param>
         public SoundManager(SoundEffect bruhHit, Song titleTheme, Song gameTheme,
             Song victoryTheme, Song loseTheme, SoundEffect sami, SoundEffect mukund,
+            SoundEffect london,
             SoundEffect calebBruh)
         {
             this.bruhHit = bruhHit;
@@ -51,6 +53,7 @@ namespace Bruh_Overtime_Defense
             mukundBruh = mukund;
             samiBruh = sami;
             this.calebBruh = calebBruh;
+            londonBruh = london;
 
             random = new Random();
         }
@@ -128,12 +131,11 @@ namespace Bruh_Overtime_Defense
             switch (currSFX)
             {
                 case 0:
-                    bruhHit.Play(0.01f, pitch, 0);
+                    londonBruh.Play(0.33f, pitch, 0);
                     break;
                 case 1:
                     samiBruh.Play(0.33f, pitch, 0);
                     break;
-
                 case 2:
                     mukundBruh.Play(0.33f, pitch, 0);
                     break;

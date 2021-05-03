@@ -109,6 +109,7 @@ namespace Bruh_Overtime_Defense
         private SoundEffect samiBruh;
         private SoundEffect mukundBruh;
         private SoundEffect calebBruh;
+        private SoundEffect londonBruh;
 
         //Collisions
         private CollisionManager collisions;
@@ -328,6 +329,7 @@ namespace Bruh_Overtime_Defense
             samiBruh = Content.Load<SoundEffect>("Music/samiBruh");
             mukundBruh = Content.Load<SoundEffect>("Music/mukundBruh");
             calebBruh = Content.Load<SoundEffect>("Music/calebBruh");
+            londonBruh = Content.Load<SoundEffect>("Music/londonBruh");
 
             towerMenuSprite = Content.Load<Texture2D>("Textures/towerSelector");
             uiInstructions = Content.Load<Texture2D>("Textures/BOD UI instructions");
@@ -366,7 +368,7 @@ namespace Bruh_Overtime_Defense
 
             //Sound Manager
             soundMan = new SoundManager(bruhEffect, titleSong, gameSong, victory, lose,
-                samiBruh, mukundBruh, calebBruh);
+                samiBruh, mukundBruh, londonBruh, calebBruh);
 
             //tutorial manager
             tutorialBG = Content.Load<Texture2D>("Textures/tutorialBackground");
@@ -508,10 +510,10 @@ namespace Bruh_Overtime_Defense
                     //constructs a rectangle where the mouse currently is,
                     //sizes it to the size of the tower selected
                     Rectangle currMousePos = new Rectangle(
-                                    new Point(mState.Position.X - (baseTowerButton.DefaultSprite.Width / 2),
-                                    mState.Position.Y - (baseTowerButton.DefaultSprite.Height / 2)),
-                                    new Point(baseTowerButton.DefaultSprite.Width,
-                                    baseTowerButton.DefaultSprite.Height));
+                                    new Point(mState.Position.X - 20,
+                                    mState.Position.Y - 20),
+                                    new Point(40,
+                                    40));
 
                     //Gets another rectangle for collisions with the mouse
                     Rectangle mouseCheck = new Rectangle(
@@ -870,6 +872,13 @@ namespace Bruh_Overtime_Defense
                     {
                         //pause the game
                         gState = GameState.PauseScreen;
+                    }
+                    //if the player hits left or right control
+                    if (SingleKeyPress(Keys.Back) || SingleKeyPress(Keys.Back))
+                    {
+                        //pause the game
+                        gState = GameState.MapSelect;
+                        soundPlaying = false;
                     }
 
                     //enables tower function on the

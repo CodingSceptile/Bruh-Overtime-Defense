@@ -26,12 +26,14 @@ namespace Bruh_Overtime_Defense
         private Vector2 originalMovement;
         private Rectangle internalHitbox;
         private bool startPosSet;
+        private RyanTheGateKeeper staller;
 
         //Properties
         public int Health { get { return health; } set { health = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public bool IsDead { get { return isDead; } set { isDead = value; } }
         public Texture2D Bruh { get { return texture; } }
+        public RyanTheGateKeeper Staller { get { return staller; } set { staller = value; } }
 
         /// <summary>
         /// Returns the X coordinate of the
