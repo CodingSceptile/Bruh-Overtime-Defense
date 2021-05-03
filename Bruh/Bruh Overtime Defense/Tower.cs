@@ -381,7 +381,6 @@ namespace Bruh_Overtime_Defense
                             {
                                 continue;
                             }
-
                             e.Health -= 1;
                             money++;
                             madeShot = true;
