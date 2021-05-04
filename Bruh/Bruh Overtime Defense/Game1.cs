@@ -1658,7 +1658,7 @@ namespace Bruh_Overtime_Defense
 
             //initialize managers
             enMan = new EnemyManager(enemies, collisions.StartPosition, arial10);
-            waveMan = new WaveManager("enemyWaveFixed.wave",
+            waveMan = new WaveManager("enemyWaveFixedFixed.wave",
                 enemyTex, red, blue, green, hurb, collisions.StartPosition);
 
             towerManager = new TowerManager(towers, collisions.TrackLocations);
