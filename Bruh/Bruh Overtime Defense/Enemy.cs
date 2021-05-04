@@ -31,13 +31,41 @@ namespace Bruh_Overtime_Defense
         private int moneyGained;
 
         //Properties
+        /// <summary>
+        /// Gets or sets the health of an enemy
+        /// </summary>
         public int Health { get { return health; } set { health = value; } }
+
+        /// <summary>
+        /// Gets or sets the speed of the enemy
+        /// </summary>
         public float Speed { get { return speed; } set { speed = value; } }
+
+        /// <summary>
+        /// gets or sets whether or not the enemy is dead
+        /// </summary>
         public bool IsDead { get { return isDead; } set { isDead = value; } }
+
+        /// <summary>
+        /// Gets or sets texture of the bruh
+        /// </summary>
         public Texture2D Bruh { get { return texture; } set { texture = value; } }
+
+        /// <summary>
+        /// Gets or sets whether or not ryan is 
+        /// targetting the bruh
+        /// </summary>
         public RyanTheGateKeeper Staller { get { return staller; } set { staller = value; } }
+
+        /// <summary>
+        /// Gets the original texture of the bruh
+        /// </summary>
         public Texture2D OriginalBruh { get { return originalTexture; } }
 
+        /// <summary>
+        /// Gets the amount of money given by
+        /// a specific bruh
+        /// </summary>
         public int MoneyGained { get { return moneyGained; } }
 
         /// <summary>
