@@ -544,20 +544,6 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
-                    //checks for intersecting towers
-                    foreach(Tower t in towers)
-                    {
-                        if (t.Position.Intersects(mouseCheck))
-                        {
-                            validPlaceForTower = Color.Red;
-                            break;
-                        }
-                        else
-                        {
-                            validPlaceForTower = Color.Green;
-                        }
-                    }
-
                     //draw the selected tower to the mouse
                     //cursor
                     switch (selectedTower)
@@ -1888,7 +1874,7 @@ namespace Bruh_Overtime_Defense
                         }
                     }
 
-                    if (i < towers.Count && towers[i].RollOver(mState))
+                    if (i < towers.Count)
                     {
                         //priority button
                         //display the correct button based on the tower's priority
