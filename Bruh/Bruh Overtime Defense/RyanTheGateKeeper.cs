@@ -91,8 +91,8 @@ namespace Bruh_Overtime_Defense
                 (time > 5 && time < 7) ||
                 (time >9))
             {
-                System.Diagnostics.Debug.WriteLine(time);
-                System.Diagnostics.Debug.WriteLine(this.Position);
+                //System.Diagnostics.Debug.WriteLine(time);
+                //System.Diagnostics.Debug.WriteLine(this.Position);
                 return true;
             }
 
