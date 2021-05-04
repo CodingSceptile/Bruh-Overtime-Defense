@@ -262,6 +262,7 @@ namespace Bruh_Overtime_Defense
                             if (Distance(Position, e.Position) <= Radius)
                             {
                                 targetEnemy = e;
+                                break;
                             }
                         }
                     }
