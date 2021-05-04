@@ -51,23 +51,23 @@ namespace Bruh_Overtime_Defense
                     Enemy newEnemy = null;
                     if (towers[i] is DootSkeleton)
                     {
-                        newEnemy = new Enemy(enemyTexture, 1, 3, startPos);
+                        newEnemy = new Enemy(enemyTexture, 1, 3, startPos, 1);
                     }
                     else if (towers[i] is SniperMonke)
                     {
-                        newEnemy = new Enemy(enemyTexture, 3, 3, startPos);
+                        newEnemy = new Enemy(enemyTexture, 3, 3, startPos, 2);
                     }
                     else if(towers[i] is BuffDoge)
                     {
-                        newEnemy = new Enemy(enemyTexture, 5, 3, startPos);
+                        newEnemy = new Enemy(enemyTexture, 5, 3, startPos, 3);
                     }
                     else if(towers[i] is RyanTheGateKeeper)
                     {
-                        newEnemy = new Enemy(enemyTexture, 6, 3, startPos);
+                        newEnemy = new Enemy(enemyTexture, 6, 3, startPos, 4);
                     }
                     else
                     {
-                        newEnemy = new Enemy(enemyTexture, 10, 6, startPos);
+                        newEnemy = new Enemy(enemyTexture, 10, 6, startPos, 5);
                     }
 
                     towers.Remove(towers[i]);

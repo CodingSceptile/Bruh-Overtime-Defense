@@ -28,6 +28,8 @@ namespace Bruh_Overtime_Defense
         private RyanTheGateKeeper staller;
         private Texture2D originalTexture;
 
+        private int moneyGained;
+
         //Properties
         public int Health { get { return health; } set { health = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
@@ -35,6 +37,8 @@ namespace Bruh_Overtime_Defense
         public Texture2D Bruh { get { return texture; } set { texture = value; } }
         public RyanTheGateKeeper Staller { get { return staller; } set { staller = value; } }
         public Texture2D OriginalBruh { get { return originalTexture; } }
+
+        public int MoneyGained { get { return moneyGained; } }
 
         /// <summary>
         /// Returns the X coordinate of the
@@ -98,7 +102,8 @@ namespace Bruh_Overtime_Defense
         /// <param name="health">Health of the enemy</param>
         /// <param name="speed">Movement speed of the enemy</param>
         /// <param name="position">Position of the enemy on the map</param>
-        public Enemy(Texture2D texture, int health, float speed, Rectangle position)
+        public Enemy(Texture2D texture, int health, float speed, Rectangle position,
+            int moneyGained)
             : base(position, texture)
         {
             this.texture = texture;
@@ -126,6 +131,7 @@ namespace Bruh_Overtime_Defense
             
             this.vectorInteractions = 0;
             this.originalMovement = movement;
+            this.moneyGained = moneyGained;
         }
     } 
 }

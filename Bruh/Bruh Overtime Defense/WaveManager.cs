@@ -153,22 +153,22 @@ namespace Bruh_Overtime_Defense
                     //regular bruhs added
                     for(int j = 0; j < int.Parse(stats[1]); j++)
                     {
-                        waves[i + 1].Add(new Enemy(bruh, bruhHealth, bruhSpeed, startingRect));
+                        waves[i + 1].Add(new Enemy(bruh, bruhHealth, bruhSpeed, startingRect, bruhHealth));
                     }
                     //red bruhs added
                     for (int j = 0; j < int.Parse(stats[2]); j++)
                     {
-                        waves[i + 1].Add(new Enemy(red, redHealth, redSpeed, startingRect));
+                        waves[i + 1].Add(new Enemy(red, redHealth, redSpeed, startingRect, redHealth));
                     }
                     //green bruhs added
                     for (int j = 0; j < int.Parse(stats[3]); j++)
                     {
-                        waves[i + 1].Add(new Enemy(green, greenHealth, greenSpeed, startingRect));
+                        waves[i + 1].Add(new Enemy(green, greenHealth, greenSpeed, startingRect, greenHealth));
                     }
                     //blue bruhs added
                     for (int j = 0; j < int.Parse(stats[4]); j++)
                     {
-                        waves[i + 1].Add(new Enemy(blue, blueHealth, blueSpeed, startingRect));
+                        waves[i + 1].Add(new Enemy(blue, blueHealth, blueSpeed, startingRect, blueHealth));
                     }
 
                     //checks if hurb needs to be added
@@ -176,7 +176,7 @@ namespace Bruh_Overtime_Defense
                     {
                         for (int j = 0; j < int.Parse(stats[5]); j++)
                         {
-                            waves[i + 1].Add(new Enemy(hurb, hurbHealth, hurbSpeed, startingRect));
+                            waves[i + 1].Add(new Enemy(hurb, hurbHealth, hurbSpeed, startingRect, hurbHealth));
                         }
                     }
                 }
