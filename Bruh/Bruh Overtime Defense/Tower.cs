@@ -315,7 +315,6 @@ namespace Bruh_Overtime_Defense
            foreach (Enemy e in enemies)
            {
                 //so more money can be returned for stronger enemies
-                int money = 0;
                 if(targetEnemy != null)
                 {
                     //resets target enemy in case something
@@ -391,12 +390,11 @@ namespace Bruh_Overtime_Defense
                             }
 
                             targetEnemy.Health -= damageGiven;
-                            money++;
                             madeShot = true;
                             if (targetEnemy.Health <= 0)
                             {
                                 targetEnemy.IsDead = true;
-                                return money;
+                                return targetEnemy.MoneyGained;
                             }
                         }
                     }

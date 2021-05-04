@@ -1512,7 +1512,7 @@ namespace Bruh_Overtime_Defense
                 {
                     if (tower is DootSkeleton)
                     {
-                        totalMoney += 1;
+                        totalMoney += 2;
                     }
                     else if (tower is SniperMonke)
                     {
