@@ -407,18 +407,6 @@ namespace Bruh_Overtime_Defense
             mState = Mouse.GetState();
             kState = Keyboard.GetState();
 
-            //shortcuts to view game over and victory screens
-            if (Keyboard.GetState().IsKeyDown(Keys.G))
-            {
-                soundPlaying = false;
-                gState = GameState.GameOver;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.V))
-            {
-                gState = GameState.VictoryScreen;
-                soundPlaying = false;
-            }
-
             //check the game state and see if it needs to be moved
             FiniteStateMachine(gameTime);
 

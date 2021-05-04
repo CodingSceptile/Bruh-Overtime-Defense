@@ -312,11 +312,18 @@ namespace Bruh_Overtime_Defense
                 }
             }
 
+
            foreach (Enemy e in enemies)
            {
                 //so more money can be returned for stronger enemies
                 if(targetEnemy != null)
                 {
+                    if (Distance(Position, targetEnemy.Position) > Radius)
+                    {
+                        targetEnemy = null;
+                        return 0;
+                    }
+
                     //resets target enemy in case something
                     //is shot down mid-cycle
                     if (targetEnemy.IsDead)
@@ -399,6 +406,10 @@ namespace Bruh_Overtime_Defense
                             {
                                 targetEnemy.IsDead = true;
                                 return targetEnemy.MoneyGained;
+                            }
+                            else
+                            {
+                                return 0;
                             }
                         }
                     }
