@@ -648,7 +648,7 @@ namespace Bruh_Overtime_Defense
                     aniMan.Draw(_spriteBatch);
                     //draw the header and instructions
                     _spriteBatch.DrawString(gameText36, "Paused",
-                        new Vector2(240, 50), Color.Black);
+                        new Vector2(240, 30), Color.Black);
                     DrawInstructions();
                     _spriteBatch.DrawString(arial36, "Press Enter to return to game",
                         new Vector2(80, 490), Color.Black);
@@ -1153,6 +1153,7 @@ namespace Bruh_Overtime_Defense
             //if the player is on the pause screen
             else if(gState == GameState.PauseScreen)
             {
+                instructionsPage = 0;
                 timeSpanSincePause = gameTime.TotalGameTime;
                 //if the player hits escape
                 if (SingleKeyPress(Keys.LeftControl) || SingleKeyPress(Keys.RightControl))
