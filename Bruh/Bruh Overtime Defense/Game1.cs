@@ -1383,12 +1383,12 @@ namespace Bruh_Overtime_Defense
                     {
                         soundMan.PlayBruhSFX();
                         towers[i].MadeShot = true;
+                        enemyCount--;
                     }
                     else
                     {
                         towers[i].MadeShot = false;
                     }
-                    enemyCount -= gainMoney; //since 1 money is gained for 1 enemy dying
                 }
             }
         }
