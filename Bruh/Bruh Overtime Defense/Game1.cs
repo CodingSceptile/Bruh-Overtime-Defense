@@ -1615,7 +1615,7 @@ namespace Bruh_Overtime_Defense
                     new Vector2(100, 260), Color.White);
                 _spriteBatch.DrawString(arial16, "Big Purp: Doot Skeleton image",
                     new Vector2(100, 290), Color.White);
-                _spriteBatch.DrawString(arial16, "Chris Cascioli: SpriteBatch library",
+                _spriteBatch.DrawString(arial16, "Chris Cascioli: ShapeBatch library",
                     new Vector2(100, 320), Color.White);
                 _spriteBatch.DrawString(arial16, "Game Developer Studio: Sniper Rifle image",
                     new Vector2(100, 350), Color.White);

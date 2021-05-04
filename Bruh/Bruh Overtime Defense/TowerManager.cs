@@ -93,12 +93,29 @@ namespace Bruh_Overtime_Defense
         /// <param name="sb">SpriteBatch</param>
         public void DrawTowers(SpriteBatch sb, SpriteFont sf, List<Enemy> enemies, GraphicsDeviceManager _graphics)
         {
+            //bool otherTowerPlaced = false;
+
+            //for(int i = 0; i < towers.Count; i++)
+            //{
+            //    for(int j = 1; j < towers.Count; j++)
+            //    {
+            //        if(i != j)
+            //        {
+            //            if(towers[i].Position.Intersects(towers[j].Position))
+            //            {
+            //                otherTowerPlaced = true;
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
+
             for(int i = 0; i < towers.Count; i++)
             {
                 foreach(Rectangle r in trackLocs)
                 {
                     //if the tower is not on a track tile
-                    if(!r.Intersects(towers[i].Position))
+                    if((!r.Intersects(towers[i].Position)) /*&& !otherTowerPlaced*/)
                     {
                         //draw the tower and its remaining pay beneath it
                         towers[i].Draw(sb, _graphics);
@@ -106,6 +123,7 @@ namespace Bruh_Overtime_Defense
                             new Vector2(towers[i].Position.X - 20, towers[i].Position.Y + 30),
                             Color.White);
                     }
+
                 }            
             }
         }
