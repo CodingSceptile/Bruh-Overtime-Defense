@@ -321,6 +321,7 @@ namespace Bruh_Overtime_Defense
                     //is shot down mid-cycle
                     if (targetEnemy.IsDead)
                     {
+                        //for First prio
                         if(towerPriority == Priority.First)
                         {
                             if (!e.IsDead)
@@ -330,6 +331,7 @@ namespace Bruh_Overtime_Defense
                             }
                         }
                         
+                        //For strong prio
                         else if(towerPriority == Priority.Strong)
                         {
                             foreach (Enemy en in enemies)
@@ -347,6 +349,7 @@ namespace Bruh_Overtime_Defense
                             }
                         }
 
+                        //For close prio
                         else if(towerPriority == Priority.Close)
                         {
                             foreach (Enemy ene in enemies)
@@ -379,19 +382,19 @@ namespace Bruh_Overtime_Defense
                     //Shoots every activitySpeed amount of seconds.
                     if ((int)gameTime.TotalGameTime.TotalMilliseconds % (activitySpeed * 500) == 0)
                     {
-                        if (Distance(Position, e.Position) <= Radius)
+                        if (Distance(Position, targetEnemy.Position) <= Radius)
                         {
-                            if (e.IsDead == true)
+                            if (targetEnemy.IsDead == true)
                             {
                                 continue;
                             }
 
-                            e.Health -= damageGiven;
+                            targetEnemy.Health -= damageGiven;
                             money++;
                             madeShot = true;
-                            if (e.Health <= 0)
+                            if (targetEnemy.Health <= 0)
                             {
-                                e.IsDead = true;
+                                targetEnemy.IsDead = true;
                                 return money;
                             }
                         }
